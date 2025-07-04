@@ -82,7 +82,9 @@ public class PlayerController : MonoBehaviour
     private float CalculateYBoundary()
     {
         float camHeight = Camera.main.orthographicSize;
+        float hudOffset = LevelBounds.GetHudOffsetInUnits();
         float halfPaddleHeight = _paddlePrefab.GetComponent<SpriteRenderer>().bounds.extents.y;
-        return camHeight - halfPaddleHeight;
+        return camHeight - hudOffset - halfPaddleHeight;
     }
+
 }

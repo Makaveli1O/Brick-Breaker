@@ -5308,6 +5308,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6807a9e8f2fa6e6488792fff157787f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _wallSpriteHorizontal: {fileID: 21300000, guid: e80052c1b35bac043b626b486bb184e3, type: 3}
+  _wallSpriteVertical: {fileID: 21300000, guid: 48c6d4ed237c1e6408dfc349318f1407, type: 3}
 --- !u!1 &1116544573 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7352906868426914609, guid: 31f0674b3fea33d4a82644cc536addcb, type: 3}
