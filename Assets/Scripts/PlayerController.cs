@@ -12,7 +12,6 @@ public class PlayerController : MonoBehaviour
     private Vector2 _movementVector;
     [SerializeField] private float acceleration = 30f;
     [SerializeField] private PlayerParticleController _ppc;
-    private float _verticalBoundary;
     private Rigidbody2D _rb;
 
     private void Awake()
@@ -25,7 +24,6 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        _verticalBoundary = CalculateYBoundary();
 
         _paddleInstance = Instantiate(_paddlePrefab, transform.position, Quaternion.identity, transform);
         _paddle = _paddleInstance.GetComponent<IPaddleBehaviour>();
@@ -74,17 +72,15 @@ public class PlayerController : MonoBehaviour
     private void ClampToVerticalBounds()
     {
         Vector3 pos = transform.position;
-        pos.y = Mathf.Clamp(pos.y, -_verticalBoundary, _verticalBoundary);
-        transform.position = pos;
-    }
 
-
-    private float CalculateYBoundary()
-    {
         float camHeight = Camera.main.orthographicSize;
         float hudOffset = LevelBounds.GetHudOffsetInUnits();
         float halfPaddleHeight = _paddlePrefab.GetComponent<SpriteRenderer>().bounds.extents.y;
-        return camHeight - hudOffset - halfPaddleHeight;
-    }
 
+        float upperBound = camHeight - hudOffset - halfPaddleHeight;
+        float lowerBound = -camHeight + halfPaddleHeight;
+
+        pos.y = Mathf.Clamp(pos.y, lowerBound, upperBound);
+        transform.position = pos;
+    }
 }
