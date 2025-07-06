@@ -8,6 +8,8 @@ namespace Assets.Scripts.HeartSystem
     public class HeartUI : MonoBehaviour
     {
         [SerializeField] private GameObject _heartPrefab;
+        [SerializeField] private AudioClip _removeHeartClip;
+        private ISoundPlayer _soundPlayer;
         private IHeartController _heartController;
         private const float _initialPositionX = -6.0f;
         private readonly List<HeartIcon> _icons = new();
@@ -21,6 +23,7 @@ namespace Assets.Scripts.HeartSystem
         void Start()
         {
             _heartController = SimpleServiceLocator.Resolve<IHeartController>();
+            _soundPlayer = SimpleServiceLocator.Resolve<ISoundPlayer>();
 
             if (_heartController == null) throw new System.Exception("Heart controller not assigned!");
             InstantiateHearts();
@@ -45,7 +48,7 @@ namespace Assets.Scripts.HeartSystem
                     transform.position.y,
                     transform.position.z
                 );
-                
+
                 _icons.Add(new HeartIcon
                     {
                         GameObject = go,
@@ -58,7 +61,10 @@ namespace Assets.Scripts.HeartSystem
         private void HandleHeartRemoved(int newCount)
         {
             if (newCount >= 0 && newCount < _icons.Count)
+            {
                 _icons[newCount].GameObject.SetActive(false);
+                _soundPlayer.PlaySfx(_removeHeartClip);
+            }
         }
 
         private void HandleHeartAdded(int newCount)

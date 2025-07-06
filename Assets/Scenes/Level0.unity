@@ -10153,6 +10153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _heartPrefab: {fileID: 8206297830998072596, guid: 0dae1b9a519c0a4479a8b9a5736cd65c, type: 3}
+  _removeHeartClip: {fileID: 8300000, guid: 1e712862eaef3aa48951eef4336f00e0, type: 3}
 --- !u!1 &2061557749
 GameObject:
   m_ObjectHideFlags: 0
