@@ -4,6 +4,7 @@ using Assets.Scripts.Blocks;
 using Assets.Scripts.GameHandler;
 using Assets.Scripts.Level;
 using Assets.Scripts.Score;
+using Assets.Scripts.HeartSystem;
 
 
 public class GameBootstrapper : MonoBehaviour
@@ -18,6 +19,7 @@ public class GameBootstrapper : MonoBehaviour
     [SerializeField] private GameHandler _gameHandlerPrefab;
     private ScoreTracker _scoreTracker;
     private GameHandler _gameHandlerInstance;
+    private HeartController _heartController;
     void Awake()
     {
         _blockFactory = GetComponent<BlockFactory>();
@@ -25,6 +27,7 @@ public class GameBootstrapper : MonoBehaviour
         _sceneLoader = GetComponent<SceneLoader>();
         _levelDesigner = GetComponent<LevelDesigner>();
         _scoreTracker = GetComponent<ScoreTracker>();
+        _heartController = new HeartController(3);
 
 
         RegisterServices();
@@ -43,6 +46,7 @@ public class GameBootstrapper : MonoBehaviour
         SimpleServiceLocator.Register<ISceneLoader>(_sceneLoader);
         SimpleServiceLocator.Register<ILevelDesigner>(_levelDesigner);
         SimpleServiceLocator.Register<IScoreTracker>(_scoreTracker);
+        SimpleServiceLocator.Register<IHeartController>(_heartController);
     }
 
     private void RegisterInstantiatedServices()

@@ -1,5 +1,6 @@
 using Assets.Scripts.Score;
 using Assets.Scripts.SharedKernel;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,7 +12,7 @@ namespace Assets.Scripts.GameHandler
         private ISoundPlayer _soundPlayer;
         private IGameStateController _gameHandler;
         public AudioClip GetSceneMusicTheme => Resources.Load<AudioClip>("Sound/UI/Themes/win_game");
-        [SerializeField] private Text _text;
+        [SerializeField] private TextMeshProUGUI _text;
         void Awake()
         {
             _sceneLoader = SimpleServiceLocator.Resolve<ISceneLoader>();
