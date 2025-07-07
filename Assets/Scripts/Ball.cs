@@ -3,9 +3,9 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 using Vector2 = UnityEngine.Vector2;
 
-namespace DefaultNamespace
+namespace Assets.Scripts.Ball
 {
-    public class Ball : MonoBehaviour
+    public class Ball : MonoBehaviour, IBallController
     {
         [SerializeField] private AudioClip _launchBallClip;
         [SerializeField] private AudioClip _ballHit;
@@ -20,11 +20,6 @@ namespace DefaultNamespace
         {
             _rb = GetComponent<Rigidbody2D>();
             _soundPlayer = SimpleServiceLocator.Resolve<ISoundPlayer>();
-        }
-
-        private void Start()
-        {
-            LaunchBall();
         }
 
         public void LaunchBall()

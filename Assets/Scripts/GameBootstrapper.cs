@@ -5,6 +5,7 @@ using Assets.Scripts.GameHandler;
 using Assets.Scripts.Level;
 using Assets.Scripts.Score;
 using Assets.Scripts.HeartSystem;
+using Assets.Scripts.Ball;
 
 
 public class GameBootstrapper : MonoBehaviour
@@ -20,6 +21,8 @@ public class GameBootstrapper : MonoBehaviour
     private ScoreTracker _scoreTracker;
     private GameHandler _gameHandlerInstance;
     private HeartController _heartController;
+    [SerializeField] private Ball _ballPrefab;
+    private IBallController _ballInstanceController;
     void Awake()
     {
         _blockFactory = GetComponent<BlockFactory>();
@@ -33,9 +36,13 @@ public class GameBootstrapper : MonoBehaviour
         RegisterServices();
 
         _gameHandlerInstance = Instantiate(_gameHandlerPrefab);
-        _soundPlayerInstance = Instantiate(_soundPlayerPrefab);
+        SimpleServiceLocator.Register<IGameStateController>(_gameHandlerInstance);
 
-        RegisterInstantiatedServices();
+        _soundPlayerInstance = Instantiate(_soundPlayerPrefab);
+        SimpleServiceLocator.Register<ISoundPlayer>(_soundPlayerInstance);
+
+        _ballInstanceController = Instantiate(_ballPrefab);
+        SimpleServiceLocator.Register<IBallController>(_ballInstanceController);
     }
 
     private void RegisterServices()
@@ -47,11 +54,5 @@ public class GameBootstrapper : MonoBehaviour
         SimpleServiceLocator.Register<ILevelDesigner>(_levelDesigner);
         SimpleServiceLocator.Register<IScoreTracker>(_scoreTracker);
         SimpleServiceLocator.Register<IHeartController>(_heartController);
-    }
-
-    private void RegisterInstantiatedServices()
-    {
-        SimpleServiceLocator.Register<IGameStateController>(_gameHandlerInstance);
-        SimpleServiceLocator.Register<ISoundPlayer>(_soundPlayerInstance);
     }
 }
