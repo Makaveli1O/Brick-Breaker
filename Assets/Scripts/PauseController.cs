@@ -41,7 +41,7 @@ public class PauseController : MonoBehaviour, IPauseController
 
     public void Pause()
     {
-        gameObject.SetActive(false); // not working
+        gameObject.SetActive(false);
         SimpleServiceLocator.Resolve<IGameStateController>().SetState(GameState.Paused);
     }
 
