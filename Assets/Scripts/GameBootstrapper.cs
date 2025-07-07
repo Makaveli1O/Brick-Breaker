@@ -21,8 +21,7 @@ public class GameBootstrapper : MonoBehaviour
     private ScoreTracker _scoreTracker;
     private GameHandler _gameHandlerInstance;
     private HeartController _heartController;
-    [SerializeField] private BallController _ballPrefab;
-    private IBallController _ballInstanceController;
+    [SerializeField] private GameObject _ballPrefab;
     [SerializeField] private GameObject _pausePanelPrefab;
     void Awake()
     {
@@ -42,12 +41,16 @@ public class GameBootstrapper : MonoBehaviour
         _soundPlayerInstance = Instantiate(_soundPlayerPrefab);
         SimpleServiceLocator.Register<ISoundPlayer>(_soundPlayerInstance);
 
-        _ballInstanceController = Instantiate(_ballPrefab);
-        SimpleServiceLocator.Register<IBallController>(_ballInstanceController);
+        if (_sceneLoader.IsCurrentSceneLevel())
+        {
+            GameObject _ballInstance = Instantiate(_ballPrefab);
+            IBallController ballController = _ballInstance.GetComponent<IBallController>();
+            SimpleServiceLocator.Register(ballController);
+        }
 
         GameObject pausePanelInstance = Instantiate(_pausePanelPrefab);
         IPauseController pauseController = pausePanelInstance.GetComponent<IPauseController>();
-        SimpleServiceLocator.Register<IPauseController>(pauseController);
+        SimpleServiceLocator.Register(pauseController);
     }
 
     private void RegisterServices()

@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private PlayerParticleController _ppc;
     [SerializeField] private IBallController _ballController;
     private Rigidbody2D _rb;
+    private bool _ballLaunched = false;
 
     private void Awake()
     {
@@ -49,9 +50,10 @@ public class PlayerController : MonoBehaviour
 
     public void OnLaunchBall(InputAction.CallbackContext ctx)
     {
-        if (ctx.performed)
+        if (ctx.performed && !_ballLaunched)
         {
             _ballController.LaunchBall();
+            _ballLaunched = true;
             SimpleServiceLocator.Resolve<IGameStateController>().SetState(GameState.Playing);
         }
     }

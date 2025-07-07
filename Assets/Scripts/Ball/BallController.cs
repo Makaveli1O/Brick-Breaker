@@ -16,6 +16,16 @@ namespace Assets.Scripts.Ball
 
         private Rigidbody2D _rb;
 
+        public void Deactivate()
+        {
+            gameObject.SetActive(false);
+        }
+
+        public void Activate()
+        {
+            gameObject.SetActive(true);
+        }
+
         private void Awake()
         {
             _rb = GetComponent<Rigidbody2D>();
@@ -29,7 +39,6 @@ namespace Assets.Scripts.Ball
                 Random.Range(-1.0f, 0.5f) :
                 Random.Range(0.5f, 1.0f);
 
-            // Set initial velocity
             Vector2 direction = new Vector2(x, y).normalized;
             _rb.AddForce(direction * initialSpeed);
             _soundPlayer.PlaySfx(_launchBallClip);

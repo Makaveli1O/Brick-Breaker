@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-public class Instructions : MonoBehaviour
+public class InstructionsUI : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _instruction;
     private float _pulseSpeed = 2f;

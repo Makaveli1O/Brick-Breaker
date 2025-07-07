@@ -49,7 +49,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _soundPlayerPrefab: {fileID: -1377738759042821329, guid: 9ae7e97f59ce8c34ca27e7273d58981f, type: 3}
   _gameHandlerPrefab: {fileID: 2726506092947698812, guid: c1e78ed9d325331448845b68352f05c4, type: 3}
-  _ballPrefab: {fileID: 1581510110383421938, guid: 115fac255c1a97541acbc2cac07955ee, type: 3}
+  _ballPrefab: {fileID: 5750805449532267282, guid: 115fac255c1a97541acbc2cac07955ee, type: 3}
   _pausePanelPrefab: {fileID: 4989728627547998542, guid: 675a4893aa7bfcb43bcaae0025d82de1, type: 3}
 --- !u!114 &1122794507345039866
 MonoBehaviour:

@@ -5218,6 +5218,10 @@ PrefabInstance:
       propertyPath: m_RenderMode
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5878217140803099864, guid: 044cef92fc64cb84cb500dae20569043, type: 3}
+      propertyPath: _heartPrefab
+      value: 
+      objectReference: {fileID: 7233131255840360070, guid: 76a23f138dd895446ad626dfce12c89a, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
