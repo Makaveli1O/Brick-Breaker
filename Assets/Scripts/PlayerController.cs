@@ -1,5 +1,6 @@
 using System;
 using Assets.Scripts.Ball;
+using Assets.Scripts.GameHandler;
 using Assets.Scripts.SharedKernel;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -51,6 +52,15 @@ public class PlayerController : MonoBehaviour
         if (ctx.performed)
         {
             _ballController.LaunchBall();
+            SimpleServiceLocator.Resolve<IGameStateController>().SetState(GameState.Playing);
+        }
+    }
+
+    public void OnPauseGame(InputAction.CallbackContext ctx)
+    {
+        if (ctx.performed)
+        {
+            SimpleServiceLocator.Resolve<IPauseController>().TogglePause();
         }
     }
 

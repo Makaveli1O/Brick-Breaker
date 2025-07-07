@@ -25,10 +25,24 @@ public class PauseController : MonoBehaviour, IPauseController
         _sceneLoader.LoadScene(SceneNames.MainMenu);
     }
 
+    public void TogglePause()
+    {
+        if (SimpleServiceLocator.Resolve<IGameStateController>().CurrentState == GameState.Paused)
+        {
+            gameObject.SetActive(false); 
+            SimpleServiceLocator.Resolve<IGameStateController>().SetState(GameState.Playing);
+        }
+        else
+        {
+            gameObject.SetActive(true);
+            SimpleServiceLocator.Resolve<IGameStateController>().SetState(GameState.Paused);
+        }
+    }
+
     public void Pause()
     {
-        gameObject.SetActive(true);
-        _gameStateController.SetState(GameState.Paused);
+        gameObject.SetActive(false); // not working
+        SimpleServiceLocator.Resolve<IGameStateController>().SetState(GameState.Paused);
     }
 
     public void UnPause()

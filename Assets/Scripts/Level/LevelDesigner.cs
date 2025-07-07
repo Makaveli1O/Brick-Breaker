@@ -12,6 +12,7 @@ namespace Assets.Scripts.Level
         private ISoundPlayer _soundPlayer;
         public AudioClip GetSceneMusicTheme => Resources.Load<AudioClip>("Sound/UI/Themes/game_loop");
         private IGameStateController _gameStateController;
+        
 
         void Awake()
         {
@@ -23,7 +24,7 @@ namespace Assets.Scripts.Level
         void Start()
         {   
             LoadLevel(GetLevelData(GameStateStorage.CurrentLevel));
-            _gameStateController.SetState(GameState.Paused);
+            _gameStateController.SetState(GameState.Loaded);
             _soundPlayer.PlayMusic(GetSceneMusicTheme);
         }
 

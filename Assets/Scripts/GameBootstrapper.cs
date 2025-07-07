@@ -23,6 +23,7 @@ public class GameBootstrapper : MonoBehaviour
     private HeartController _heartController;
     [SerializeField] private BallController _ballPrefab;
     private IBallController _ballInstanceController;
+    [SerializeField] private GameObject _pausePanelPrefab;
     void Awake()
     {
         _blockFactory = GetComponent<BlockFactory>();
@@ -43,6 +44,10 @@ public class GameBootstrapper : MonoBehaviour
 
         _ballInstanceController = Instantiate(_ballPrefab);
         SimpleServiceLocator.Register<IBallController>(_ballInstanceController);
+
+        GameObject pausePanelInstance = Instantiate(_pausePanelPrefab);
+        IPauseController pauseController = pausePanelInstance.GetComponent<IPauseController>();
+        SimpleServiceLocator.Register<IPauseController>(pauseController);
     }
 
     private void RegisterServices()
