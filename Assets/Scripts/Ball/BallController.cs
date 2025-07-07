@@ -5,7 +5,7 @@ using Vector2 = UnityEngine.Vector2;
 
 namespace Assets.Scripts.Ball
 {
-    public class Ball : MonoBehaviour, IBallController
+    public class BallController : MonoBehaviour, IBallController
     {
         [SerializeField] private AudioClip _launchBallClip;
         [SerializeField] private AudioClip _ballHit;

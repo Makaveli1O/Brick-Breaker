@@ -21,7 +21,7 @@ public class GameBootstrapper : MonoBehaviour
     private ScoreTracker _scoreTracker;
     private GameHandler _gameHandlerInstance;
     private HeartController _heartController;
-    [SerializeField] private Ball _ballPrefab;
+    [SerializeField] private BallController _ballPrefab;
     private IBallController _ballInstanceController;
     void Awake()
     {
