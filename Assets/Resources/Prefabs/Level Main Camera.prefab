@@ -150,5 +150,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6807a9e8f2fa6e6488792fff157787f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _wallSpriteHorizontal: {fileID: 21300000, guid: e80052c1b35bac043b626b486bb184e3, type: 3}
-  _wallSpriteVertical: {fileID: 21300000, guid: 48c6d4ed237c1e6408dfc349318f1407, type: 3}
+  _wallBlockHorizontalPrefab: {fileID: 4544472822524786109, guid: 7b40586850d9f4d45aa59c28f875f738, type: 3}
+  _wallBlockVerticalPrefab: {fileID: 7769383839839293709, guid: adc2365830952a24ea0412d954c87744, type: 3}

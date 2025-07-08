@@ -1,7 +1,8 @@
 using Assets.Scripts.GameHandler;
-using TMPro;
+using Assets.Scripts.SharedKernel;
 using UnityEngine;
 
+//TODO refactor?
 public class LevelBounds : MonoBehaviour
 {
     public enum WallScreenPosition
@@ -22,8 +23,10 @@ public class LevelBounds : MonoBehaviour
     private float _bottom = 0f;
     private float _width = 0f;
     private float _height = 0f;
-    [SerializeField] private Sprite _wallSpriteHorizontal;
-    [SerializeField] private Sprite _wallSpriteVertical;
+    [SerializeField] private GameObject _wallBlockHorizontalPrefab;
+    [SerializeField] private GameObject _wallBlockVerticalPrefab;
+    private Transform _horizontalTransform;
+    private Transform _verticalTransform;
 
     void Start()
     {
@@ -49,13 +52,13 @@ public class LevelBounds : MonoBehaviour
 
         float hudOffsetInUnits = GetHudOffsetInUnits();
 
-        CreateWall(
+        GameObject topWall = CreateWall(
             new Vector2((_left + _right) / _TWO,
             _top + _wallThickness / _TWO - hudOffsetInUnits),
             new Vector2(_width, _wallThickness),
             WallScreenPosition.Top
         );
-        CreateWall(
+        GameObject bottomWall = CreateWall(
             new Vector2((_left + _right) / _TWO,
             _bottom - _wallThickness / _TWO),
             new Vector2(_width, _wallThickness),
@@ -73,47 +76,101 @@ public class LevelBounds : MonoBehaviour
             new Vector2(_wallThickness, _height),
             WallScreenPosition.Right
         );
+
+        FixHorizontalOverlap(topWall);
+        FixHorizontalOverlap(bottomWall);
     }
 
-    private void CreateWall(Vector2 position, Vector2 size, WallScreenPosition wallPosition)
+    // Returns wall GO as a whole containing blocks as children
+    private GameObject CreateWall(Vector2 position, Vector2 size, WallScreenPosition wallPosition)
     {
-        GameObject wall;
-        switch (wallPosition)
+        GameObject wallParent = new GameObject(wallPosition + "Wall");
+
+        bool isHorizontal = wallPosition == WallScreenPosition.Top || wallPosition == WallScreenPosition.Bottom;
+        GameObject blockPrefab = isHorizontal ? _wallBlockHorizontalPrefab : _wallBlockVerticalPrefab;
+
+        SpriteRenderer blockRenderer = blockPrefab.GetComponent<SpriteRenderer>();
+        if (blockRenderer == null)
         {
-            case WallScreenPosition.Left:
-                wall = new GameObject("LeftWall");
-                wall.AddComponent<GameOverTrigger>();
-                AssignVisualsToWallGO(wall, _wallSpriteVertical);
-                break;
-            case WallScreenPosition.Right:
-                wall = new GameObject("RightWall");
-                AssignVisualsToWallGO(wall, _wallSpriteVertical);
-                break;
-            case WallScreenPosition.Bottom:
-                wall = new GameObject("BottomWall");
-                AssignVisualsToWallGO(wall, _wallSpriteHorizontal);
-                break;
-            case WallScreenPosition.Top:
-                wall = new GameObject("TopWall");
-                AssignVisualsToWallGO(wall, _wallSpriteHorizontal);
-                break;
-            default:
-                wall = new GameObject("Wall");
-                break;
+            Debug.LogError("Wall block prefab is missing a SpriteRenderer.");
+            return null;
         }
-        wall.transform.position = position;
 
-        var collider = wall.AddComponent<BoxCollider2D>();
-        collider.isTrigger = false;
+        float blockSize = isHorizontal
+            ? blockRenderer.bounds.size.x
+            : blockRenderer.bounds.size.y;
 
-        wall.AddComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
+        int count = Mathf.CeilToInt(isHorizontal ? size.x / blockSize : size.y / blockSize);
+
+        Vector2 adjustedPosition = position;
+
+        if (wallPosition == WallScreenPosition.Top)
+            adjustedPosition.y -= blockRenderer.bounds.extents.y;
+        else if (wallPosition == WallScreenPosition.Bottom)
+            adjustedPosition.y += blockRenderer.bounds.extents.y;
+        else if (wallPosition == WallScreenPosition.Left)
+            adjustedPosition.x += blockRenderer.bounds.extents.x;
+        else if (wallPosition == WallScreenPosition.Right)
+            adjustedPosition.x -= blockRenderer.bounds.extents.x;
+
+        Vector2 startPos = isHorizontal
+            ? new Vector2(adjustedPosition.x - (count - 1) * blockSize / 2f, adjustedPosition.y)
+            : new Vector2(adjustedPosition.x, adjustedPosition.y - (count - 1) * blockSize / 2f);
+
+        for (int i = 0; i < count; i++)
+        {
+            Vector2 blockPos = isHorizontal
+                ? new Vector2(startPos.x + i * blockSize, startPos.y)
+                : new Vector2(startPos.x, startPos.y + i * blockSize);
+
+            var block = Instantiate(blockPrefab, blockPos, Quaternion.identity, wallParent.transform);
+            if (wallPosition == WallScreenPosition.Left)
+                block.AddComponent<GameOverTrigger>();
+        }
+
+        // Adjust wallParent scale to fit exactly without overlapping
+        if (isHorizontal)
+        {
+            float totalLength = count * blockRenderer.bounds.size.x;
+            float scaleX = size.x / totalLength;
+            wallParent.transform.localScale = new Vector3(scaleX, 1f, 1f);
+            _horizontalTransform = wallParent.transform;
+        }
+        else
+        {
+            float totalLength = count * blockRenderer.bounds.size.y;
+            float scaleY = size.y / totalLength;
+            wallParent.transform.localScale = new Vector3(1f, scaleY, 1f);
+            _verticalTransform = wallParent.transform;
+        }
+
+        return wallParent;
     }
 
-    private SpriteRenderer AssignVisualsToWallGO(GameObject wall, Sprite sprite)
+    private void FixHorizontalOverlap(GameObject horizontalWall)
     {
-        SpriteRenderer sr = wall.AddComponent<SpriteRenderer>();
-        sr.sprite = sprite;
+        // Get full horizontal wall width in world units
+        Bounds bounds = Utils2D.GetWorldBounds(horizontalWall);
 
-        return sr;
+        // Amount to subtract in world units (e.g. total vertical wall thickness)
+        float overlapWorld = GetVerticalWallThickness();
+
+        // Current total width of the horizontal wall (before scaling)
+        float currentWidth = bounds.size.x;
+
+        // Calculate target width after subtracting overlap
+        float targetWidth = currentWidth - overlapWorld;
+
+        // Compute required X scale
+        float scaleX = targetWidth / currentWidth;
+
+        horizontalWall.transform.localScale = new Vector3(scaleX, 1f, 1f);
+    }
+
+    private float GetVerticalWallThickness()
+    {
+        SpriteRenderer renderer = _wallBlockVerticalPrefab.GetComponent<SpriteRenderer>();
+        float width = renderer.bounds.size.x * _wallBlockVerticalPrefab.transform.localScale.x;
+        return width * 2f; // left and right
     }
 }
