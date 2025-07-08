@@ -1,19 +1,25 @@
 fileFormatVersion: 2
-guid: 385eaa9eb550d9d44bc72297aafe380e
+guid: 91f90e34a682e6d44afe187697f257dd
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -274549069830704790
-    second: ShotLoop-Sheet_0
+      213: 5138971775380046094
+    second: walls_vertical_0
   - first:
-      213: 2868270679548618853
-    second: ShotLoop-Sheet_1
+      213: 2340196375072333761
+    second: walls_vertical_1
   - first:
-      213: 3418327566947634176
-    second: ShotLoop-Sheet_2
+      213: 6602257629895469012
+    second: walls_vertical_2
   - first:
-      213: -8321496093868815569
-    second: ShotLoop-Sheet_3
+      213: -6053737242303779598
+    second: walls_vertical_3
+  - first:
+      213: -5824136286377632837
+    second: walls_vertical_4
+  - first:
+      213: 5286960164943406446
+    second: walls_vertical_5
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -122,57 +128,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: ShotLoop-Sheet_0
+      name: walls_vertical_0
       rect:
         serializedVersion: 2
-        x: 26
-        y: 18
-        width: 12
-        height: 19
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: a61b35b531b903cf0800000000000000
-      internalID: -274549069830704790
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: ShotLoop-Sheet_1
-      rect:
-        serializedVersion: 2
-        x: 90
-        y: 19
-        width: 12
-        height: 18
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 568e92e7cf42ec720800000000000000
-      internalID: 2868270679548618853
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: ShotLoop-Sheet_2
-      rect:
-        serializedVersion: 2
-        x: 155
-        y: 20
+        x: 0
+        y: 0
         width: 10
-        height: 17
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -181,20 +143,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 00cc6d1afc6507f20800000000000000
-      internalID: 3418327566947634176
+      spriteID: e01494e2a9b415740800000000000000
+      internalID: 5138971775380046094
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ShotLoop-Sheet_3
+      name: walls_vertical_1
       rect:
         serializedVersion: 2
-        x: 219
-        y: 19
-        width: 10
-        height: 18
+        x: 15
+        y: 0
+        width: 11
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -203,8 +165,96 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f2b062d446b148c80800000000000000
-      internalID: -8321496093868815569
+      spriteID: 1cfd7d8443c0a7020800000000000000
+      internalID: 2340196375072333761
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walls_vertical_2
+      rect:
+        serializedVersion: 2
+        x: 31
+        y: 0
+        width: 11
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4d72889855eef9b50800000000000000
+      internalID: 6602257629895469012
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walls_vertical_3
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 0
+        width: 11
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2fc2eec5d0eccfba0800000000000000
+      internalID: -6053737242303779598
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walls_vertical_4
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 0
+        width: 11
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bbb9ff6b7e28c2fa0800000000000000
+      internalID: -5824136286377632837
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walls_vertical_5
+      rect:
+        serializedVersion: 2
+        x: 79
+        y: 0
+        width: 10
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e65a71d224e0f5940800000000000000
+      internalID: 5286960164943406446
       vertices: []
       indices: 
       edges: []
@@ -223,10 +273,12 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      ShotLoop-Sheet_0: -274549069830704790
-      ShotLoop-Sheet_1: 2868270679548618853
-      ShotLoop-Sheet_2: 3418327566947634176
-      ShotLoop-Sheet_3: -8321496093868815569
+      walls_vertical_0: 5138971775380046094
+      walls_vertical_1: 2340196375072333761
+      walls_vertical_2: 6602257629895469012
+      walls_vertical_3: -6053737242303779598
+      walls_vertical_4: -5824136286377632837
+      walls_vertical_5: 5286960164943406446
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

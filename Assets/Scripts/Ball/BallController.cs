@@ -13,6 +13,7 @@ namespace Assets.Scripts.Ball
         private float maxSpeed = 1500f;
         private float speedIncreaseFactor = 1.5f;
         private ISoundPlayer _soundPlayer;
+        public bool IsMoving => _rb.linearVelocity.sqrMagnitude > 0.001f;
 
         private Rigidbody2D _rb;
 
