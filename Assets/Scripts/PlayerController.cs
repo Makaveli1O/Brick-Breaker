@@ -1,4 +1,7 @@
 using System;
+using Assets.Scripts.Ball;
+using Assets.Scripts.GameHandler;
+using Assets.Scripts.SharedKernel;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -12,7 +15,9 @@ public class PlayerController : MonoBehaviour
     private Vector2 _movementVector;
     [SerializeField] private float acceleration = 30f;
     [SerializeField] private PlayerParticleController _ppc;
+    [SerializeField] private IBallController _ballController;
     private Rigidbody2D _rb;
+    private bool _ballLaunched = false;
 
     private void Awake()
     {
@@ -24,9 +29,9 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-
         _paddleInstance = Instantiate(_paddlePrefab, transform.position, Quaternion.identity, transform);
         _paddle = _paddleInstance.GetComponent<IPaddleBehaviour>();
+        _ballController = SimpleServiceLocator.Resolve<IBallController>();
 
         if (_paddle == null)
             throw new Exception("IPaddleBehaviour not implemented on the paddle GameObject.");
@@ -41,6 +46,25 @@ public class PlayerController : MonoBehaviour
         _rb.linearVelocity = new Vector2(0f, newYSpeed);
 
         ClampToVerticalBounds();
+    }
+
+    public void OnLaunchBall(InputAction.CallbackContext ctx)
+    {
+        if (ctx.performed && !_ballLaunched)
+        {
+            _ballController.LaunchBall();
+            _ballLaunched = true;
+            SimpleServiceLocator.Resolve<InstructionsUI>().Hide();
+            SimpleServiceLocator.Resolve<IGameStateController>().SetState(GameState.Playing);
+        }
+    }
+
+    public void OnPauseGame(InputAction.CallbackContext ctx)
+    {
+        if (ctx.performed)
+        {
+            SimpleServiceLocator.Resolve<IPauseController>().TogglePause();
+        }
     }
 
     public void OnMove(InputAction.CallbackContext ctx)

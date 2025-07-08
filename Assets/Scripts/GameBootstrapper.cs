@@ -5,6 +5,7 @@ using Assets.Scripts.GameHandler;
 using Assets.Scripts.Level;
 using Assets.Scripts.Score;
 using Assets.Scripts.HeartSystem;
+using Assets.Scripts.Ball;
 
 
 public class GameBootstrapper : MonoBehaviour
@@ -20,6 +21,9 @@ public class GameBootstrapper : MonoBehaviour
     private ScoreTracker _scoreTracker;
     private GameHandler _gameHandlerInstance;
     private HeartController _heartController;
+    [SerializeField] private GameObject _ballPrefab;
+    [SerializeField] private GameObject _pausePanelPrefab;
+    [SerializeField] private GameObject _instructionsUiPrefab;
     void Awake()
     {
         _blockFactory = GetComponent<BlockFactory>();
@@ -27,15 +31,31 @@ public class GameBootstrapper : MonoBehaviour
         _sceneLoader = GetComponent<SceneLoader>();
         _levelDesigner = GetComponent<LevelDesigner>();
         _scoreTracker = GetComponent<ScoreTracker>();
-        _heartController = new HeartController(3);
+        _heartController = new HeartController(1);
 
 
         RegisterServices();
 
         _gameHandlerInstance = Instantiate(_gameHandlerPrefab);
-        _soundPlayerInstance = Instantiate(_soundPlayerPrefab);
+        SimpleServiceLocator.Register<IGameStateController>(_gameHandlerInstance);
 
-        RegisterInstantiatedServices();
+        _soundPlayerInstance = Instantiate(_soundPlayerPrefab);
+        SimpleServiceLocator.Register<ISoundPlayer>(_soundPlayerInstance);
+
+        if (_sceneLoader.IsCurrentSceneLevel())
+        {
+            GameObject _ballInstance = Instantiate(_ballPrefab);
+            IBallController ballController = _ballInstance.GetComponent<IBallController>();
+            SimpleServiceLocator.Register(ballController);
+
+            GameObject _instructionsUiInstance = Instantiate(_instructionsUiPrefab);
+            InstructionsUI instructionController = _instructionsUiInstance.GetComponent<InstructionsUI>();
+            SimpleServiceLocator.Register(instructionController);
+        }
+
+        GameObject pausePanelInstance = Instantiate(_pausePanelPrefab);
+        IPauseController pauseController = pausePanelInstance.GetComponent<IPauseController>();
+        SimpleServiceLocator.Register(pauseController);
     }
 
     private void RegisterServices()
@@ -47,11 +67,5 @@ public class GameBootstrapper : MonoBehaviour
         SimpleServiceLocator.Register<ILevelDesigner>(_levelDesigner);
         SimpleServiceLocator.Register<IScoreTracker>(_scoreTracker);
         SimpleServiceLocator.Register<IHeartController>(_heartController);
-    }
-
-    private void RegisterInstantiatedServices()
-    {
-        SimpleServiceLocator.Register<IGameStateController>(_gameHandlerInstance);
-        SimpleServiceLocator.Register<ISoundPlayer>(_soundPlayerInstance);
     }
 }

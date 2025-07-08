@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Dynamic;
 using Assets.Scripts.SharedKernel;
 using UnityEngine;
 
@@ -11,7 +10,8 @@ namespace Assets.Scripts.HeartSystem
         [SerializeField] private AudioClip _removeHeartClip;
         private ISoundPlayer _soundPlayer;
         private IHeartController _heartController;
-        private const float _initialPositionX = -6.0f;
+        private const float _initialPositionX = -100.0f;
+        private const float _positionOffset = 100f;
         private readonly List<HeartIcon> _icons = new();
 
         private class HeartIcon
@@ -36,17 +36,17 @@ namespace Assets.Scripts.HeartSystem
 
             for (int i = 0; i < _heartController.GetMaxHearts; i++)
             {
-                GameObject go = Instantiate(_heartPrefab, transform.position, Quaternion.identity);
+                GameObject go = Instantiate(_heartPrefab, transform);
 
                 HeartIcon icon = new()
                 {
                     GameObject = go,
                     Index = i
                 };
-                icon.GameObject.transform.position = new Vector3(
-                    _initialPositionX - i,
-                    transform.position.y,
-                    transform.position.z
+                icon.GameObject.transform.localPosition = new Vector3(
+                    _initialPositionX + (i * _positionOffset),
+                    0f,
+                    1f
                 );
 
                 _icons.Add(new HeartIcon

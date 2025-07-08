@@ -59,6 +59,20 @@ namespace Assets.Scripts.SharedKernel
             return worldPoint;
         }
 
+        // Reteurn world units bounds of given GO
+        public static Bounds GetWorldBounds(GameObject go)
+        {
+            SpriteRenderer[] renderers = go.GetComponentsInChildren<SpriteRenderer>();
+            if (renderers.Length == 0)
+                return new Bounds(go.transform.position, Vector3.zero);
+
+            Bounds bounds = renderers[0].bounds;
+            for (int i = 1; i < renderers.Length; i++)
+                bounds.Encapsulate(renderers[i].bounds);
+
+            return bounds;
+        }
+
         public static Vector3 GetAxisAlignedVisiblePoint(Vector3 origin)
         {
             Camera cam = Camera.main;
