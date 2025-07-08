@@ -10,12 +10,20 @@ namespace Assets.Scripts.Ball
         [SerializeField] private AudioClip _launchBallClip;
         [SerializeField] private AudioClip _ballHit;
         private float initialSpeed = 300f;
-        private float maxSpeed = 1500f;
+        private float maxSpeed = 500f;
         private float speedIncreaseFactor = 1.5f;
         private ISoundPlayer _soundPlayer;
         public bool IsMoving => _rb.linearVelocity.sqrMagnitude > 0.001f;
 
         private Rigidbody2D _rb;
+
+        #if UNITY_EDITOR
+        [SerializeField] private float _currentSpeed;
+        void Update()
+        {
+            _currentSpeed = _rb.linearVelocity.magnitude;
+        }
+        #endif
 
         public void Deactivate()
         {
@@ -57,7 +65,17 @@ namespace Assets.Scripts.Ball
                 _rb.AddForce(collision.relativeVelocity.normalized * speedIncreaseFactor);
             }
 
+            if (collision.gameObject.tag.Contains("Wall")) NudgeDirection();
+
             _soundPlayer.PlaySfx(_ballHit);
+        }
+        
+        // This functon should prevent ball from stucking between walls infinitely
+        private void NudgeDirection()
+        {
+            float angleOffset = Random.Range(-5f, 5f);
+            Quaternion rotation = Quaternion.Euler(0, 0, angleOffset);
+            _rb.linearVelocity = rotation * _rb.linearVelocity.normalized * _rb.linearVelocity.magnitude;
         }
     }
 }
