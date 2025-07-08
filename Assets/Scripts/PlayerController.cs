@@ -54,6 +54,7 @@ public class PlayerController : MonoBehaviour
         {
             _ballController.LaunchBall();
             _ballLaunched = true;
+            SimpleServiceLocator.Resolve<InstructionsUI>().Hide();
             SimpleServiceLocator.Resolve<IGameStateController>().SetState(GameState.Playing);
         }
     }

@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InstructionsUI : MonoBehaviour
 {
@@ -7,6 +8,20 @@ public class InstructionsUI : MonoBehaviour
     private float _pulseSpeed = 2f;
     private float _minAlpha = 0.3f;
     private float _maxAlpha = 1f;
+    public void Show()
+    {
+        gameObject.SetActive(true);
+    }
+
+    public void Hide()
+    {
+        gameObject.SetActive(false);
+    }
+
+    public void SetText(string text)
+    {
+        _instruction.text = text;
+    }
 
     void Update()
     {
