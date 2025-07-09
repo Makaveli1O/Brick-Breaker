@@ -1,25 +1,10 @@
 fileFormatVersion: 2
-guid: 91f90e34a682e6d44afe187697f257dd
+guid: 09cb285b50f01964ea17a134cf15729f
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5138971775380046094
-    second: walls_vertical_0
-  - first:
-      213: 2340196375072333761
-    second: walls_vertical_1
-  - first:
-      213: 6602257629895469012
-    second: walls_vertical_2
-  - first:
-      213: -6053737242303779598
-    second: walls_vertical_3
-  - first:
-      213: -5824136286377632837
-    second: walls_vertical_4
-  - first:
-      213: 5286960164943406446
-    second: walls_vertical_5
+      213: -7673394891369863455
+    second: bricks_white_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -128,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: walls_vertical_0
+      name: bricks_white_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 10
-        height: 32
+        width: 16
+        height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -143,118 +128,30 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e01494e2a9b415740800000000000000
-      internalID: 5138971775380046094
+      spriteID: 1e62a9e6000a28590800000000000000
+      internalID: -7673394891369863455
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: walls_vertical_1
+      name: bricks_white_1
       rect:
         serializedVersion: 2
-        x: 15
+        x: 16
         y: 0
-        width: 11
-        height: 32
+        width: 16
+        height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 1cfd7d8443c0a7020800000000000000
-      internalID: 2340196375072333761
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: walls_vertical_2
-      rect:
-        serializedVersion: 2
-        x: 31
-        y: 0
-        width: 11
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 4d72889855eef9b50800000000000000
-      internalID: 6602257629895469012
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: walls_vertical_3
-      rect:
-        serializedVersion: 2
-        x: 47
-        y: 0
-        width: 11
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 2fc2eec5d0eccfba0800000000000000
-      internalID: -6053737242303779598
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: walls_vertical_4
-      rect:
-        serializedVersion: 2
-        x: 63
-        y: 0
-        width: 11
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: bbb9ff6b7e28c2fa0800000000000000
-      internalID: -5824136286377632837
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: walls_vertical_5
-      rect:
-        serializedVersion: 2
-        x: 79
-        y: 0
-        width: 10
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: e65a71d224e0f5940800000000000000
-      internalID: 5286960164943406446
+      spriteID: 5b9799197d2a2c145a624f458e4cbcde
+      internalID: 1136248423
       vertices: []
       indices: 
       edges: []
@@ -263,7 +160,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: c0ea89219b0584543af6b18b5ba0ac0e
     internalID: 0
     vertices: []
     indices: 
@@ -271,14 +168,12 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":2.0,"y":1.0},"gridSpriteSize":{"x":16.0,"y":16.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      walls_vertical_0: 5138971775380046094
-      walls_vertical_1: 2340196375072333761
-      walls_vertical_2: 6602257629895469012
-      walls_vertical_3: -6053737242303779598
-      walls_vertical_4: -5824136286377632837
-      walls_vertical_5: 5286960164943406446
+      bricks_white_0: -7673394891369863455
+      bricks_white_1: 1136248423
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

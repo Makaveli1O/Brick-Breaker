@@ -12,7 +12,7 @@ namespace Assets.Scripts.Level
         private ISoundPlayer _soundPlayer;
         public AudioClip GetSceneMusicTheme => Resources.Load<AudioClip>("Sound/UI/Themes/game_loop");
         private IGameStateController _gameStateController;
-        
+
 
         void Awake()
         {
@@ -32,8 +32,9 @@ namespace Assets.Scripts.Level
         {
             return levelIndex switch
             {
-                1 => GetLevel1(),
+                1 => GetLevel3(),
                 2 => GetLevel2(),
+                3 => GetLevel3(),
                 _ => GetLevel1()
             };
         }
@@ -127,6 +128,29 @@ namespace Assets.Scripts.Level
 
             return builder.Build();
         }
+
+        // TODO Test level for explosion behaviour performance
+        private LevelData GetLevel3()
+        {
+            var builder = new LevelBuilder();
+
+            var exploder = new BehaviourBuilder()
+                .AddNonConfigurable<ExplodeBehaviour>()
+                .Build();
+
+            float s = BlockGrid.Spacing;
+
+            for (int x = -10; x <= 10; x++)
+            {
+                for (int y = -10; y <= 10; y++)
+                {
+                    builder.WithBlock(new float2(x * s, y * s), exploder);
+                }
+            }
+
+            return builder.Build();
+        }
+
 
         public void LoadLevel(LevelData levelData)
         {

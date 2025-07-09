@@ -13,6 +13,10 @@ namespace Assets.Scripts.SharedKernel
             {
                 return new Vector2(value.x, value.y);
             }
+            public static Vector2 ToVector2(float2 value)
+            {
+                return new Vector2(value.x, value.y);
+            }
 
             public static int2 ToInt2(Vector2 value)
             {

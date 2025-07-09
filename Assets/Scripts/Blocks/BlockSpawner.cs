@@ -1,6 +1,5 @@
 using UnityEngine;
 using Assets.Scripts.SharedKernel;
-using Unity.Mathematics;
 
 namespace Assets.Scripts.Blocks
 {
@@ -26,17 +25,10 @@ namespace Assets.Scripts.Blocks
 
         public Block SpawnBlock(BlockData blockData)
         {
-            Vector3 gridPosition = new Vector3(blockData.Position.x, blockData.Position.y, 0);
-            Block block = _blockFactory.SpawnBlock(
-                blockData with
-                {
-                    Position = new int2(
-                        (int)gridPosition.x,
-                        (int)gridPosition.y
-                    )
-                },transform
-            );
-            block.transform.position = gridPosition;
+            Vector3 worldPosition = new(blockData.Position.x, blockData.Position.y, 0f);
+
+            Block block = _blockFactory.SpawnBlock(blockData, transform);
+            block.transform.position = worldPosition;
 
             _blockCounter.OnBlockSpawned(block);
             return block;

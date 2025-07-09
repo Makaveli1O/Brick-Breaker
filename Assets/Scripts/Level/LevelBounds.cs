@@ -1,3 +1,4 @@
+using System;
 using Assets.Scripts.GameHandler;
 using Assets.Scripts.SharedKernel;
 using UnityEngine;
@@ -28,7 +29,7 @@ public class LevelBounds : MonoBehaviour
         InitializeLevelBounds();
 
         float hudOffset = GetHudOffsetInUnits();
-        _wallThickness = GetWallThickness(_wallBlockVerticalPrefab); // assumed uniform
+        _wallThickness = GetWallThickness(_wallBlockVerticalPrefab); 
 
         GameObject topWall = CreateWall(
             GetWallPosition(WallScreenPosition.Top, hudOffset),
@@ -89,12 +90,13 @@ public class LevelBounds : MonoBehaviour
         bool isHorizontal = wallPosition is WallScreenPosition.Top or WallScreenPosition.Bottom;
         GameObject prefab = isHorizontal ? _wallBlockHorizontalPrefab : _wallBlockVerticalPrefab;
         SpriteRenderer renderer = prefab.GetComponent<SpriteRenderer>();
-
         if (renderer == null)
         {
             Debug.LogError("Wall block prefab is missing a SpriteRenderer.");
             return null;
         }
+
+        renderer = ApplyRendererRotation(renderer, wallPosition);
 
         float blockSize = isHorizontal ? renderer.bounds.size.x : renderer.bounds.size.y;
         int count = Mathf.CeilToInt((isHorizontal ? size.x : size.y) / blockSize);
@@ -108,6 +110,13 @@ public class LevelBounds : MonoBehaviour
         ApplyWallScaling(wallParent, count, renderer, size, isHorizontal);
 
         return wallParent;
+    }
+
+    private SpriteRenderer ApplyRendererRotation(SpriteRenderer renderer, WallScreenPosition position)
+    {
+        if (position == WallScreenPosition.Top) renderer.flipY = true;
+        else if (position == WallScreenPosition.Right) renderer.flipX = true;
+        return renderer;
     }
 
     private Vector2 AdjustWallPosition(Vector2 pos, WallScreenPosition position, SpriteRenderer renderer)
