@@ -10,7 +10,7 @@ namespace Assets.Scripts.Level
         private readonly List<BlockData> _entries = new();
 
         public LevelBuilder WithBlock(
-            int2 position,
+            float2 position,
             List<BehaviourConfig> behaviourConfigs
         )
         {

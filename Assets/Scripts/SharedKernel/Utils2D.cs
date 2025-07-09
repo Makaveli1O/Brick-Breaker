@@ -13,6 +13,10 @@ namespace Assets.Scripts.SharedKernel
             {
                 return new Vector2(value.x, value.y);
             }
+            public static Vector2 ToVector2(float2 value)
+            {
+                return new Vector2(value.x, value.y);
+            }
 
             public static int2 ToInt2(Vector2 value)
             {
@@ -57,6 +61,20 @@ namespace Assets.Scripts.SharedKernel
             worldPoint.z = 0f;
 
             return worldPoint;
+        }
+
+        // Reteurn world units bounds of given GO
+        public static Bounds GetWorldBounds(GameObject go)
+        {
+            SpriteRenderer[] renderers = go.GetComponentsInChildren<SpriteRenderer>();
+            if (renderers.Length == 0)
+                return new Bounds(go.transform.position, Vector3.zero);
+
+            Bounds bounds = renderers[0].bounds;
+            for (int i = 1; i < renderers.Length; i++)
+                bounds.Encapsulate(renderers[i].bounds);
+
+            return bounds;
         }
 
         public static Vector3 GetAxisAlignedVisiblePoint(Vector3 origin)

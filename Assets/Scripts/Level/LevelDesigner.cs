@@ -13,6 +13,7 @@ namespace Assets.Scripts.Level
         public AudioClip GetSceneMusicTheme => Resources.Load<AudioClip>("Sound/UI/Themes/game_loop");
         private IGameStateController _gameStateController;
 
+
         void Awake()
         {
             _spawner = GetComponent<BlockSpawner>();
@@ -23,7 +24,7 @@ namespace Assets.Scripts.Level
         void Start()
         {   
             LoadLevel(GetLevelData(GameStateStorage.CurrentLevel));
-            _gameStateController.SetState(GameState.Paused);
+            _gameStateController.SetState(GameState.Loaded);
             _soundPlayer.PlayMusic(GetSceneMusicTheme);
         }
 
@@ -33,6 +34,7 @@ namespace Assets.Scripts.Level
             {
                 1 => GetLevel1(),
                 2 => GetLevel2(),
+                3 => GetLevel3(),
                 _ => GetLevel1()
             };
         }
@@ -84,13 +86,13 @@ namespace Assets.Scripts.Level
         {
             var diagonalMover = new BehaviourBuilder()
                 .Add<MoveBehaviour, MoveConfig>(
-                    new MoveConfig(2.5f, new Vector3(-3, -3, 0), new Vector3(3, 3, 0))
+                    new MoveConfig(1f, new Vector3(-3, -3, 0), new Vector3(3, 3, 0))
                 )
                 .Build();
 
             var verticalMover = new BehaviourBuilder()
                 .Add<MoveBehaviour, MoveConfig>(
-                    new MoveConfig(3f, new Vector3(0, -4, 0), new Vector3(0, 4, 0))
+                    new MoveConfig(0.8f, new Vector3(0, -4, 0), new Vector3(0, 4, 0))
                 )
                 .Build();
 
@@ -100,7 +102,7 @@ namespace Assets.Scripts.Level
 
             var comboFast = new BehaviourBuilder()
                 .Add<MoveBehaviour, MoveConfig>(
-                    new MoveConfig(4.5f, new Vector3(-2, 0, 0), new Vector3(2, 0, 0))
+                    new MoveConfig(0.5f, new Vector3(-2, 0, 0), new Vector3(2, 0, 0))
                 )
                 .AddNonConfigurable<ExplodeBehaviour>()
                 .Build();
@@ -126,6 +128,49 @@ namespace Assets.Scripts.Level
 
             return builder.Build();
         }
+
+        // TODO Test level for explosion behaviour performance
+        private LevelData GetLevel3()
+        {
+            var builder = new LevelBuilder();
+
+            var exploder = new BehaviourBuilder()
+                .AddNonConfigurable<ExplodeBehaviour>()
+                .Build();
+
+            float s = BlockGrid.Spacing;
+
+            for (int x = -10; x <= 10; x++)
+            {
+                for (int y = -10; y <= 10; y++)
+                {
+                    builder.WithBlock(new float2(x * s, y * s), exploder);
+                }
+            }
+
+            return builder.Build();
+        }
+
+        private LevelData GetLevelPhaseTest()
+        {
+            var blockA = new BehaviourBuilder()
+            .Add<MoveBehaviour, MoveConfig>(
+                new MoveConfig(1.0f, new Vector3(-4, 0, 0), new Vector3(4, 0, 0), 0f)
+            )
+            .Build();
+
+            var blockB = new BehaviourBuilder()
+                .Add<MoveBehaviour, MoveConfig>(
+                    new MoveConfig(1.0f, new Vector3(-4, 0, 0), new Vector3(4, 0, 0), 1.5f) // offset
+                )
+            .Build();
+
+            return new LevelBuilder()
+                .WithBlock(new float2(-4f, 0f), blockA)
+                .WithBlock(new float2(-4f, 0f), blockB)
+                .Build();
+        }
+
 
         public void LoadLevel(LevelData levelData)
         {

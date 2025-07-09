@@ -12,6 +12,7 @@ namespace Assets.Scripts.Blocks
         private float _spreadForce = 5f;
         private ISoundPlayer _soundPlayer;
         private IBlockCounter _blockCounter;
+        private bool _isExploding = false;
 
         void Awake()
         {
@@ -28,6 +29,8 @@ namespace Assets.Scripts.Blocks
 
         public void Explode(Block context)
         {
+            if (_isExploding) return;
+            _isExploding = true;
             context.StartCoroutine(ExplosionSequence(context));
         }
 
@@ -48,6 +51,8 @@ namespace Assets.Scripts.Blocks
                 _soundPlayer.PlaySfx(_blip);
             }
             ExecuteExplosion(ctx);
+
+            _isExploding = false;
         }
 
         private void ExecuteExplosion(Block ctx)

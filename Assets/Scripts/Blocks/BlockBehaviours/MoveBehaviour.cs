@@ -8,6 +8,7 @@ namespace Assets.Scripts.Blocks
         public Vector3 EndPoint = Vector3.zero;
         public Vector3 StartPoint = Vector3.zero;
         private float time;
+        public float PhaseOffset;
 
         public void OnUpdateExecute(Block context)
         {
@@ -26,6 +27,9 @@ namespace Assets.Scripts.Blocks
             Speed = config.Speed;
             StartPoint = config.StartPoint;
             EndPoint = config.EndPoint;
+            PhaseOffset = config.PhaseOffset;
+
+            time = Mathf.Repeat(PhaseOffset, 1f);
 
             if (EndPoint.Equals(Vector3.zero))
                 EndPoint = Utils2D.GetAxisAlignedVisiblePoint(StartPoint);

@@ -3,6 +3,7 @@ using Assets.Scripts.Blocks;
 using Assets.Scripts.SharedKernel;
 using Assets.Scripts.Score;
 using UnityEngine;
+using Assets.Scripts.Ball;
 
 namespace Assets.Scripts.GameHandler
 {

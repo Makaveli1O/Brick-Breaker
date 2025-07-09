@@ -4,6 +4,7 @@ namespace Assets.Scripts.GameHandler{
         Playing,
         Paused,
         GameOver,
-        Win
+        Win,
+        Loaded
     }
 }

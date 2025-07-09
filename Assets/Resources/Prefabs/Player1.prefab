@@ -156,6 +156,22 @@ MonoBehaviour:
         m_CallState: 1
     m_ActionId: 489978b5-35e1-47b9-b69a-7d94105f7c45
     m_ActionName: 'Base/Dash[/Keyboard/space]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6201673107845914765}
+        m_TargetAssemblyTypeName: PlayerController, Scripts
+        m_MethodName: OnLaunchBall
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
+    m_ActionId: f0b84d42-1671-43ef-ae97-a0649c46cffc
+    m_ActionName: 'Base/Launch[/Keyboard/space]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Base
@@ -175,6 +191,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _paddlePrefab: {fileID: 5665547355342053869, guid: 67f7df10c233b9f4da00714030ca990b, type: 3}
   acceleration: 30
+  _ppc: {fileID: 0}
 --- !u!50 &697293219477396324
 Rigidbody2D:
   serializedVersion: 5
