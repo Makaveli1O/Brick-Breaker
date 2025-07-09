@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using Assets.Scripts.Blocks;
 using Assets.Scripts.GameHandler;
 using Assets.Scripts.SharedKernel;
 using UnityEngine;
@@ -106,10 +109,24 @@ public class LevelBounds : MonoBehaviour
             ? new Vector2(adjustedPos.x - (count - 1) * blockSize / 2f, adjustedPos.y)
             : new Vector2(adjustedPos.x, adjustedPos.y - (count - 1) * blockSize / 2f);
 
-        CreateWallBlocks(wallParent.transform, prefab, blockSize, count, startPos, isHorizontal, wallPosition);
+        List<GameObject> blocks = CreateWallBlocks(wallParent.transform, prefab, blockSize, count, startPos, isHorizontal, wallPosition);
         ApplyWallScaling(wallParent, count, renderer, size, isHorizontal);
 
+        ApplyBoxColliderToWall(wallParent, size, blocks.FirstOrDefault().transform.position, isHorizontal);
+
+        if (wallPosition == WallScreenPosition.Left)
+            wallParent.AddComponent<GameOverTrigger>();
+
         return wallParent;
+    }
+
+    private void ApplyBoxColliderToWall(GameObject wallParent, Vector2 size, Vector2 blockPosition, bool isHorizontal)
+    {
+        BoxCollider2D collider = wallParent.AddComponent<BoxCollider2D>();
+        collider.size = size;
+
+        if (isHorizontal) collider.offset = new Vector2(0f, blockPosition.y);
+        else collider.offset = new Vector2(blockPosition.x, 0f);
     }
 
     private SpriteRenderer ApplyRendererRotation(SpriteRenderer renderer, WallScreenPosition position)
@@ -132,18 +149,19 @@ public class LevelBounds : MonoBehaviour
         };
     }
 
-    private void CreateWallBlocks(Transform parent, GameObject prefab, float blockSize, int count, Vector2 startPos, bool isHorizontal, WallScreenPosition wallPosition)
+    private List<GameObject> CreateWallBlocks(Transform parent, GameObject prefab, float blockSize, int count, Vector2 startPos, bool isHorizontal, WallScreenPosition wallPosition)
     {
+        List<GameObject> blocks = new();
         for (int i = 0; i < count; i++)
         {
             Vector2 blockPos = isHorizontal
                 ? new Vector2(startPos.x + i * blockSize, startPos.y)
                 : new Vector2(startPos.x, startPos.y + i * blockSize);
 
-            var block = Instantiate(prefab, blockPos, Quaternion.identity, parent);
-            if (wallPosition == WallScreenPosition.Left)
-                block.AddComponent<GameOverTrigger>();
+            blocks.Add(Instantiate(prefab, blockPos, Quaternion.identity, parent));
         }
+
+        return blocks;
     }
 
     private void ApplyWallScaling(GameObject wallParent, int count, SpriteRenderer renderer, Vector2 size, bool isHorizontal)

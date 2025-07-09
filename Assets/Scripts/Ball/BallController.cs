@@ -11,7 +11,7 @@ namespace Assets.Scripts.Ball
         [SerializeField] private AudioClip _ballHit;
         private float initialSpeed = 300f;
         private float maxSpeed = 500f;
-        private float speedIncreaseFactor = 1.5f;
+        private float speedIncreaseFactor = 1.1f;
         private ISoundPlayer _soundPlayer;
         public bool IsMoving => _rb.linearVelocity.sqrMagnitude > 0.001f;
 
@@ -73,7 +73,7 @@ namespace Assets.Scripts.Ball
         // This functon should prevent ball from stucking between walls infinitely
         private void NudgeDirection()
         {
-            float angleOffset = Random.Range(-5f, 5f);
+            float angleOffset = Random.Range(-2f, 2f);
             Quaternion rotation = Quaternion.Euler(0, 0, angleOffset);
             _rb.linearVelocity = rotation * _rb.linearVelocity.normalized * _rb.linearVelocity.magnitude;
         }

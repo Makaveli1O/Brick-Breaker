@@ -32,7 +32,7 @@ namespace Assets.Scripts.Level
         {
             return levelIndex switch
             {
-                1 => GetLevel3(),
+                1 => GetLevel1(),
                 2 => GetLevel2(),
                 3 => GetLevel3(),
                 _ => GetLevel1()
@@ -86,13 +86,13 @@ namespace Assets.Scripts.Level
         {
             var diagonalMover = new BehaviourBuilder()
                 .Add<MoveBehaviour, MoveConfig>(
-                    new MoveConfig(2.5f, new Vector3(-3, -3, 0), new Vector3(3, 3, 0))
+                    new MoveConfig(1f, new Vector3(-3, -3, 0), new Vector3(3, 3, 0))
                 )
                 .Build();
 
             var verticalMover = new BehaviourBuilder()
                 .Add<MoveBehaviour, MoveConfig>(
-                    new MoveConfig(3f, new Vector3(0, -4, 0), new Vector3(0, 4, 0))
+                    new MoveConfig(0.8f, new Vector3(0, -4, 0), new Vector3(0, 4, 0))
                 )
                 .Build();
 
@@ -102,7 +102,7 @@ namespace Assets.Scripts.Level
 
             var comboFast = new BehaviourBuilder()
                 .Add<MoveBehaviour, MoveConfig>(
-                    new MoveConfig(4.5f, new Vector3(-2, 0, 0), new Vector3(2, 0, 0))
+                    new MoveConfig(0.5f, new Vector3(-2, 0, 0), new Vector3(2, 0, 0))
                 )
                 .AddNonConfigurable<ExplodeBehaviour>()
                 .Build();
@@ -149,6 +149,26 @@ namespace Assets.Scripts.Level
             }
 
             return builder.Build();
+        }
+
+        private LevelData GetLevelPhaseTest()
+        {
+            var blockA = new BehaviourBuilder()
+            .Add<MoveBehaviour, MoveConfig>(
+                new MoveConfig(1.0f, new Vector3(-4, 0, 0), new Vector3(4, 0, 0), 0f)
+            )
+            .Build();
+
+            var blockB = new BehaviourBuilder()
+                .Add<MoveBehaviour, MoveConfig>(
+                    new MoveConfig(1.0f, new Vector3(-4, 0, 0), new Vector3(4, 0, 0), 1.5f) // offset
+                )
+            .Build();
+
+            return new LevelBuilder()
+                .WithBlock(new float2(-4f, 0f), blockA)
+                .WithBlock(new float2(-4f, 0f), blockB)
+                .Build();
         }
 
 
