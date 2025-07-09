@@ -12,7 +12,7 @@ namespace Assets.Scripts.Level
         private ISoundPlayer _soundPlayer;
         public AudioClip GetSceneMusicTheme => Resources.Load<AudioClip>("Sound/UI/Themes/game_loop");
         private IGameStateController _gameStateController;
-        
+
 
         void Awake()
         {
@@ -32,8 +32,9 @@ namespace Assets.Scripts.Level
         {
             return levelIndex switch
             {
-                1 => GetLevel1(),
+                1 => GetLevel3(),
                 2 => GetLevel2(),
+                3 => GetLevel3(),
                 _ => GetLevel1()
             };
         }
@@ -127,6 +128,46 @@ namespace Assets.Scripts.Level
 
             return builder.Build();
         }
+
+        private LevelData GetLevel3()
+        {
+            var builder = new LevelBuilder();
+
+            var diagonal = new BehaviourBuilder()
+                .Add<MoveBehaviour, MoveConfig>(
+                    new MoveConfig(1.5f, new Vector3(-3, -3, 0), new Vector3(3, 3, 0))
+                )
+                .Build();
+
+            var slowVertical = new BehaviourBuilder()
+                .Add<MoveBehaviour, MoveConfig>(
+                    new MoveConfig(1.0f, new Vector3(0, -4, 0), new Vector3(0, 4, 0))
+                )
+                .Build();
+
+            var slowHorizontal = new BehaviourBuilder()
+                .Add<MoveBehaviour, MoveConfig>(
+                    new MoveConfig(1.0f, new Vector3(-4, 0, 0), new Vector3(4, 0, 0))
+                )
+                .Build();
+
+            var exploder = new BehaviourBuilder()
+                .AddNonConfigurable<ExplodeBehaviour>()
+                .Build();
+
+            float s = BlockGrid.Spacing;
+
+            for (int x = -1; x <= 1; x++)
+            {
+                for (int y = -1; y <= 1; y++)
+                {
+                    builder.WithBlock(new float2(x * s, y * s), exploder);
+                }
+            }
+
+            return builder.Build();
+        }
+
 
         public void LoadLevel(LevelData levelData)
         {

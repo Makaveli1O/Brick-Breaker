@@ -7,6 +7,10 @@ namespace Assets.Scripts.Blocks
     public class BlockFactory : MonoBehaviour, IBlockFactory
     {
         [SerializeField] private GameObject _blockPrefab;
+        void Awake()
+        {
+            BlockGrid.InitializeFrom(_blockPrefab);
+        }
 
         public Block SpawnBlock(BlockData data, Transform parent)
         {
