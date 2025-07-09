@@ -157,9 +157,9 @@ namespace Assets.Scripts.Level
 
             float s = BlockGrid.Spacing;
 
-            for (int x = -1; x <= 1; x++)
+            for (int x = -10; x <= 10; x++)
             {
-                for (int y = -1; y <= 1; y++)
+                for (int y = -10; y <= 10; y++)
                 {
                     builder.WithBlock(new float2(x * s, y * s), exploder);
                 }
