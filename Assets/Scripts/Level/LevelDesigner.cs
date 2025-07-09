@@ -129,27 +129,10 @@ namespace Assets.Scripts.Level
             return builder.Build();
         }
 
+        // TODO Test level for explosion behaviour performance
         private LevelData GetLevel3()
         {
             var builder = new LevelBuilder();
-
-            var diagonal = new BehaviourBuilder()
-                .Add<MoveBehaviour, MoveConfig>(
-                    new MoveConfig(1.5f, new Vector3(-3, -3, 0), new Vector3(3, 3, 0))
-                )
-                .Build();
-
-            var slowVertical = new BehaviourBuilder()
-                .Add<MoveBehaviour, MoveConfig>(
-                    new MoveConfig(1.0f, new Vector3(0, -4, 0), new Vector3(0, 4, 0))
-                )
-                .Build();
-
-            var slowHorizontal = new BehaviourBuilder()
-                .Add<MoveBehaviour, MoveConfig>(
-                    new MoveConfig(1.0f, new Vector3(-4, 0, 0), new Vector3(4, 0, 0))
-                )
-                .Build();
 
             var exploder = new BehaviourBuilder()
                 .AddNonConfigurable<ExplodeBehaviour>()
