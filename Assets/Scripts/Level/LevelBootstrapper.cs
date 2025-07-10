@@ -2,6 +2,7 @@ namespace Assets.Scripts.Level
 {
     using UnityEngine;
     using Assets.Scripts.SharedKernel;
+    using UnityEngine.Experimental.AI;
 
     public class LevelBootstrapper : MonoBehaviour
     {
@@ -19,6 +20,7 @@ namespace Assets.Scripts.Level
 
             SimpleServiceLocator.Register<ILevelDesigner>(designer);
             SimpleServiceLocator.Register<IPauseController>(pausePanel);
+            SimpleServiceLocator.Register<ILevelCatalog>(new StaticLevelCatalog());
         }
     }
 }
