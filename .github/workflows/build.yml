@@ -7,7 +7,7 @@ on:
   pull_request:
 
 permissions:
-  contents: write  # Required for release creation
+  contents: write  # Required for creating releases
 
 jobs:
   buildForAllSupportedPlatforms:
@@ -18,7 +18,7 @@ jobs:
       matrix:
         targetPlatform:
           - StandaloneWindows
-          - WebGL
+          # - WebGL
     steps:
       - uses: actions/checkout@v4
         with:
@@ -48,7 +48,7 @@ jobs:
           path: build/${{ matrix.targetPlatform }}
 
   release:
-    name: Create Release
+    name: Create Pre-Release
     needs: buildForAllSupportedPlatforms
     runs-on: ubuntu-latest
     if: ${{ github.ref == 'refs/heads/main' }}
@@ -63,16 +63,17 @@ jobs:
       - name: Get latest tag
         id: get_tag
         run: |
-          latest_tag=$(git describe --tags --abbrev=0 || echo "v0.0.0")
+          latest_tag=$(git describe --tags --abbrev=0 || echo "v0.0.0-alpha")
           echo "latest_tag=$latest_tag" >> $GITHUB_OUTPUT
 
-      - name: Bump version (patch)
+      - name: Bump version (patch prerelease)
         id: bump_version
         run: |
           old=${{ steps.get_tag.outputs.latest_tag }}
           version=${old#v}
+          version=${version%-alpha}
           IFS='.' read -r major minor patch <<< "$version"
-          new_tag="v$major.$minor.$((patch+1))"
+          new_tag="v$major.$minor.$((patch+1))-alpha"
           echo "new_tag=$new_tag" >> $GITHUB_OUTPUT
 
       - name: Download Windows build artifact
@@ -81,18 +82,20 @@ jobs:
           name: Build-StandaloneWindows
           path: Builds/StandaloneWindows
 
-      - name: Download WebGL build artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: Build-WebGL
-          path: Builds/WebGL
+      - name: Zip build folder
+        run: |
+          cd Builds/StandaloneWindows
+          zip -r ../../Build-${{ steps.bump_version.outputs.new_tag }}.zip ./*
+          cd ../..
 
-      - name: Create GitHub Release
+      - name: Create GitHub Pre-Release
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ steps.bump_version.outputs.new_tag }}
-          name: Release ${{ steps.bump_version.outputs.new_tag }}
+          name: Pre-Release ${{ steps.bump_version.outputs.new_tag }}
           generate_release_notes: true
-          files: |
-            Builds/**/*
+          prerelease: true
+          files: Build-${{ steps.bump_version.outputs.new_tag }}.zip
 
+      - name: Clean up zip
+        run: rm Build-${{ steps.bump_version.outputs.new_tag }}.zip
