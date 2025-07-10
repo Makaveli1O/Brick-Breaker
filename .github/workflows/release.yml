@@ -1,18 +1,32 @@
 name: Release
 
 on:
-  push:
-    branches:
-      - main
+  workflow_run:
+    workflows: ["Build project"]
+    types:
+      - completed
 
 permissions:
   contents: write
 
 jobs:
   release:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
 
     steps:
+      - name: Download Windows build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: Build-StandaloneWindows
+          path: Builds/StandaloneWindows
+
+      - name: Download WebGL build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: Build-WebGL
+          path: Builds/WebGL
+
       - name: Checkout code
         uses: actions/checkout@v4
 
@@ -33,18 +47,6 @@ jobs:
           IFS='.' read -r major minor patch <<< "$version"
           new_tag="v$major.$minor.$((patch+1))"
           echo "new_tag=$new_tag" >> $GITHUB_OUTPUT
-
-      - name: Download Windows build artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: Build-StandaloneWindows
-          path: Builds/StandaloneWindows
-
-      - name: Download WebGL build artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: Build-WebGL
-          path: Builds/WebGL
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
