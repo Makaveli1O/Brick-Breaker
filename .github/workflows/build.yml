@@ -1,6 +1,13 @@
-name: Build project
+name: Build and Release Project
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+permissions:
+  contents: write  # Required for release creation
 
 jobs:
   buildForAllSupportedPlatforms:
@@ -10,20 +17,23 @@ jobs:
       fail-fast: false
       matrix:
         targetPlatform:
-          - StandaloneWindows # Build a Windows standalone.
-          - WebGL # WebGL.
+          - StandaloneWindows
+          - WebGL
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
           lfs: true
+
       - uses: actions/cache@v3
         with:
           path: Library
           key: Library-${{ matrix.targetPlatform }}
           restore-keys: Library-
+
       - if: matrix.targetPlatform == 'Android'
         uses: jlumbroso/free-disk-space@v1.3.1
+
       - uses: game-ci/unity-builder@v4
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
@@ -31,7 +41,58 @@ jobs:
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           targetPlatform: ${{ matrix.targetPlatform }}
+
       - uses: actions/upload-artifact@v4
         with:
           name: Build-${{ matrix.targetPlatform }}
           path: build/${{ matrix.targetPlatform }}
+
+  release:
+    name: Create Release
+    needs: buildForAllSupportedPlatforms
+    runs-on: ubuntu-latest
+    if: ${{ github.ref == 'refs/heads/main' }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Git
+        run: git fetch --tags
+
+      - name: Get latest tag
+        id: get_tag
+        run: |
+          latest_tag=$(git describe --tags --abbrev=0 || echo "v0.0.0")
+          echo "latest_tag=$latest_tag" >> $GITHUB_OUTPUT
+
+      - name: Bump version (patch)
+        id: bump_version
+        run: |
+          old=${{ steps.get_tag.outputs.latest_tag }}
+          version=${old#v}
+          IFS='.' read -r major minor patch <<< "$version"
+          new_tag="v$major.$minor.$((patch+1))"
+          echo "new_tag=$new_tag" >> $GITHUB_OUTPUT
+
+      - name: Download Windows build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: Build-StandaloneWindows
+          path: Builds/StandaloneWindows
+
+      - name: Download WebGL build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: Build-WebGL
+          path: Builds/WebGL
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.bump_version.outputs.new_tag }}
+          name: Release ${{ steps.bump_version.outputs.new_tag }}
+          generate_release_notes: true
+          files: |
+            Builds/**/*
+
