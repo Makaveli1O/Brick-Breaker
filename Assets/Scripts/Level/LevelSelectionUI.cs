@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts.GameHandler;
 using Assets.Scripts.Level;
@@ -8,43 +9,53 @@ using UnityEngine.UI;
 
 public class LevelSelectionUI : MonoBehaviour
 {
-    [SerializeField] private GameObject _buttonPrefab;
-    [SerializeField] private Transform _container;
-    private float _buttonHeight;
+    [SerializeField] private Button _prevButton;
+    [SerializeField] private Button _nextButton;
+
     private ILevelCatalog _levelCatalog;
     private ISceneLoader _sceneLoader;
+    private List<LevelDefinition> _levels;
+    private int _currentIndex = 0;
+    [SerializeField] private GameObject _currentButton;
 
     void Awake()
     {
         _levelCatalog = SimpleServiceLocator.Resolve<ILevelCatalog>();
         _sceneLoader = SimpleServiceLocator.Resolve<ISceneLoader>();
-        _buttonHeight = _buttonPrefab.GetComponent<RectTransform>().sizeDelta.y;
+        _levels = _levelCatalog.GetAvailableLevels().ToList();
+
+        _prevButton.onClick.AddListener(ShowPrevious);
+        _nextButton.onClick.AddListener(ShowNext);
     }
 
     void Start()
     {
-        var levelList = _levelCatalog.GetAvailableLevels().ToList();
-        for (int i = 0;  i < levelList.Count; i++)
-        {
-            GameObject button = Instantiate(_buttonPrefab, _container);
-            button.GetComponentInChildren<TextMeshProUGUI>().text = levelList[i].DisplayName;
+        RenderCurrent();
+    }
 
-            button.transform.position = new Vector2(
-                button.transform.position.x,
-                button.transform.position.y - (_buttonHeight * i)
-            );
+    private void ShowPrevious()
+    {
+        _currentIndex = (_currentIndex - 1 + _levels.Count) % _levels.Count;
+        RenderCurrent();
+    }
 
-            var id = levelList[i].Id;
-            button.GetComponent<Button>().onClick.AddListener(() =>
-            {
-                LoadLevel(id);
-            });
-        }
+    private void ShowNext()
+    {
+        _currentIndex = (_currentIndex + 1) % _levels.Count;
+        RenderCurrent();
+    }
+
+    private void RenderCurrent()
+    {
+        var level = _levels[_currentIndex];
+
+        _currentButton.GetComponentInChildren<TextMeshProUGUI>().text = $"{_currentIndex}. {level.DisplayName}";
+        _currentButton.GetComponent<Button>().onClick.RemoveAllListeners();
+        _currentButton.GetComponent<Button>().onClick.AddListener(() => LoadLevel(level.Id));
     }
 
     private void LoadLevel(int levelId)
     {
-        Debug.Log("Loading level: " + levelId);
         _sceneLoader.LoadScene(SceneNames.Level0, levelId);
     }
 }
