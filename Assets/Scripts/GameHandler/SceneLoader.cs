@@ -7,8 +7,9 @@ namespace Assets.Scripts.GameHandler
     {
         public string GetCurrentSceneName => SceneManager.GetActiveScene().name;
         public bool IsCurrentSceneLevel() => GetCurrentSceneName.Contains("Level");
-        public void LoadScene(string sceneName)
+        public void LoadScene(string sceneName, int levelIndex = 1)
         {
+            GameStateStorage.CurrentLevel = levelIndex;
             SceneManager.LoadScene(sceneName);
         } 
     }
