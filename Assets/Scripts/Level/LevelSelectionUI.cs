@@ -1,4 +1,5 @@
 using System.Linq;
+using Assets.Scripts.GameHandler;
 using Assets.Scripts.Level;
 using Assets.Scripts.SharedKernel;
 using TMPro;
@@ -11,12 +12,12 @@ public class LevelSelectionUI : MonoBehaviour
     [SerializeField] private Transform _container;
     private float _buttonHeight;
     private ILevelCatalog _levelCatalog;
-    private ILevelDesigner _levelDesigner;
+    private ISceneLoader _sceneLoader;
 
     void Awake()
     {
         _levelCatalog = SimpleServiceLocator.Resolve<ILevelCatalog>();
-        _levelDesigner = SimpleServiceLocator.Resolve<ILevelDesigner>();
+        _sceneLoader = SimpleServiceLocator.Resolve<ISceneLoader>();
         _buttonHeight = _buttonPrefab.GetComponent<RectTransform>().sizeDelta.y;
     }
 
@@ -44,7 +45,6 @@ public class LevelSelectionUI : MonoBehaviour
     private void LoadLevel(int levelId)
     {
         Debug.Log("Loading level: " + levelId);
-
-        _levelDesigner.LoadLevel(levelId);
+        _sceneLoader.LoadScene(SceneNames.Level0, levelId);
     }
 }
