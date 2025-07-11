@@ -20,7 +20,6 @@ namespace Assets.Scripts.Level
 
             SimpleServiceLocator.Register<ILevelDesigner>(designer);
             SimpleServiceLocator.Register<IPauseController>(pausePanel);
-            SimpleServiceLocator.Register<ILevelCatalog>(new StaticLevelCatalog());
         }
     }
 }

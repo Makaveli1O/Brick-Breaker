@@ -1,5 +1,7 @@
+using System.Linq;
 using Assets.Scripts.Level;
 using Assets.Scripts.SharedKernel;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,21 +9,31 @@ public class LevelSelectionUI : MonoBehaviour
 {
     [SerializeField] private GameObject _buttonPrefab;
     [SerializeField] private Transform _container;
-
+    private float _buttonHeight;
     private ILevelCatalog _levelCatalog;
     private ILevelDesigner _levelDesigner;
 
-    void Start()
+    void Awake()
     {
         _levelCatalog = SimpleServiceLocator.Resolve<ILevelCatalog>();
         _levelDesigner = SimpleServiceLocator.Resolve<ILevelDesigner>();
+        _buttonHeight = _buttonPrefab.GetComponent<RectTransform>().sizeDelta.y;
+    }
 
-        foreach (var level in _levelCatalog.GetAvailableLevels())
+    void Start()
+    {
+        var levelList = _levelCatalog.GetAvailableLevels().ToList();
+        for (int i = 0;  i < levelList.Count; i++)
         {
-            var button = Instantiate(_buttonPrefab, _container);
-            button.GetComponentInChildren<Text>().text = level.DisplayName;
+            GameObject button = Instantiate(_buttonPrefab, _container);
+            button.GetComponentInChildren<TextMeshProUGUI>().text = levelList[i].DisplayName;
 
-            var id = level.Id;
+            button.transform.position = new Vector2(
+                button.transform.position.x,
+                button.transform.position.y - (_buttonHeight * i)
+            );
+
+            var id = levelList[i].Id;
             button.GetComponent<Button>().onClick.AddListener(() =>
             {
                 LoadLevel(id);
