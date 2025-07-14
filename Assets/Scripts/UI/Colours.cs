@@ -19,5 +19,6 @@ namespace Assets.Scripts.UI
         public static readonly Color ButtonTextColorHover = new(1.0f, 0.714f, 0.631f);
         public static readonly Color MoveBlockColor = new(1.0f, 0.796f, 0.643f);
         public static readonly Color ExplodeBlockColor = new(0.655f, 1.0f, 0.922f);
+        public static readonly Color ReflectBlockColor = new(0.624f, 1.0f, 1.0f);
     } 
 }
