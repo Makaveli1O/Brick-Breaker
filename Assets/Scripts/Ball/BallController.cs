@@ -62,7 +62,7 @@ namespace Assets.Scripts.Ball
                     Debug.Log("Max speed reached, no further increase.");
                     return;
                 }
-                _rb.AddForce(collision.relativeVelocity.normalized * speedIncreaseFactor);
+                _rb.AddForce(collision.relativeVelocity.normalized);
             }
 
             if (collision.gameObject.tag.Contains("Wall")) NudgeDirection();

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Assets.Scripts.Blocks;
 using Assets.Scripts.GameHandler;
 using Assets.Scripts.SharedKernel;
@@ -8,6 +9,8 @@ namespace Assets.Scripts.Level
 {
     public class LevelDesigner : MonoBehaviour, ILevelDesigner
     {
+        private const float _xStepSize = 0.2f;
+        private const float _yStepSize = 0.3f;
         private BlockSpawner _spawner;
         private ISoundPlayer _soundPlayer;
         public AudioClip GetSceneMusicTheme => Resources.Load<AudioClip>("Sound/UI/Themes/game_loop");
@@ -35,6 +38,7 @@ namespace Assets.Scripts.Level
                 1 => GetLevel1(),
                 2 => GetLevel2(),
                 3 => GetLevel3(),
+                4 => GetLevel4(),
                 _ => GetLevel1()
             };
         }
@@ -129,7 +133,6 @@ namespace Assets.Scripts.Level
             return builder.Build();
         }
 
-        // TODO Test level for explosion behaviour performance
         private LevelData GetLevel3()
         {
             var builder = new LevelBuilder();
@@ -151,24 +154,50 @@ namespace Assets.Scripts.Level
             return builder.Build();
         }
 
-        private LevelData GetLevelPhaseTest()
+        private LevelData GetLevel4()
         {
-            var blockA = new BehaviourBuilder()
-            .Add<MoveBehaviour, MoveConfig>(
-                new MoveConfig(1.0f, new Vector3(-4, 0, 0), new Vector3(4, 0, 0), 0f)
-            )
-            .Build();
-
-            var blockB = new BehaviourBuilder()
-                .Add<MoveBehaviour, MoveConfig>(
-                    new MoveConfig(1.0f, new Vector3(-4, 0, 0), new Vector3(4, 0, 0), 1.5f) // offset
+            var reflecter = new BehaviourBuilder()
+                .Add<ReflectBehaviour, ReflectConfig>(
+                    new ReflectConfig(Vector2.left)
                 )
-            .Build();
-
-            return new LevelBuilder()
-                .WithBlock(new float2(-4f, 0f), blockA)
-                .WithBlock(new float2(-4f, 0f), blockB)
                 .Build();
+
+            var exploder = new BehaviourBuilder()
+                .AddNonConfigurable<ExplodeBehaviour>()
+                .Build();
+
+            var builder = new LevelBuilder();
+
+            foreach (var pos in GenerateYCoords(4f, -4, 0))
+                builder.WithBlock(new float2(pos.x, pos.y), reflecter);
+
+            builder.WithBlock(new float2(3f, 0f), exploder);
+
+            return builder.Build();
+        }
+
+        private IEnumerable<float2> GenerateYCoords(float start, float end, float xPos)
+        {
+            float step = Mathf.Sign(end - start) * Mathf.Abs(_yStepSize);
+            for (float y = start; step > 0 ? y <= end : y >= end; y += step)
+                yield return new float2(xPos, y);
+        }
+
+        private IEnumerable<float2> GenerateXCoords(float start, float end, float yPos)
+        {
+            float step = Mathf.Sign(end - start) * Mathf.Abs(_xStepSize);
+            for (float x = start; step > 0 ? x <= end : x >= end; x += step)
+                yield return new float2(x, yPos);
+        }
+
+        private IEnumerable<float2> GenerateGrid(float xStart, float xEnd, float xStep, float yStart, float yEnd, float yStep)
+        {
+            float xDir = Mathf.Sign(xEnd - xStart) * Mathf.Abs(xStep);
+            float yDir = Mathf.Sign(yEnd - yStart) * Mathf.Abs(yStep);
+
+            for (float x = xStart; xDir > 0 ? x <= xEnd : x >= xEnd; x += xDir)
+                for (float y = yStart; yDir > 0 ? y <= yEnd : y >= yEnd; y += yDir)
+                    yield return new float2(x, y);
         }
 
         public void LoadLevel(int levelId)
