@@ -1,8 +1,9 @@
+using Assets.Scripts.Score;
 using Assets.Scripts.SharedKernel;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Assets.Scripts.Score
+namespace Assets.Scripts.UI
 {
     public class ScoreUI : MonoBehaviour
     {
