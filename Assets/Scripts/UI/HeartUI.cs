@@ -1,8 +1,9 @@
 using System.Collections.Generic;
+using Assets.Scripts.HeartSystem;
 using Assets.Scripts.SharedKernel;
 using UnityEngine;
 
-namespace Assets.Scripts.HeartSystem
+namespace Assets.Scripts.UI
 {
     public class HeartUI : MonoBehaviour
     {

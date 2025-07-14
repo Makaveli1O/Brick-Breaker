@@ -2,6 +2,7 @@ namespace Assets.Scripts.Level
 {
     using UnityEngine;
     using Assets.Scripts.SharedKernel;
+    using UnityEngine.Experimental.AI;
 
     public class LevelBootstrapper : MonoBehaviour
     {

@@ -67,5 +67,6 @@ public class GameBootstrapper : MonoBehaviour
         SimpleServiceLocator.Register<ILevelDesigner>(_levelDesigner);
         SimpleServiceLocator.Register<IScoreTracker>(_scoreTracker);
         SimpleServiceLocator.Register<IHeartController>(_heartController);
+        SimpleServiceLocator.Register<ILevelCatalog>(new StaticLevelCatalog());
     }
 }

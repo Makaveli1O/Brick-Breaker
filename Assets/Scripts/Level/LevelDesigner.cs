@@ -171,6 +171,10 @@ namespace Assets.Scripts.Level
                 .Build();
         }
 
+        public void LoadLevel(int levelId)
+        {
+            LoadLevel(GetLevelData(levelId));
+        }
 
         public void LoadLevel(LevelData levelData)
         {
