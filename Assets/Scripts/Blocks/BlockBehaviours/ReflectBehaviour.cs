@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Blocks
 {
-    public class ReflectBehaviour : MonoBehaviour, ICollisionBehaviour, IConfigurableBehaviour<ReflectBehaviour>
+    public class ReflectBehaviour : MonoBehaviour, ICollisionBehaviour, IConfigurableBehaviour<ReflectConfig>
     {
         public Vector2 ReflectDirection { get; set; } = Vector2.left;
         public void OnCollisionExecute(Block context, Collision2D collision)
@@ -17,13 +17,15 @@ namespace Assets.Scripts.Blocks
             if (rb == null) return;
 
             Vector2 incomingVelocity = collision.relativeVelocity;
-            Vector2 normal = collision.contacts[0].normal;
-            Vector2 reflectedVelocity = Vector2.Reflect(incomingVelocity, normal);
+            float speed = incomingVelocity.magnitude;
+
+            Vector2 direction = ReflectDirection.normalized;
+            Vector2 reflectedVelocity = direction * speed;
 
             rb.linearVelocity = reflectedVelocity;
         }
 
-        public void Configure(ReflectBehaviour config)
+        public void Configure(ReflectConfig config)
         {
             ReflectDirection = config.ReflectDirection;
         }
