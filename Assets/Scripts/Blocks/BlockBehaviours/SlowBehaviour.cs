@@ -1,3 +1,4 @@
+using Assets.Scripts.Ball;
 using Assets.Scripts.SharedKernel;
 using UnityEngine;
 
@@ -6,9 +7,8 @@ namespace Assets.Scripts.Blocks
     public class SlowBehaviour : MonoBehaviour, IDestructableBehaviour, IConfigurableBehaviour<SlowConfig>, ICollisionBehaviour
     {
         public float Slowness { get; set; } = 0.5f;
-        private bool _isSlowed = false;
         private const float _delay = 2f;
-        private const float _normalSpeed = 1f;
+
         public void Configure(SlowConfig config)
         {
             Slowness = config.SlownessPercentage;
@@ -16,19 +16,44 @@ namespace Assets.Scripts.Blocks
 
         public void OnCollisionExecute(Block context, Collision2D collision)
         {
-            if (_isSlowed) return;
+            if (!collision.gameObject.CompareTag("Ball")) return;
+            if (!collision.gameObject.TryGetComponent(out BallController ballController)) return;
+            if (!collision.gameObject.TryGetComponent(out Rigidbody2D ballRigidbody)) return;
 
-            Time.timeScale = Slowness;
-            _isSlowed = true;
+            if (!ballController.IsSlowed)
+            {
+                ballController.IsSlowed = true;
 
-            context.StartCoroutine(RestoreTimeAfterDelay(_delay));
+                Vector2 originalVelocity = ballRigidbody.linearVelocity;
+                ballRigidbody.linearVelocity = originalVelocity * Slowness;
+
+                ballController.StartCoroutine(RestoreSpeedAfterDelay(ballRigidbody, ballController, originalVelocity, _delay));
+            }
+
+            DestroyBlock(context);
         }
 
-        private System.Collections.IEnumerator RestoreTimeAfterDelay(float delay)
+        private System.Collections.IEnumerator RestoreSpeedAfterDelay(Rigidbody2D rb, BallController controller, Vector2 originalVelocity, float delay)
         {
             yield return new WaitForSecondsRealtime(delay);
-            Time.timeScale = _normalSpeed;
-            _isSlowed = false;
+
+            // Calculate speed ratio between original and current velocity
+            float originalSpeed = originalVelocity.magnitude;
+            float currentSpeed = rb.linearVelocity.magnitude;
+
+            if (currentSpeed > 0)
+            {
+                // Restore velocity direction but keep the current velocity's direction
+                Vector2 direction = rb.linearVelocity.normalized;
+                rb.linearVelocity = direction * originalSpeed;
+            }
+            else
+            {
+                // If ball stopped, restore original velocity
+                rb.linearVelocity = originalVelocity;
+            }
+
+            controller.IsSlowed = false;
         }
 
         public void DestroyBlock(Block context)
