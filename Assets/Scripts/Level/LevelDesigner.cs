@@ -40,6 +40,8 @@ namespace Assets.Scripts.Level
                 3 => GetLevel3(),
                 4 => GetLevel4(),
                 5 => GetLevel5(),
+                6 => GetLevel6(),
+                7 => GetLevel7(),
                 _ => GetLevel1()
             };
         }
@@ -151,6 +153,50 @@ namespace Assets.Scripts.Level
                     builder.WithBlock(new float2(x * s, y * s), exploder);
                 }
             }
+
+            return builder.Build();
+        }
+
+        private LevelData GetLevel6()
+        {
+            var slower = new BehaviourBuilder()
+                .Add<SlowBehaviour, SlowConfig>(
+                    new SlowConfig(2f, 0.3f)
+                )
+                .Build();
+
+            var reflector = new BehaviourBuilder()
+                .Add<ReflectBehaviour, ReflectConfig>(
+                    new ReflectConfig(Vector2.up)
+                )
+                .Build();
+
+            var builder = new LevelBuilder();
+
+            // Horizontal reflector line
+            foreach (var pos in GenerateXCoords(-4f, 4f, 0f))
+                builder.WithBlock(new float2(pos.x, pos.y), reflector);
+
+            // Vertical slow line
+            foreach (var pos in GenerateYCoords(3f, -3f, 0f))
+                builder.WithBlock(new float2(pos.x, pos.y), slower);
+
+            return builder.Build();
+        }
+
+        private LevelData GetLevel7()
+        {
+            var combo = new BehaviourBuilder()
+                .Add<SlowBehaviour, SlowConfig>(
+                    new SlowConfig(1.5f, 0.4f)
+                )
+                .AddNonConfigurable<ExplodeBehaviour>()
+                .Build();
+
+            var builder = new LevelBuilder();
+
+            foreach (var pos in GenerateGrid(-2f, 2f, 0.4f, 2f, -2f, 0.4f))
+                builder.WithBlock(new float2(pos.x, pos.y), combo);
 
             return builder.Build();
         }
