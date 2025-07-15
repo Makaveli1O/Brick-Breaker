@@ -24,7 +24,7 @@ namespace Assets.Scripts.Blocks
 
         public void OnCollisionExecute(Block context, Collision2D collision)
         {
-            Explode(context);
+            RegisterAndTrigger(context);
         }
 
         public void Explode(Block context)
@@ -73,6 +73,13 @@ namespace Assets.Scripts.Blocks
             }
             _soundPlayer.PlaySfx(_explodeClip);
             DestroyBlock(ctx);
+        }
+
+        public void RegisterAndTrigger(Block context)
+        {
+            var coordinator = context.GetComponent<DestructionCoordinator>();
+            coordinator.RegisterCoroutine(ExplosionSequence(context));
+            coordinator.TriggerDestruction();
         }
 
         public void DestroyBlock(Block context)
