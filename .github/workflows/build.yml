@@ -60,17 +60,23 @@ jobs:
       - name: Determine pre-release version
         id: bump_version
         run: |
+          set -e
           git fetch --tags --force
 
-          # Get latest stable version
+          # Get latest stable version (without -alpha)
           stable=$(git tag --sort=-v:refname | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | head -n1)
-          # Get latest pre-release version
+
+          # Get latest pre-release version (with -alpha)
           alpha=$(git tag --sort=-v:refname | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+-alpha$' | head -n1)
 
           if [ -n "$alpha" ]; then
             echo "Using existing alpha tag: $alpha"
-            echo "new_tag=$alpha" >> $GITHUB_OUTPUT
+            echo "new_tag=$alpha" >> "$GITHUB_OUTPUT"
           else
             version=${stable#v}
             IFS='.' read -r major minor patch <<< "$version"
-            new_tag="v$major.$mino_
+            new_tag="v$major.$minor.$((patch+1))-alpha"
+            echo "Creating new alpha tag: $new_tag"
+            echo "new_tag=$new_tag" >> "$GITHUB_OUTPUT"
+          fi
+
