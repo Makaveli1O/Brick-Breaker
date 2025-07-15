@@ -12,7 +12,8 @@ namespace Assets.Scripts.Blocks
         {
             [typeof(MoveBehaviour)] = Colours.MoveBlockColor,
             [typeof(ExplodeBehaviour)] = Colours.ExplodeBlockColor,
-            [typeof(ReflectBehaviour)] = Colours.ReflectBlockColor
+            [typeof(ReflectBehaviour)] = Colours.ReflectBlockColor,
+            [typeof(SlowBehaviour)] = Colours.SlowBlockColor
         };
         public static Color Resolve(List<BehaviourConfig> behaviours)
         {

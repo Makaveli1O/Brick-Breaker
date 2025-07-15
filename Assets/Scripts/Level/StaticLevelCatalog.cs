@@ -9,7 +9,8 @@ namespace Assets.Scripts.Level
             new LevelDefinition(1, "Pilot"),
             new LevelDefinition(2, "Moving Challenge"),
             new LevelDefinition(3, "Explosion performance test"),
-            new LevelDefinition(4, "Reflect behaviour test")
+            new LevelDefinition(4, "Reflect behaviour test"),
+            new LevelDefinition(5, "Slower madness")
         };
 
         public IReadOnlyList<LevelDefinition> GetAvailableLevels() => _levels;

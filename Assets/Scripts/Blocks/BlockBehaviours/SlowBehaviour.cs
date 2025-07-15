@@ -1,8 +1,9 @@
+using Assets.Scripts.SharedKernel;
 using UnityEngine;
 
 namespace Assets.Scripts.Blocks
 {
-    public class SlowBehaviour : MonoBehaviour, IConfigurableBehaviour<SlowConfig>, ICollisionBehaviour
+    public class SlowBehaviour : MonoBehaviour, IDestructableBehaviour, IConfigurableBehaviour<SlowConfig>, ICollisionBehaviour
     {
         public float Slowness { get; set; } = 0.5f;
         private bool _isSlowed = false;
@@ -28,6 +29,17 @@ namespace Assets.Scripts.Blocks
             yield return new WaitForSecondsRealtime(delay);
             Time.timeScale = _normalSpeed;
             _isSlowed = false;
+        }
+
+        public void DestroyBlock(Block context)
+        {
+            AdjustBlockCounter();
+            Destroy(context.gameObject);
+        }
+
+        public void AdjustBlockCounter()
+        {
+            SimpleServiceLocator.Resolve<IBlockCounter>().OnBlockDestroyed();
         }
     }
 }
