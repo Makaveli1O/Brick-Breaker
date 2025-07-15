@@ -57,47 +57,20 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Git
-        run: git fetch --tags
-
-      - name: Get latest tag
-        id: get_tag
-        run: |
-          git fetch --tags --force
-          git fetch --all
-          latest_tag=$(git tag --sort=-creatordate | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+' | head -n 1)
-          echo "latest_tag=$latest_tag" >> $GITHUB_OUTPUT
-
-      - name: Bump version (patch prerelease)
+      - name: Determine pre-release version
         id: bump_version
         run: |
-          old=${{ steps.get_tag.outputs.latest_tag }}
-          version=${old#v}
-          version=${version%-alpha}  # remove -alpha if present
-          IFS='.' read -r major minor patch <<< "$version"
-          new_tag="v$major.$minor.$((patch+1))-alpha"
-          echo "new_tag=$new_tag" >> $GITHUB_OUTPUT
+          git fetch --tags --force
 
-      - name: Download Windows build artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: Build-StandaloneWindows
-          path: Builds/StandaloneWindows
+          # Get latest stable version
+          stable=$(git tag --sort=-v:refname | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | head -n1)
+          # Get latest pre-release version
+          alpha=$(git tag --sort=-v:refname | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+-alpha$' | head -n1)
 
-      - name: Zip build folder
-        run: |
-          cd Builds/StandaloneWindows
-          zip -r ../../Build-${{ steps.bump_version.outputs.new_tag }}.zip ./*
-          cd ../..
-
-      - name: Create GitHub Pre-Release
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: ${{ steps.bump_version.outputs.new_tag }}
-          name: Pre-Release ${{ steps.bump_version.outputs.new_tag }}
-          generate_release_notes: true
-          prerelease: true
-          files: Build-${{ steps.bump_version.outputs.new_tag }}.zip
-
-      - name: Clean up zip
-        run: rm Build-${{ steps.bump_version.outputs.new_tag }}.zip
+          if [ -n "$alpha" ]; then
+            echo "Using existing alpha tag: $alpha"
+            echo "new_tag=$alpha" >> $GITHUB_OUTPUT
+          else
+            version=${stable#v}
+            IFS='.' read -r major minor patch <<< "$version"
+            new_tag="v$major.$mino_
