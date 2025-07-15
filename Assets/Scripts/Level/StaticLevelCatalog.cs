@@ -10,7 +10,9 @@ namespace Assets.Scripts.Level
             new LevelDefinition(2, "Moving Challenge"),
             new LevelDefinition(3, "Explosion performance test"),
             new LevelDefinition(4, "Reflect behaviour test"),
-            new LevelDefinition(5, "Slower madness")
+            new LevelDefinition(5, "Slower madness"),
+            new LevelDefinition(6, "Slow & Reflect Cross Pattern"),
+            new LevelDefinition(7, "Slow + Explode Combo Grid")
         };
 
         public IReadOnlyList<LevelDefinition> GetAvailableLevels() => _levels;

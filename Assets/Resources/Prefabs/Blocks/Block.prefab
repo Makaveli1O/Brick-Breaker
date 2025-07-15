@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4205123141860245065}
   - component: {fileID: 258504909998533141}
   - component: {fileID: 8638455681782496722}
+  - component: {fileID: 1357396478241080401}
   m_Layer: 0
   m_Name: Block
   m_TagString: Block
@@ -149,3 +150,15 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.1, y: 0.32}
   m_EdgeRadius: 0
+--- !u!114 &1357396478241080401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5284649261403713773}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7f1059cceff0474ca2a1d60b70aff55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

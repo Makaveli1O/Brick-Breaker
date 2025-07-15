@@ -1,3 +1,4 @@
+using System.Collections;
 using Assets.Scripts.Ball;
 using Assets.Scripts.SharedKernel;
 using UnityEngine;
@@ -30,10 +31,23 @@ namespace Assets.Scripts.Blocks
                 ballController.StartCoroutine(RestoreSpeedAfterDelay(ballRigidbody, ballController, originalVelocity, _delay));
             }
 
-            DestroyBlock(context);
+            RegisterAndTrigger(context);
         }
 
-        private System.Collections.IEnumerator RestoreSpeedAfterDelay(Rigidbody2D rb, BallController controller, Vector2 originalVelocity, float delay)
+        public void RegisterAndTrigger(Block context)
+        {
+            var coordinator = context.GetComponent<DestructionCoordinator>();
+            coordinator.RegisterCoroutine(SlowDestroy(context));
+            coordinator.TriggerDestruction();
+        }
+
+        private IEnumerator SlowDestroy(Block context)
+        {
+            yield return null;
+            AdjustBlockCounter();
+        }
+
+        private IEnumerator RestoreSpeedAfterDelay(Rigidbody2D rb, BallController controller, Vector2 originalVelocity, float delay)
         {
             yield return new WaitForSecondsRealtime(delay);
 
