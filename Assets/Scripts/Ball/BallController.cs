@@ -9,8 +9,8 @@ namespace Assets.Scripts.Ball
     {
         [SerializeField] private AudioClip _launchBallClip;
         [SerializeField] private AudioClip _ballHit;
-        private float _initialSpeed = 300f;
-        private float _maxSpeed = 500f;
+        private float _initialPush = 200f;
+        private float _maxSpeed = 6f;
         public bool IsSlowed { get; set; } = false;
         private ISoundPlayer _soundPlayer;
         public bool IsMoving => _rb.linearVelocity.sqrMagnitude > 0.001f;
@@ -41,15 +41,26 @@ namespace Assets.Scripts.Ball
             _soundPlayer = SimpleServiceLocator.Resolve<ISoundPlayer>();
         }
 
+        void FixedUpdate()
+        {
+            if (_rb.linearVelocity.magnitude > _maxSpeed)
+            {
+                _rb.linearVelocity = Vector3.ClampMagnitude(_rb.linearVelocity, _maxSpeed);
+            }
+        }
+
         public void LaunchBall()
         {
-            float x = -1f; // always launch to the left
+            // Threshold used for the initial bump
+            float threshold = .1f;
+
+            float x = -1f; // Always launch to the left
             float y = Random.value < 0.5f ?
-                Random.Range(-1.0f, 0.5f) :
-                Random.Range(0.5f, 1.0f);
+                Random.Range(-threshold, 0.5f) :
+                Random.Range(0.5f, threshold);
 
             Vector2 direction = new Vector2(x, y).normalized;
-            _rb.AddForce(direction * _initialSpeed);
+            _rb.AddForce(direction * _initialPush);
             _soundPlayer.PlaySfx(_launchBallClip);
         }
 
@@ -57,11 +68,7 @@ namespace Assets.Scripts.Ball
         {
             if (collision.gameObject.CompareTag("Player"))
             {
-                if (_rb.linearVelocity.magnitude >= _maxSpeed)
-                {
-                    Debug.Log("Max speed reached, no further increase.");
-                    return;
-                }
+                if (_rb.linearVelocity.magnitude >= _maxSpeed) return;
                 _rb.AddForce(collision.relativeVelocity.normalized);
             }
 
