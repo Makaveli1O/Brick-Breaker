@@ -9,9 +9,9 @@ namespace Assets.Scripts.Ball
     {
         [SerializeField] private AudioClip _launchBallClip;
         [SerializeField] private AudioClip _ballHit;
-        private float initialSpeed = 300f;
-        private float maxSpeed = 500f;
-        private float speedIncreaseFactor = 1.1f;
+        private float _initialSpeed = 300f;
+        private float _maxSpeed = 500f;
+        public bool IsSlowed { get; set; } = false;
         private ISoundPlayer _soundPlayer;
         public bool IsMoving => _rb.linearVelocity.sqrMagnitude > 0.001f;
 
@@ -49,7 +49,7 @@ namespace Assets.Scripts.Ball
                 Random.Range(0.5f, 1.0f);
 
             Vector2 direction = new Vector2(x, y).normalized;
-            _rb.AddForce(direction * initialSpeed);
+            _rb.AddForce(direction * _initialSpeed);
             _soundPlayer.PlaySfx(_launchBallClip);
         }
 
@@ -57,7 +57,7 @@ namespace Assets.Scripts.Ball
         {
             if (collision.gameObject.CompareTag("Player"))
             {
-                if (_rb.linearVelocity.magnitude >= maxSpeed)
+                if (_rb.linearVelocity.magnitude >= _maxSpeed)
                 {
                     Debug.Log("Max speed reached, no further increase.");
                     return;
