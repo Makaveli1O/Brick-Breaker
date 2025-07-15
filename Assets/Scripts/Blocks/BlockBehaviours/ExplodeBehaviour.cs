@@ -77,8 +77,13 @@ namespace Assets.Scripts.Blocks
 
         public void DestroyBlock(Block context)
         {
-            _blockCounter.OnBlockDestroyed();
+            AdjustBlockCounter();
             Destroy(context.gameObject);
+        }
+
+        public void AdjustBlockCounter()
+        {
+            _blockCounter.OnBlockDestroyed();
         }
     }
 }

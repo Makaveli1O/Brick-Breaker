@@ -39,6 +39,7 @@ namespace Assets.Scripts.Level
                 2 => GetLevel2(),
                 3 => GetLevel3(),
                 4 => GetLevel4(),
+                5 => GetLevel5(),
                 _ => GetLevel1()
             };
         }
@@ -172,6 +173,22 @@ namespace Assets.Scripts.Level
                 builder.WithBlock(new float2(pos.x, pos.y), reflecter);
 
             builder.WithBlock(new float2(3f, 0f), exploder);
+
+            return builder.Build();
+        }
+
+        private LevelData GetLevel5()
+        {
+            var slower = new BehaviourBuilder()
+                .Add<SlowBehaviour, SlowConfig>(
+                    new SlowConfig(2f, 0.5f)
+                )
+                .Build();
+
+            var builder = new LevelBuilder();
+
+            foreach (var pos in GenerateGrid(-2f, 2f, 0.3f, 2f, -2f, 0.3f))
+                builder.WithBlock(new float2(pos.x, pos.y), slower);
 
             return builder.Build();
         }
