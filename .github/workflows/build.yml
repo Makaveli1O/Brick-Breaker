@@ -7,7 +7,7 @@ on:
   pull_request:
 
 permissions:
-  contents: write  # Required for creating releases
+  contents: write
 
 jobs:
   buildForAllSupportedPlatforms:
@@ -63,7 +63,7 @@ jobs:
       - name: Get latest tag
         id: get_tag
         run: |
-          latest_tag=$(git describe --tags --abbrev=0 || echo "v0.0.0-alpha")
+          latest_tag=$(git describe --tags --abbrev=0 || echo "v0.0.0")
           echo "latest_tag=$latest_tag" >> $GITHUB_OUTPUT
 
       - name: Bump version (patch prerelease)
@@ -71,7 +71,7 @@ jobs:
         run: |
           old=${{ steps.get_tag.outputs.latest_tag }}
           version=${old#v}
-          version=${version%-alpha}
+          version=${version%-alpha}  # remove -alpha if present
           IFS='.' read -r major minor patch <<< "$version"
           new_tag="v$major.$minor.$((patch+1))-alpha"
           echo "new_tag=$new_tag" >> $GITHUB_OUTPUT
