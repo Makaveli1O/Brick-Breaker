@@ -17,13 +17,13 @@ namespace Assets.Scripts.Ball
 
         private Rigidbody2D _rb;
 
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         [SerializeField] private float _currentSpeed;
         void Update()
         {
             _currentSpeed = _rb.linearVelocity.magnitude;
         }
-        #endif
+#endif
 
         public void Deactivate()
         {
@@ -72,17 +72,28 @@ namespace Assets.Scripts.Ball
                 _rb.AddForce(collision.relativeVelocity.normalized);
             }
 
-            if (collision.gameObject.tag.Contains("Wall")) NudgeDirection();
+            if (collision.gameObject.tag.Contains("Wall") && ShouldNudge()) NudgeDirection();
 
             _soundPlayer.PlaySfx(_ballHit);
         }
-        
+
         // This functon should prevent ball from stucking between walls infinitely
         private void NudgeDirection()
         {
-            float angleOffset = Random.Range(-2f, 2f);
+            float angleOffset = Random.Range(-5f, 5f);
             Quaternion rotation = Quaternion.Euler(0, 0, angleOffset);
             _rb.linearVelocity = rotation * _rb.linearVelocity.normalized * _rb.linearVelocity.magnitude;
+        }
+        
+        // Check whether or not should nudge direction ( if near perfect angles )
+        private bool ShouldNudge()
+        {
+            Vector2 v = _rb.linearVelocity.normalized;
+            float dotX = Mathf.Abs(Vector2.Dot(v, Vector2.right));
+            float dotY = Mathf.Abs(Vector2.Dot(v, Vector2.up));
+
+            // Close to axis-aligned (dot near 1)
+            return dotX > 0.995f || dotY > 0.995f;
         }
     }
 }

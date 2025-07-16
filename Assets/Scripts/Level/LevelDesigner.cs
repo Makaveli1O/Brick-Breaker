@@ -205,7 +205,7 @@ namespace Assets.Scripts.Level
 
             var reflector = new BehaviourBuilder()
                 .Add<ReflectBehaviour, ReflectConfig>(
-                    new ReflectConfig(new Vector2(-1f,-.4f))
+                    new ReflectConfig( Vector2.up)
                 )
                 .Build();
 

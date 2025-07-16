@@ -89,6 +89,7 @@ public class LevelBounds : MonoBehaviour
     private GameObject CreateWall(Vector2 position, Vector2 size, WallScreenPosition wallPosition)
     {
         GameObject wallParent = new GameObject(wallPosition + "Wall");
+        wallParent.tag = "Wall";
 
         bool isHorizontal = wallPosition is WallScreenPosition.Top or WallScreenPosition.Bottom;
         GameObject prefab = isHorizontal ? _wallBlockHorizontalPrefab : _wallBlockVerticalPrefab;
