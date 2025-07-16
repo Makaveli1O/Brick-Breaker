@@ -22,7 +22,7 @@ public class PauseController : MonoBehaviour, IPauseController
     public void OnExitClicked()
     {
         Time.timeScale = 1f;
-        _sceneLoader.LoadScene(SceneNames.MainMenu);
+        _sceneLoader.LoadScene(SceneNames.MainMenu, GameStateStorage.CurrentLevel);
     }
 
     public void TogglePause()

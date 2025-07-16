@@ -23,7 +23,12 @@ namespace Assets.Scripts.GameHandler
 
         public void PlayGame()
         {
-            _sceneLoader.LoadScene(GetInitialSceneName);
+            _sceneLoader.LoadScene(GetInitialSceneName, 1);
+        }
+
+        public void ContinueGame()
+        {
+            _sceneLoader.LoadScene(GetInitialSceneName, GameStateStorage.CurrentLevel);
         }
 
         public void ExitGame()

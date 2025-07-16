@@ -26,7 +26,7 @@ namespace Assets.Scripts.Level
 
         void Start()
         {   
-            LoadLevel(GetLevelData(GameStateStorage.CurrentLevel));
+             LoadLevel(GetLevelData(GameStateStorage.CurrentLevel));
             _gameStateController.SetState(GameState.Loaded);
             _soundPlayer.PlayMusic(GetSceneMusicTheme);
         }
@@ -91,47 +91,16 @@ namespace Assets.Scripts.Level
 
         private LevelData GetLevel2()
         {
-            var diagonalMover = new BehaviourBuilder()
-                .Add<MoveBehaviour, MoveConfig>(
-                    new MoveConfig(1f, new Vector3(-3, -3, 0), new Vector3(3, 3, 0))
+            var reflecter = new BehaviourBuilder()
+                .Add<ReflectBehaviour, ReflectConfig>(
+                    new ReflectConfig(Vector2.left)
                 )
-                .Build();
-
-            var verticalMover = new BehaviourBuilder()
-                .Add<MoveBehaviour, MoveConfig>(
-                    new MoveConfig(0.8f, new Vector3(0, -4, 0), new Vector3(0, 4, 0))
-                )
-                .Build();
-
-            var stationaryExploder = new BehaviourBuilder()
-                .AddNonConfigurable<ExplodeBehaviour>()
-                .Build();
-
-            var comboFast = new BehaviourBuilder()
-                .Add<MoveBehaviour, MoveConfig>(
-                    new MoveConfig(0.5f, new Vector3(-2, 0, 0), new Vector3(2, 0, 0))
-                )
-                .AddNonConfigurable<ExplodeBehaviour>()
                 .Build();
 
             var builder = new LevelBuilder();
 
             // Diagonal arms
-            builder.WithBlock(new int2(-3, -3), diagonalMover);
-            builder.WithBlock(new int2(3, 3), diagonalMover);
-            builder.WithBlock(new int2(-3, 3), diagonalMover);
-            builder.WithBlock(new int2(3, -3), diagonalMover);
-
-            // Center fast combo
-            builder.WithBlock(new int2(0, 0), comboFast);
-
-            // Vertical cross (exploders)
-            builder.WithBlock(new int2(0, 2), stationaryExploder);
-            builder.WithBlock(new int2(0, -2), stationaryExploder);
-
-            // Horizontal cross (movers)
-            builder.WithBlock(new int2(-2, 0), verticalMover);
-            builder.WithBlock(new int2(2, 0), verticalMover);
+            builder.WithBlock(new int2(-3, -3), reflecter);
 
             return builder.Build();
         }

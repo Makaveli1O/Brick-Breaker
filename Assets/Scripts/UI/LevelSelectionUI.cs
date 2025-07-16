@@ -59,6 +59,7 @@ namespace Assets.Scripts.UI
 
         private void LoadLevel(int levelId)
         {
+            GameStateStorage.CurrentLevel = levelId;
             _sceneLoader.LoadScene(SceneNames.Level0, levelId);
         }
     }   
