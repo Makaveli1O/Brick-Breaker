@@ -11,6 +11,7 @@ namespace Assets.Scripts.Ball
         [SerializeField] private AudioClip _ballHit;
         private float _initialPush = 200f;
         private float _maxSpeed = 6f;
+        private float _minSpeed = 4f;
         public bool IsSlowed { get; set; } = false;
         private ISoundPlayer _soundPlayer;
         public bool IsMoving => _rb.linearVelocity.sqrMagnitude > 0.001f;
@@ -43,10 +44,7 @@ namespace Assets.Scripts.Ball
 
         void FixedUpdate()
         {
-            if (_rb.linearVelocity.magnitude > _maxSpeed)
-            {
-                _rb.linearVelocity = Vector3.ClampMagnitude(_rb.linearVelocity, _maxSpeed);
-            }
+            HandleMinAndMaxVelocity();
         }
 
         public void LaunchBall()
@@ -75,6 +73,14 @@ namespace Assets.Scripts.Ball
             if (collision.gameObject.tag.Contains("Wall") && ShouldNudge()) NudgeDirection();
 
             _soundPlayer.PlaySfx(_ballHit);
+        }
+
+        private void HandleMinAndMaxVelocity()
+        {
+            if (_rb.linearVelocity.magnitude > _maxSpeed)
+                _rb.linearVelocity = Vector3.ClampMagnitude(_rb.linearVelocity, _maxSpeed);
+            else if (_rb.linearVelocity.magnitude < _minSpeed)
+                _rb.linearVelocity = _rb.linearVelocity.normalized * _minSpeed;
         }
 
         // This functon should prevent ball from stucking between walls infinitely
