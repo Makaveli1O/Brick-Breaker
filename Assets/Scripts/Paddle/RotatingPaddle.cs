@@ -23,9 +23,9 @@ public class RotatingPaddle : MonoBehaviour, IPaddleBehaviour
 
         if (ctx.performed)
         {
-            if (rotationInput == Vector2.right)
+            if (rotationInput == Vector2.left)
                 _targetAngle = rotateRightAngle;
-            else if (rotationInput == Vector2.left)
+            else if (rotationInput == Vector2.right)
                 _targetAngle = rotateLeftAngle;
         }
         else if (ctx.canceled)
