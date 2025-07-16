@@ -23,7 +23,7 @@ namespace Assets.Scripts.GameHandler{
             _heartController.RemoveHeart();
 
             if (_heartController.GetCurrentHeart <= 0)
-                _sceneLoader.LoadScene(GetSceneName); 
+                _sceneLoader.LoadScene(GetSceneName, GameStateStorage.CurrentLevel); 
         }
     }
 }

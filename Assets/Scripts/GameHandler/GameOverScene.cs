@@ -21,6 +21,6 @@ public class GameOverScreen : MonoBehaviour
 
     public void BackToMenu()
     {
-        _sceneLoader.LoadScene(SceneNames.MainMenu);
+        _sceneLoader.LoadScene(SceneNames.MainMenu, GameStateStorage.CurrentLevel);
     }
 }

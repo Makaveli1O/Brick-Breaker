@@ -28,13 +28,13 @@ namespace Assets.Scripts.GameHandler
 
         public void LoadMainMenu()
         {
-            _sceneLoader.LoadScene(SceneNames.MainMenu);
+            _sceneLoader.LoadScene(SceneNames.MainMenu, GameStateStorage.CurrentLevel);
         }
 
         public void OnContinueClicked()
         {
             GameStateStorage.CurrentLevel++;
-            _sceneLoader.LoadScene(SceneNames.Level0);
+            _sceneLoader.LoadScene(SceneNames.Level0, GameStateStorage.CurrentLevel);
         }
     }
 }

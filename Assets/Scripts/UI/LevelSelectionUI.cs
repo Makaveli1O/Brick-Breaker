@@ -13,7 +13,7 @@ namespace Assets.Scripts.UI
     {
         [SerializeField] private Button _prevButton;
         [SerializeField] private Button _nextButton;
-
+        [SerializeField] private TMP_Text _description;
         private ILevelCatalog _levelCatalog;
         private ISceneLoader _sceneLoader;
         private List<LevelDefinition> _levels;
@@ -52,12 +52,14 @@ namespace Assets.Scripts.UI
             var level = _levels[_currentIndex];
 
             _currentButton.GetComponentInChildren<TextMeshProUGUI>().text = $"{_currentIndex}. {level.DisplayName}";
+            _description.text = level.Description ?? "";
             _currentButton.GetComponent<Button>().onClick.RemoveAllListeners();
             _currentButton.GetComponent<Button>().onClick.AddListener(() => LoadLevel(level.Id));
         }
 
         private void LoadLevel(int levelId)
         {
+            GameStateStorage.CurrentLevel = levelId;
             _sceneLoader.LoadScene(SceneNames.Level0, levelId);
         }
     }   

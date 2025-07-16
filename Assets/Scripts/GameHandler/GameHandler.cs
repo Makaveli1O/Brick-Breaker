@@ -65,11 +65,11 @@ namespace Assets.Scripts.GameHandler
                     break;
                 case GameState.GameOver:
                     Time.timeScale = 0f;
-                    _sceneLoader.LoadScene(_gameOverScene);
+                    _sceneLoader.LoadScene(_gameOverScene, GameStateStorage.CurrentLevel);
                     break;
                 case GameState.Win:
                     Time.timeScale = 0f;
-                    _sceneLoader.LoadScene(_winScene);
+                    _sceneLoader.LoadScene(_winScene, GameStateStorage.CurrentLevel++);
                     break;
             }
         }
