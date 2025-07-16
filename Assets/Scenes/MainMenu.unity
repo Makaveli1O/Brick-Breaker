@@ -848,6 +848,14 @@ PrefabInstance:
       propertyPath: m_text
       value: BRICK-BREAKER
       objectReference: {fileID: 0}
+    - target: {fileID: 1994865617325598723, guid: 7d7c542116b12204683ff0e3d9e8645a, type: 3}
+      propertyPath: m_fontSize
+      value: 120
+      objectReference: {fileID: 0}
+    - target: {fileID: 1994865617325598723, guid: 7d7c542116b12204683ff0e3d9e8645a, type: 3}
+      propertyPath: m_fontSizeMax
+      value: 120
+      objectReference: {fileID: 0}
     - target: {fileID: 3843408466056728426, guid: 7d7c542116b12204683ff0e3d9e8645a, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
