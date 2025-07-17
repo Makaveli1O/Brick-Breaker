@@ -78,7 +78,7 @@ public class GameBootstrapper : MonoBehaviour
 
         // Level progress from SharedKernel
         SimpleServiceLocator.Register<ILevelProgressRepository>(
-            new PlayerPrefsLevelProgressRepository()
+            new PlayerPrefsLevelProgressRepository() // Use PlayerPrefs implementation as a persistence
         );
         SimpleServiceLocator.Register(
             new LevelProgressService(SimpleServiceLocator.Resolve<ILevelProgressRepository>())

@@ -3,7 +3,6 @@ using Assets.Scripts.Blocks;
 using Assets.Scripts.SharedKernel;
 using Assets.Scripts.Score;
 using UnityEngine;
-using Assets.Scripts.Ball;
 
 namespace Assets.Scripts.GameHandler
 {
@@ -16,6 +15,7 @@ namespace Assets.Scripts.GameHandler
         private GameState _currentState;
         private ISceneLoader _sceneLoader;
         private IScoreTracker _scoreTracker;
+        private LevelProgressService _levelProgressService;
         public event Action<GameState> OnStateChanged;
 
         private void Awake()
@@ -23,6 +23,7 @@ namespace Assets.Scripts.GameHandler
             _winCondition = SimpleServiceLocator.Resolve<IGameWinCondition>();
             _sceneLoader = SimpleServiceLocator.Resolve<ISceneLoader>();
             _scoreTracker = SimpleServiceLocator.Resolve<IScoreTracker>();
+            _levelProgressService = SimpleServiceLocator.Resolve<LevelProgressService>();
         }
 
         private void Start()
@@ -69,9 +70,21 @@ namespace Assets.Scripts.GameHandler
                     break;
                 case GameState.Win:
                     Time.timeScale = 0f;
-                    _sceneLoader.LoadScene(_winScene, GameStateStorage.CurrentLevel++);
+                    SaveProgressAndLoadWinScene();
                     break;
             }
+        }
+
+        private void SaveProgressAndLoadWinScene()
+        {
+            string currentLevelId = GameStateStorage.CurrentLevel.ToString();
+            _levelProgressService.CompleteLevel(
+                currentLevelId,
+                _scoreTracker.GetFinalScore(),
+                (GameStateStorage.CurrentLevel + 1).ToString()
+            );
+
+            _sceneLoader.LoadScene(_winScene, GameStateStorage.CurrentLevel++);
         }
     }
 }
