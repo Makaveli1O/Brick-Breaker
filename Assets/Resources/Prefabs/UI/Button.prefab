@@ -147,7 +147,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _hoverSound: {fileID: 8300000, guid: b6303c61c7cf4e14ca2aaae9f6f4b5e9, type: 3}
-  _selectSound: {fileID: 8300000, guid: 8cf1359c51649e849bb53a7a968eba36, type: 3}
 --- !u!1 &7626214689801803725
 GameObject:
   m_ObjectHideFlags: 0
@@ -213,7 +212,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Settings
+  m_text: Continue
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8ef5bfe83f166da42a0f818c839ea7eb, type: 2}
   m_sharedMaterial: {fileID: -2428045646024628933, guid: 8ef5bfe83f166da42a0f818c839ea7eb, type: 2}

@@ -18,5 +18,13 @@ namespace Assets.Scripts.SharedKernel
         public int GetScore(string levelId) => _repository.GetProgress(levelId).Score;
 
         public bool IsUnlocked(string levelId) => _repository.IsLevelUnlocked(levelId);
+
+        public int GetLastUnlockedLevelId()
+        {
+            int i = 0;
+            while (_repository.IsLevelUnlocked(i.ToString())) i++;
+
+            return i - 1;
+        }
     }
 }

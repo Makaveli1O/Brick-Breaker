@@ -513,6 +513,7 @@ GameObject:
   - component: {fileID: 5974410570734225482}
   - component: {fileID: 1347794698837011793}
   - component: {fileID: 9016104012461709669}
+  - component: {fileID: 3459751879679621660}
   m_Layer: 5
   m_Name: LevelSelectionUI
   m_TagString: Untagged
@@ -577,6 +578,23 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &3459751879679621660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6416854625797645842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0471c928851c1bf438f1fc9fbba59ba7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _prevButton: {fileID: 701949877680287353}
+  _nextButton: {fileID: 3971625379235438630}
+  _description: {fileID: 8685519754954370130}
+  _scoreNumber: {fileID: 6943711030436744655}
+  _currentButton: {fileID: 1942901376928329362}
 --- !u!1 &7296747283929964153
 GameObject:
   m_ObjectHideFlags: 0
@@ -888,7 +906,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8019682753879843909}
   - component: {fileID: 2209387410481232441}
-  - component: {fileID: 7933679208889114942}
   - component: {fileID: 1756824152409593263}
   m_Layer: 5
   m_Name: Row
@@ -927,23 +944,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8260172965270656060}
   m_CullTransparentMesh: 1
---- !u!114 &7933679208889114942
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8260172965270656060}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0471c928851c1bf438f1fc9fbba59ba7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _prevButton: {fileID: 701949877680287353}
-  _nextButton: {fileID: 3971625379235438630}
-  _description: {fileID: 8685519754954370130}
-  _scoreNumber: {fileID: 0}
-  _currentButton: {fileID: 1942901376928329362}
 --- !u!114 &1756824152409593263
 MonoBehaviour:
   m_ObjectHideFlags: 0

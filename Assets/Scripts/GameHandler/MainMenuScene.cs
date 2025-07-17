@@ -9,9 +9,10 @@ namespace Assets.Scripts.GameHandler
         private ISoundPlayer _soundPlayer;
         private string GetInitialSceneName => SceneNames.Level0;
         public AudioClip GetSceneMusicTheme => Resources.Load<AudioClip>("Sound/UI/Themes/main_menu");
-
+        private LevelProgressService _levelProgressService;
         void Awake()
         {
+            _levelProgressService = SimpleServiceLocator.Resolve<LevelProgressService>();
             _sceneLoader = SimpleServiceLocator.Resolve<ISceneLoader>();
             _soundPlayer = SimpleServiceLocator.Resolve<ISoundPlayer>();
         }
@@ -28,7 +29,10 @@ namespace Assets.Scripts.GameHandler
 
         public void ContinueGame()
         {
-            _sceneLoader.LoadScene(GetInitialSceneName, GameStateStorage.CurrentLevel);
+            _sceneLoader.LoadScene(
+                GetInitialSceneName,
+                _levelProgressService.GetLastUnlockedLevelId()
+            );
         }
 
         public void ExitGame()
