@@ -48,51 +48,76 @@ jobs:
           path: build/${{ matrix.targetPlatform }}
 
   release:
-    name: Create Pre-Release
+    name: Create or Update Pre-Release
     needs: buildForAllSupportedPlatforms
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
 
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Get next patch version
+      - name: Fetch Git tags
+        run: git fetch --tags --force
+
+      - name: Determine next pre-release version
         id: version
         run: |
-          git fetch --tags --force
+          # Get latest full release (not prerelease)
+          latest_release=$(gh release list --limit 100 --json tagName,isPrerelease | jq -r '.[] | select(.isPrerelease==false) | .tagName' | sort -V | tail -n1)
+          latest_prerelease=$(gh release list --limit 100 --json tagName,isPrerelease | jq -r '.[] | select(.isPrerelease==true) | .tagName' | sort -V | tail -n1)
 
-          latest=$(git tag --sort=-v:refname | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | head -n1)
-          echo "Latest tag is: $latest"
+          echo "Latest full release: $latest_release"
+          echo "Latest pre-release: $latest_prerelease"
 
-          if [ -z "$latest" ]; then
-            echo "new_tag=v0.1.0" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-
-          version=${latest#v}
+          version=${latest_release#v}
           IFS='.' read -r major minor patch <<< "$version"
-          next_tag="v$major.$minor.$((patch+1))"
+          next="v$major.$minor.$((patch+1))"
 
-          echo "new_tag=$next_tag" >> "$GITHUB_OUTPUT"
+          if [ "$latest_prerelease" == "$next" ]; then
+            echo "Reusing existing pre-release: $next"
+            echo "tag=$next" >> $GITHUB_OUTPUT
+            echo "create_new=false" >> $GITHUB_OUTPUT
+          else
+            echo "Creating new pre-release: $next"
+            echo "tag=$next" >> $GITHUB_OUTPUT
+            echo "create_new=true" >> $GITHUB_OUTPUT
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Create or update tag
+      - name: Set Git identity
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          if git tag | grep -q "^${{ steps.version.outputs.new_tag }}$"; then
-            echo "Tag already exists. Skipping creation."
-          else
-            git tag ${{ steps.version.outputs.new_tag }}
-            git push origin ${{ steps.version.outputs.new_tag }}
-          fi
+      - name: Create tag if needed
+        if: steps.version.outputs.create_new == 'true'
+        run: |
+          git tag ${{ steps.version.outputs.tag }}
+          git push origin ${{ steps.version.outputs.tag }}
 
-      - name: Create or update GitHub release
+      - name: Download Windows build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: Build-StandaloneWindows
+          path: Builds/StandaloneWindows
+
+      - name: Zip build
+        run: |
+          cd Builds/StandaloneWindows
+          zip -r ../../Build-${{ steps.version.outputs.tag }}.zip ./*
+          cd ../..
+
+      - name: Create or Update GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ steps.version.outputs.new_tag }}
+          tag_name: ${{ steps.version.outputs.tag }}
           prerelease: true
           generate_release_notes: true
+          files: Build-${{ steps.version.outputs.tag }}.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Clean up
+        run: rm Build-${{ steps.version.outputs.tag }}.zip
