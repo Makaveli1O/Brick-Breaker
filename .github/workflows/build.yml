@@ -94,8 +94,12 @@ jobs:
       - name: Create tag if needed
         if: steps.version.outputs.create_new == 'true'
         run: |
-          git tag ${{ steps.version.outputs.tag }}
-          git push origin ${{ steps.version.outputs.tag }}
+          if git rev-parse "${{ steps.version.outputs.tag }}" >/dev/null 2>&1; then
+            echo "Tag ${{ steps.version.outputs.tag }} already exists. Skipping creation."
+          else
+            git tag ${{ steps.version.outputs.tag }}
+            git push origin ${{ steps.version.outputs.tag }}
+          fi
 
       - name: Download Windows build artifact
         uses: actions/download-artifact@v4
