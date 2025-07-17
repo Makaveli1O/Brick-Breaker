@@ -6,15 +6,18 @@ namespace Assets.Scripts.Blocks
     public class ShrapnelPool : MonoBehaviour, IShrapnelPool
     {
         [SerializeField] private GameObject _shrapnelPrefab;
-        [SerializeField] private int _initialSize = 50;
+        [SerializeField] private int _maxShrapnelCount = 50;
 
         private Queue<GameObject> _pool = new();
+        private GameObject _shrapnelContainer;
 
         void Awake()
         {
-            for (int i = 0; i < _initialSize; i++)
+            _shrapnelContainer = new GameObject("ShrapnelContainer");
+
+            for (int i = 0; i < _maxShrapnelCount; i++)
             {
-                var go = Instantiate(_shrapnelPrefab);
+                var go = Instantiate(_shrapnelPrefab, _shrapnelContainer.transform);
                 go.SetActive(false);
                 _pool.Enqueue(go);
             }
@@ -22,10 +25,19 @@ namespace Assets.Scripts.Blocks
 
         public GameObject Get(Vector3 position)
         {
-            GameObject go = _pool.Count > 0 ? _pool.Dequeue() : Instantiate(_shrapnelPrefab);
-            go.transform.position = position;
-            go.SetActive(true);
-            return go;
+            if (_pool.Count > 0)
+            {
+                GameObject go = _pool.Dequeue();
+                go.transform.position = position;
+                go.SetActive(true);
+
+                return go;
+            }
+            else
+            {
+                return null;
+            }
+
         }
 
         public void Return(GameObject shrapnel)

@@ -13,6 +13,7 @@ namespace Assets.Scripts.Blocks
         private ISoundPlayer _soundPlayer;
         private IBlockCounter _blockCounter;
         private bool _isExploding = false;
+        private IShrapnelPool _shrapnelPool;
 
         void Awake()
         {
@@ -20,6 +21,7 @@ namespace Assets.Scripts.Blocks
             _explodeClip = Resources.Load<AudioClip>("Sound/Block/explosion");
             _blip = Resources.Load<AudioClip>("Sound/Block/blip");
             _blockCounter = SimpleServiceLocator.Resolve<IBlockCounter>();
+            _shrapnelPool = SimpleServiceLocator.Resolve<IShrapnelPool>();
         }
 
         public void OnCollisionExecute(Block context, Collision2D collision)
@@ -62,14 +64,18 @@ namespace Assets.Scripts.Blocks
                 Vector2 dir = Random.insideUnitCircle.normalized;
                 Vector3 spawnPos = ctx.transform.position + (Vector3)(dir * 0.5f);
 
-                GameObject shrapnel = Instantiate(ctx.shrapnelPrefab, spawnPos, Quaternion.identity);
+                GameObject shrapnel = _shrapnelPool.Get(spawnPos);
+
+                if (shrapnel == null) return; //pool exhausted
+
                 Rigidbody2D rb = shrapnel.GetComponent<Rigidbody2D>();
                 if (rb != null)
                 {
                     rb.mass = 0.1f;
                     rb.AddForce(dir * _spreadForce, ForceMode2D.Impulse);
                 }
-                Destroy(shrapnel, 2f);
+
+                SimpleServiceLocator.Resolve<DestructionCoordinator>().ReturnAfter(2f, shrapnel);
             }
             _soundPlayer.PlaySfx(_explodeClip);
             DestroyBlock(ctx);

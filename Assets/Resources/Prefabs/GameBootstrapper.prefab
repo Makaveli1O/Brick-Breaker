@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1122794507345039866}
   - component: {fileID: 2104847742451742796}
   - component: {fileID: -6398298132606713791}
+  - component: {fileID: 2318904297326655189}
   m_Layer: 0
   m_Name: GameBootstrapper
   m_TagString: Untagged
@@ -52,6 +53,7 @@ MonoBehaviour:
   _ballPrefab: {fileID: 5750805449532267282, guid: 115fac255c1a97541acbc2cac07955ee, type: 3}
   _pausePanelPrefab: {fileID: 4989728627547998542, guid: 675a4893aa7bfcb43bcaae0025d82de1, type: 3}
   _instructionsUiPrefab: {fileID: 8925700811789938693, guid: de48a51939f9bf943b88999e7fd8d04e, type: 3}
+  _destructionCoordinatorPrefab: {fileID: 7583260107085601335, guid: 6e1f6343db460814caa9416bce20d2bd, type: 3}
 --- !u!114 &1122794507345039866
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -89,3 +91,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd6c26d137202d348b537750bdafb15a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2318904297326655189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7352906868426914609}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d26a4b1da7c80b43a39efc0e8cfbd9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _shrapnelPrefab: {fileID: 5284649261403713773, guid: 95163a1c877600745ab538d98dac5bff, type: 3}
+  _maxShrapnelCount: 50

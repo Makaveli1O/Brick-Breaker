@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Assets.Scripts.SharedKernel;
 using UnityEngine;
 
 namespace Assets.Scripts.Blocks
@@ -36,6 +37,20 @@ namespace Assets.Scripts.Blocks
             }
 
             Destroy(gameObject);
+        }
+
+        private IShrapnelPool _pool;
+
+        public void ReturnAfter(float seconds, GameObject go)
+        {
+            _pool = SimpleServiceLocator.Resolve<IShrapnelPool>();
+            StartCoroutine(ReturnRoutine(seconds, go));
+        }
+
+        private IEnumerator ReturnRoutine(float seconds, GameObject go)
+        {
+            yield return new WaitForSeconds(seconds);
+            _pool?.Return(go);
         }
     }
 }
