@@ -6,7 +6,6 @@ namespace Assets.Scripts.Blocks
     public class Block : MonoBehaviour
     {
         [SerializeField] private AudioClip _destroyClip;
-        [SerializeField] public GameObject shrapnelPrefab;
         public BlockData Data { get; private set; }
         private SpriteRenderer _spriteRenderer;
         private readonly List<IUpdateBehaviour> _updateBehaviours = new();
@@ -50,12 +49,6 @@ namespace Assets.Scripts.Blocks
                 behaviour.OnCollisionExecute(this, other);
         }
 
-        // TODO test function remove
-        void Start()
-        {
-            //foreach (var behaviour in _collisionBehaviours)
-            //    behaviour.OnCollisionExecute(this, null);
-        }
     }
 
 

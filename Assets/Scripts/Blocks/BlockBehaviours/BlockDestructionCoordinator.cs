@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Assets.Scripts.SharedKernel;
 using UnityEngine;
 
 namespace Assets.Scripts.Blocks
@@ -7,6 +8,7 @@ namespace Assets.Scripts.Blocks
     public class DestructionCoordinator : MonoBehaviour
     {
         private bool _isDestroying = false;
+        private IShrapnelPoolFacade _pool;
         private readonly List<IEnumerator> _destructionCoroutines = new();
 
         public void RegisterCoroutine(IEnumerator coroutine)
@@ -19,6 +21,12 @@ namespace Assets.Scripts.Blocks
             if (_isDestroying) return;
             _isDestroying = true;
             StartCoroutine(RunDestruction());
+        }
+
+        public void ReturnShrapnelToObjectPoolAfter(float seconds, GameObject go)
+        {
+            _pool = SimpleServiceLocator.Resolve<IShrapnelPoolFacade>();
+            StartCoroutine(ReturnRoutine(seconds, go));
         }
 
         private IEnumerator RunDestruction()
@@ -36,6 +44,12 @@ namespace Assets.Scripts.Blocks
             }
 
             Destroy(gameObject);
+        }
+
+        private IEnumerator ReturnRoutine(float seconds, GameObject go)
+        {
+            yield return new WaitForSeconds(seconds);
+            _pool?.Return(go);
         }
     }
 }

@@ -9,10 +9,15 @@ namespace Assets.Scripts.Blocks
         private AudioClip _blip;
         private const int _shrapnelCount = 5;
         private const int _delaySeconds = 2;
+        private const float _shrapnelOffset = 0.5f;
+        
+        private const float _shrapnelMass = 0.1f;
+        private const float _blinkDelay = 0.1f;
         private float _spreadForce = 5f;
         private ISoundPlayer _soundPlayer;
         private IBlockCounter _blockCounter;
         private bool _isExploding = false;
+        private IShrapnelPoolFacade _shrapnelPool;
 
         void Awake()
         {
@@ -20,6 +25,7 @@ namespace Assets.Scripts.Blocks
             _explodeClip = Resources.Load<AudioClip>("Sound/Block/explosion");
             _blip = Resources.Load<AudioClip>("Sound/Block/blip");
             _blockCounter = SimpleServiceLocator.Resolve<IBlockCounter>();
+            _shrapnelPool = SimpleServiceLocator.Resolve<IShrapnelPoolFacade>();
         }
 
         public void OnCollisionExecute(Block context, Collision2D collision)
@@ -44,10 +50,10 @@ namespace Assets.Scripts.Blocks
             while (elapsed < _delaySeconds)
             {
                 sr.color = Color.white;
-                yield return new WaitForSeconds(0.1f);
+                yield return new WaitForSeconds(_blinkDelay);
                 sr.color = originalColor;
-                yield return new WaitForSeconds(0.1f);
-                elapsed += 0.2f;
+                yield return new WaitForSeconds(_blinkDelay);
+                elapsed += 2 * _blinkDelay;
                 _soundPlayer.PlaySfx(_blip);
             }
             ExecuteExplosion(ctx);
@@ -60,16 +66,20 @@ namespace Assets.Scripts.Blocks
             for (int i = 0; i < _shrapnelCount; i++)
             {
                 Vector2 dir = Random.insideUnitCircle.normalized;
-                Vector3 spawnPos = ctx.transform.position + (Vector3)(dir * 0.5f);
+                Vector3 spawnPos = ctx.transform.position + (Vector3)(dir * _shrapnelOffset);
 
-                GameObject shrapnel = Instantiate(ctx.shrapnelPrefab, spawnPos, Quaternion.identity);
+                GameObject shrapnel = _shrapnelPool.Get(spawnPos);
+
+                if (shrapnel == null) return; //pool exhausted
+
                 Rigidbody2D rb = shrapnel.GetComponent<Rigidbody2D>();
                 if (rb != null)
                 {
-                    rb.mass = 0.1f;
+                    rb.mass = _shrapnelMass;
                     rb.AddForce(dir * _spreadForce, ForceMode2D.Impulse);
                 }
-                Destroy(shrapnel, 2f);
+
+                _shrapnelPool.ScheduleReturn(shrapnel);
             }
             _soundPlayer.PlaySfx(_explodeClip);
             DestroyBlock(ctx);
