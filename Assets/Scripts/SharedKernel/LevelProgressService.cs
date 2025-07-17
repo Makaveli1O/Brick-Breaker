@@ -1,4 +1,4 @@
-namespace Assets.Scripts.Level
+namespace Assets.Scripts.SharedKernel
 {
     public class LevelProgressService
     {

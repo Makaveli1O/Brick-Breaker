@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Assets.Scripts.Level
+namespace Assets.Scripts.SharedKernel
 {
     public class PlayerPrefsLevelProgressRepository : ILevelProgressRepository
     {
