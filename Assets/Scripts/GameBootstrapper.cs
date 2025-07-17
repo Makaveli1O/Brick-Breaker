@@ -36,7 +36,6 @@ public class GameBootstrapper : MonoBehaviour
         _heartController = new HeartController(1);
         _shrapnelPool = GetComponent<ShrapnelPoolFacade>();
 
-
         RegisterServices();
 
         _gameHandlerInstance = Instantiate(_gameHandlerPrefab);
@@ -76,5 +75,13 @@ public class GameBootstrapper : MonoBehaviour
         SimpleServiceLocator.Register<IHeartController>(_heartController);
         SimpleServiceLocator.Register<ILevelCatalog>(new StaticLevelCatalog());
         SimpleServiceLocator.Register<IShrapnelPoolFacade>(_shrapnelPool);
+
+        // Level progress from SharedKernel
+        SimpleServiceLocator.Register<ILevelProgressRepository>(
+            new PlayerPrefsLevelProgressRepository() // Use PlayerPrefs implementation as a persistence
+        );
+        SimpleServiceLocator.Register(
+            new LevelProgressService(SimpleServiceLocator.Resolve<ILevelProgressRepository>())
+        );
     }
 }

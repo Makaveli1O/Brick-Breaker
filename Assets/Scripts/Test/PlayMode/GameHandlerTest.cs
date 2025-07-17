@@ -15,6 +15,7 @@ public class GameHandlerTest
     private StubSceneLoader _sceneLoader;
     private StubWinCondition _winCondition;
     private ScoreTracker _scoreTracker;
+    private LevelProgressService _levelProgressService;
 
     [UnitySetUp]
     public IEnumerator SetUp()
@@ -22,11 +23,13 @@ public class GameHandlerTest
         _sceneLoader = new StubSceneLoader();
         _winCondition = new StubWinCondition();
         _scoreTracker = new();
+        _levelProgressService = new LevelProgressService(new LevelProgressRepositoryMock());
 
         SimpleServiceLocator.Clear();
         SimpleServiceLocator.Register<IScoreTracker>(_scoreTracker);
         SimpleServiceLocator.Register<ISceneLoader>(_sceneLoader);
         SimpleServiceLocator.Register<IGameWinCondition>(_winCondition);
+        SimpleServiceLocator.Register<LevelProgressService>(_levelProgressService);
 
         _gameHandlerGO = new GameObject("GameHandler");
         _gameHandler = _gameHandlerGO.AddComponent<GameHandler>();
