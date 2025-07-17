@@ -25,7 +25,7 @@ public class GameBootstrapper : MonoBehaviour
     [SerializeField] private GameObject _pausePanelPrefab;
     [SerializeField] private GameObject _instructionsUiPrefab;
     [SerializeField] private GameObject _destructionCoordinatorPrefab;
-    private ShrapnelPool _shrapnelPool;
+    private ShrapnelPoolFacade _shrapnelPool;
     void Awake()
     {
         _blockFactory = GetComponent<BlockFactory>();
@@ -34,7 +34,7 @@ public class GameBootstrapper : MonoBehaviour
         _levelDesigner = GetComponent<LevelDesigner>();
         _scoreTracker = GetComponent<ScoreTracker>();
         _heartController = new HeartController(1);
-        _shrapnelPool = GetComponent<ShrapnelPool>();
+        _shrapnelPool = GetComponent<ShrapnelPoolFacade>();
 
 
         RegisterServices();
@@ -75,6 +75,6 @@ public class GameBootstrapper : MonoBehaviour
         SimpleServiceLocator.Register<IScoreTracker>(_scoreTracker);
         SimpleServiceLocator.Register<IHeartController>(_heartController);
         SimpleServiceLocator.Register<ILevelCatalog>(new StaticLevelCatalog());
-        SimpleServiceLocator.Register<IShrapnelPool>(_shrapnelPool);
+        SimpleServiceLocator.Register<IShrapnelPoolFacade>(_shrapnelPool);
     }
 }

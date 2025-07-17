@@ -17,7 +17,7 @@ namespace Assets.Scripts.Blocks
         private ISoundPlayer _soundPlayer;
         private IBlockCounter _blockCounter;
         private bool _isExploding = false;
-        private IShrapnelPool _shrapnelPool;
+        private IShrapnelPoolFacade _shrapnelPool;
 
         void Awake()
         {
@@ -25,7 +25,7 @@ namespace Assets.Scripts.Blocks
             _explodeClip = Resources.Load<AudioClip>("Sound/Block/explosion");
             _blip = Resources.Load<AudioClip>("Sound/Block/blip");
             _blockCounter = SimpleServiceLocator.Resolve<IBlockCounter>();
-            _shrapnelPool = SimpleServiceLocator.Resolve<IShrapnelPool>();
+            _shrapnelPool = SimpleServiceLocator.Resolve<IShrapnelPoolFacade>();
         }
 
         public void OnCollisionExecute(Block context, Collision2D collision)

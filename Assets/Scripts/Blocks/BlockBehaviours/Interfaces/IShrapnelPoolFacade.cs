@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Blocks
 {
-    public interface IShrapnelPool
+    public interface IShrapnelPoolFacade
     {
         public GameObject Get(Vector3 position);
         public void Return(GameObject shrapnel);

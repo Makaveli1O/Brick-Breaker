@@ -8,7 +8,7 @@ namespace Assets.Scripts.Blocks
     public class DestructionCoordinator : MonoBehaviour
     {
         private bool _isDestroying = false;
-        private IShrapnelPool _pool;
+        private IShrapnelPoolFacade _pool;
         private readonly List<IEnumerator> _destructionCoroutines = new();
 
         public void RegisterCoroutine(IEnumerator coroutine)
@@ -25,7 +25,7 @@ namespace Assets.Scripts.Blocks
 
         public void ReturnShrapnelToObjectPoolAfter(float seconds, GameObject go)
         {
-            _pool = SimpleServiceLocator.Resolve<IShrapnelPool>();
+            _pool = SimpleServiceLocator.Resolve<IShrapnelPoolFacade>();
             StartCoroutine(ReturnRoutine(seconds, go));
         }
 
