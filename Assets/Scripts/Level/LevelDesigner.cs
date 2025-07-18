@@ -28,7 +28,8 @@ namespace Assets.Scripts.Level
         {
             LoadLevel(GetLevelData(GameStateStorage.CurrentLevel));
             _gameStateController.SetState(GameState.Loaded);
-            _soundPlayer.PlayMusic(GetSceneMusicTheme);
+            // _soundPlayer.PlayMusic(GetSceneMusicTheme);
+            _soundPlayer.PlayMusic(null);
         }
 
         public LevelData GetLevelData(int levelIndex)
