@@ -1,4 +1,4 @@
-namespace Assets.Scripts.Blocks
+namespace Assets.Scripts.SharedKernel
 {
     public interface IConfigurableBehaviour<TConfig>
     {

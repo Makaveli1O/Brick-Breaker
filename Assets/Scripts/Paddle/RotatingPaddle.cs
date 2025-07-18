@@ -3,14 +3,17 @@ using UnityEngine.InputSystem;
 
 public class RotatingPaddle : MonoBehaviour, IPaddleBehaviour
 {
-    private const float defaultAngle = 0f;
-    private const float rotateLeftAngle = -45f;
-    private const float rotateRightAngle = 45f;
-    private const float speed = 5f;
-    public float Speed => speed;
+    private const float _defaultAngle = 0f;
+    private const float _rotateLeftAngle = -45f;
+    private const float _rotateRightAngle = 45f;
+    private float _speed = 5f;
+    private float _acceleration = 20f;
 
     private Rigidbody2D _rb;
-    private float _targetAngle = defaultAngle;
+    private float _targetAngle = _defaultAngle;
+
+    public float Speed { get => _speed; set => _speed = value; }
+    public float Acceleration { get => _acceleration; set => _acceleration = value; }
 
     void Awake()
     {
@@ -24,13 +27,13 @@ public class RotatingPaddle : MonoBehaviour, IPaddleBehaviour
         if (ctx.performed)
         {
             if (rotationInput == Vector2.left)
-                _targetAngle = rotateRightAngle;
+                _targetAngle = _rotateRightAngle;
             else if (rotationInput == Vector2.right)
-                _targetAngle = rotateLeftAngle;
+                _targetAngle = _rotateLeftAngle;
         }
         else if (ctx.canceled)
         {
-            _targetAngle = defaultAngle;
+            _targetAngle = _defaultAngle;
         }
     }
 
@@ -40,7 +43,7 @@ public class RotatingPaddle : MonoBehaviour, IPaddleBehaviour
         float newAngle = Mathf.MoveTowardsAngle(
             _rb.rotation,
             _targetAngle,
-            speed * 100f * Time.fixedDeltaTime
+            _speed * 100f * Time.fixedDeltaTime
         );
 
         _rb.MoveRotation(newAngle);
