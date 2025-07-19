@@ -34,8 +34,7 @@ namespace Assets.Scripts.Powerups
 
         protected override void Apply()
         {
-            var controller = _target.GetComponent<IPaddleBehaviour>();
-            if (controller == null) return;
+            if (!_target.TryGetComponent<IPaddleBehaviour>(out var controller)) return;
             _soundPlayer.PlaySfx(_sfx);
 
             _originalSpeed = controller.Speed;
