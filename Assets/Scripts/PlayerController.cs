@@ -74,7 +74,7 @@ public class PlayerController : MonoBehaviour
         // TODO own key binding 
         if (ctx.performed)
         {
-            _powerupSpawner.Spawn(0, _paddleInstance);
+            _powerupSpawner.Spawn(PowerupSpawner.PowerupTypes.SpeedBoost, _paddleInstance);
         }
 
         if (ctx.performed && !_ballLaunched)

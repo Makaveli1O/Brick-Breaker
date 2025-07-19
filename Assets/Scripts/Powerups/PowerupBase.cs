@@ -1,12 +1,16 @@
 using UnityEngine;
 using System.Collections;
 using Assets.Scripts.SharedKernel;
+using UnityEngine.UI;
+using static Assets.Scripts.Powerups.PowerupSpawner;
 
 namespace Assets.Scripts.Powerups
 {
     public abstract class PowerupBase : MonoBehaviour
     {
         protected GameObject _target;
+        public abstract PowerupTypes Type { get; }
+        [SerializeField] private Sprite _icon;
         [SerializeField] protected AudioClip _sfx;
         protected ISoundPlayer _soundPlayer;
 
@@ -14,18 +18,19 @@ namespace Assets.Scripts.Powerups
         {
             _soundPlayer = SimpleServiceLocator.Resolve<ISoundPlayer>();
             _target = target;
+            SetSpriteIcon();
             Apply();
-            StartCoroutine(ExpireAfterDelay());
         }
         public virtual void Configure(object config) { }
         protected abstract void Apply();
         protected abstract void Revert();
-        protected abstract float Duration { get; set; }
+        public float Duration => duration;
+        protected abstract float duration { get; set; }
         protected virtual void SetDefaultConfiguration() { return; }
+        private void SetSpriteIcon() => GetComponent<Image>().sprite = _icon;
 
-        private IEnumerator ExpireAfterDelay()
+        public void OnExpiration(PowerupBase powerup)
         {
-            yield return new WaitForSeconds(Duration);
             Revert();
             Destroy(gameObject);
         }

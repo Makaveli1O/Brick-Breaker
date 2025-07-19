@@ -1,9 +1,12 @@
+using static Assets.Scripts.Powerups.PowerupSpawner;
+
 namespace Assets.Scripts.Powerups
 {
     public class SpeedBoost : PowerupBase
     {
+        public override PowerupTypes Type => PowerupTypes.SpeedBoost;
         private float Multiplier;
-        protected override float Duration { get => _duration; set => _duration = value; }
+        protected override float duration { get => _duration; set => _duration = value; }
         private float Acceleration;
         private float _originalSpeed;
         private float _originalAcceleration;
@@ -17,7 +20,7 @@ namespace Assets.Scripts.Powerups
             if (config is SpeedBoostConfig boostConfig)
             {
                 Multiplier = boostConfig.Multiplier;
-                Duration = boostConfig.Duration;
+                duration = boostConfig.Duration;
             }
             else
             {
@@ -28,7 +31,7 @@ namespace Assets.Scripts.Powerups
         protected override void SetDefaultConfiguration()
         {
             Multiplier = _defaultMultiplier;
-            Duration = _defaultDuration;
+            duration = _defaultDuration;
             Acceleration = _defaultAcceleration;
         }
 

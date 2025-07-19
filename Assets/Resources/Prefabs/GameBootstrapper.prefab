@@ -53,7 +53,7 @@ MonoBehaviour:
   _ballPrefab: {fileID: 5750805449532267282, guid: 115fac255c1a97541acbc2cac07955ee, type: 3}
   _pausePanelPrefab: {fileID: 4989728627547998542, guid: 675a4893aa7bfcb43bcaae0025d82de1, type: 3}
   _instructionsUiPrefab: {fileID: 8925700811789938693, guid: de48a51939f9bf943b88999e7fd8d04e, type: 3}
-  _destructionCoordinatorPrefab: {fileID: 7583260107085601335, guid: 6e1f6343db460814caa9416bce20d2bd, type: 3}
+  _coordinatorPrefab: {fileID: 7583260107085601335, guid: 6e1f6343db460814caa9416bce20d2bd, type: 3}
 --- !u!114 &1122794507345039866
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -6,6 +6,7 @@ using Assets.Scripts.Level;
 using Assets.Scripts.Score;
 using Assets.Scripts.HeartSystem;
 using Assets.Scripts.Ball;
+using Assets.Scripts.Powerups;
 
 
 public class GameBootstrapper : MonoBehaviour
@@ -24,7 +25,7 @@ public class GameBootstrapper : MonoBehaviour
     [SerializeField] private GameObject _ballPrefab;
     [SerializeField] private GameObject _pausePanelPrefab;
     [SerializeField] private GameObject _instructionsUiPrefab;
-    [SerializeField] private GameObject _destructionCoordinatorPrefab;
+    [SerializeField] private GameObject _coordinatorPrefab;
     private ShrapnelPoolFacade _shrapnelPool;
     void Awake()
     {
@@ -54,9 +55,13 @@ public class GameBootstrapper : MonoBehaviour
             InstructionsUI instructionController = _instructionsUiInstance.GetComponent<InstructionsUI>();
             SimpleServiceLocator.Register(instructionController);
 
-            GameObject _destructionCoordinatorInstance = Instantiate(_destructionCoordinatorPrefab);
-            DestructionCoordinator destructionCoordinator = _destructionCoordinatorInstance.GetComponent<DestructionCoordinator>();
+            GameObject _coordinatorInstance = Instantiate(_coordinatorPrefab);
+            DestructionCoordinator destructionCoordinator = _coordinatorInstance.GetComponent<DestructionCoordinator>();
+
+            PowerupExpirationCoordinator powerupExpirationCoordinator = _coordinatorInstance.GetComponent<PowerupExpirationCoordinator>();
+
             SimpleServiceLocator.Register(destructionCoordinator);
+            SimpleServiceLocator.Register<IPowerupExpirationCoordinator>(powerupExpirationCoordinator);
         }
 
         GameObject pausePanelInstance = Instantiate(_pausePanelPrefab);
