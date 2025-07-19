@@ -33,7 +33,7 @@ public class GameBootstrapper : MonoBehaviour
         _sceneLoader = GetComponent<SceneLoader>();
         _levelDesigner = GetComponent<LevelDesigner>();
         _scoreTracker = GetComponent<ScoreTracker>();
-        _heartController = new HeartController(1);
+        _heartController = new HeartController(5);
         _shrapnelPool = GetComponent<ShrapnelPoolFacade>();
 
         RegisterServices();
