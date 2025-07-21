@@ -9,6 +9,7 @@ namespace Assets.Scripts.UI
     {
         [SerializeField] private Text _scoreText;
         private IScoreTracker _scoreTracker;
+        public Canvas GetCanvas() => GetComponent<Canvas>();
 
         void Awake()
         {

@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &7583260107085601335
+--- !u!1 &8862771495373327913
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,39 +8,43 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5793424099505644972}
-  - component: {fileID: 878924265216383141}
+  - component: {fileID: 5566647293425096707}
+  - component: {fileID: -6484885480043452763}
   m_Layer: 0
-  m_Name: Destruction Coordinator
+  m_Name: PowerupSpawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5793424099505644972
+--- !u!4 &5566647293425096707
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7583260107085601335}
+  m_GameObject: {fileID: 8862771495373327913}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.89476, y: 0.07953, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &878924265216383141
+--- !u!114 &-6484885480043452763
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7583260107085601335}
+  m_GameObject: {fileID: 8862771495373327913}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d7f1059cceff0474ca2a1d60b70aff55, type: 3}
+  m_Script: {fileID: 11500000, guid: 78e75c540eddcd541a722213ccc9e1af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _powerupPrefabs:
+  - {fileID: 7575263988484412043, guid: 31f5245b94b3c54438b65a6f1dc7a189, type: 3}
+  _speedPowerupPrefab: {fileID: 7575263988484412043, guid: 31f5245b94b3c54438b65a6f1dc7a189, type: 3}
+  _container: {fileID: 0}

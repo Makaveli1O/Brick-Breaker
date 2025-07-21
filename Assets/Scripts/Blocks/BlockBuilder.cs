@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Assets.Scripts.SharedKernel;
 
 namespace Assets.Scripts.Blocks
 {
@@ -57,7 +58,7 @@ namespace Assets.Scripts.Blocks
 
             if (!iface.IsAssignableFrom(instance.GetType()))
                 throw new Exception($"{instance.GetType().Name} does not implement IConfigurable<{configType.Name}>");
-            
+
             var method = iface.GetMethod("Configure");
             method?.Invoke(instance, new[] { config });
         }

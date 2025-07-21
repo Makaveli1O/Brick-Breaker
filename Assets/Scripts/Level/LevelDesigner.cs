@@ -28,7 +28,8 @@ namespace Assets.Scripts.Level
         {
             LoadLevel(GetLevelData(GameStateStorage.CurrentLevel));
             _gameStateController.SetState(GameState.Loaded);
-            _soundPlayer.PlayMusic(GetSceneMusicTheme);
+            // _soundPlayer.PlayMusic(GetSceneMusicTheme);
+            _soundPlayer.PlayMusic(null);
         }
 
         public LevelData GetLevelData(int levelIndex)
@@ -67,24 +68,11 @@ namespace Assets.Scripts.Level
 
             var builder = new LevelBuilder();
 
-            // Outer slow movers (top & bottom rows)
-            for (int x = -4; x <= 4; x += 2)
-            {
-                builder.WithBlock(new int2(x, 4), slowMover);
-                builder.WithBlock(new int2(x, -4), slowMover);
-            }
-
             // Middle stationary exploders (sides)
-            for (int y = -2; y <= 2; y += 2)
+            for (float y = -1; y <= 1; y += 0.2f)
             {
-                builder.WithBlock(new int2(-4, y), stationaryExploder);
-                builder.WithBlock(new int2(4, y), stationaryExploder);
+                builder.WithBlock(new float2(-4, y), stationaryExploder);
             }
-
-            // Inner fast combined
-            builder.WithBlock(new int2(0, 0), fastCombo);
-            builder.WithBlock(new int2(-2, 0), fastCombo);
-            builder.WithBlock(new int2(2, 0), fastCombo);
 
             return builder.Build();
         }

@@ -1,6 +1,7 @@
 using System;
 using Assets.Scripts.Ball;
 using Assets.Scripts.GameHandler;
+using Assets.Scripts.Powerups;
 using Assets.Scripts.SharedKernel;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -13,9 +14,9 @@ public class PlayerController : MonoBehaviour
     private IPaddleBehaviour _paddle;
     private PlayerControls _playerControls;
     private Vector2 _movementVector;
-    [SerializeField] private float acceleration = 30f;
     [SerializeField] private PlayerParticleController _ppc;
     [SerializeField] private IBallController _ballController;
+    public PowerupSpawner _powerupSpawner;
     private Rigidbody2D _rb;
     private bool _ballLaunched = false;
 
@@ -39,17 +40,43 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        float targetYSpeed = _movementVector.y * _paddle.Speed;
+        ArcadeSteering();
+        ClampToVerticalBounds();
+    }
+
+    private void SimulatedSteering()
+    {
         float currentYSpeed = _rb.linearVelocity.y;
 
-        float newYSpeed = Mathf.MoveTowards(currentYSpeed, targetYSpeed, acceleration * Time.fixedDeltaTime);
-        _rb.linearVelocity = new Vector2(0f, newYSpeed);
+        float targetYSpeed = _movementVector.y * _paddle.Speed;
+        float smoothing = _paddle.Acceleration;
 
-        ClampToVerticalBounds();
+        _rb.linearVelocityY = Mathf.Lerp(currentYSpeed, targetYSpeed, smoothing * Time.fixedDeltaTime);
+
+    }
+
+    private void ArcadeSteering()
+    {
+        float currentYSpeed = _rb.linearVelocity.y;
+
+        if (_movementVector.y == 0)
+            _rb.linearVelocityY = 0f;
+        else
+        {
+            float targetYSpeed = _movementVector.y * _paddle.Speed;
+            float newYSpeed = Mathf.MoveTowards(currentYSpeed, targetYSpeed, _paddle.Acceleration * Time.fixedDeltaTime);
+            _rb.linearVelocityY = newYSpeed;
+        }
     }
 
     public void OnLaunchBall(InputAction.CallbackContext ctx)
     {
+        // TODO own key binding 
+        if (ctx.performed)
+        {
+            _powerupSpawner.Spawn(PowerupSpawner.PowerupTypes.SpeedBoost, _paddleInstance);
+        }
+
         if (ctx.performed && !_ballLaunched)
         {
             _ballController.LaunchBall();

@@ -69,8 +69,8 @@ namespace Assets.Scripts.GameHandler
                     _sceneLoader.LoadScene(_gameOverScene, GameStateStorage.CurrentLevel);
                     break;
                 case GameState.Win:
-                    Time.timeScale = 0f;
                     SaveProgressAndLoadWinScene();
+                    Time.timeScale = 0f;
                     break;
             }
         }
