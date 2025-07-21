@@ -3,6 +3,8 @@ using System.Collections;
 using Assets.Scripts.SharedKernel;
 using UnityEngine.UI;
 using static Assets.Scripts.Powerups.PowerupSpawner;
+using Assets.Scripts.UI;
+
 
 namespace Assets.Scripts.Powerups
 {
@@ -20,6 +22,9 @@ namespace Assets.Scripts.Powerups
             _target = target;
             SetSpriteIcon();
             Apply();
+
+            if (TryGetComponent<PowerupUI>(out var powerupUI))
+                powerupUI.Initialize(Duration);
         }
         public virtual void Configure(object config) { }
         protected abstract void Apply();
