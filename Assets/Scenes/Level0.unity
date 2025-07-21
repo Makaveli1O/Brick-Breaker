@@ -5348,6 +5348,30 @@ PrefabInstance:
       propertyPath: _heartPrefab
       value: 
       objectReference: {fileID: 7233131255840360070, guid: 76a23f138dd895446ad626dfce12c89a, type: 3}
+    - target: {fileID: 6962348860689147599, guid: 044cef92fc64cb84cb500dae20569043, type: 3}
+      propertyPath: m_Spacing
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6962348860689147599, guid: 044cef92fc64cb84cb500dae20569043, type: 3}
+      propertyPath: m_Padding.m_Top
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6962348860689147599, guid: 044cef92fc64cb84cb500dae20569043, type: 3}
+      propertyPath: m_ChildAlignment
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6962348860689147599, guid: 044cef92fc64cb84cb500dae20569043, type: 3}
+      propertyPath: m_Padding.m_Left
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6962348860689147599, guid: 044cef92fc64cb84cb500dae20569043, type: 3}
+      propertyPath: m_Padding.m_Right
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6962348860689147599, guid: 044cef92fc64cb84cb500dae20569043, type: 3}
+      propertyPath: m_Padding.m_Bottom
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 7646375371833703311, guid: 044cef92fc64cb84cb500dae20569043, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
