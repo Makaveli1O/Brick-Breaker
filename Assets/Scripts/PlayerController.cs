@@ -40,34 +40,29 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        ArcadeSteering();
-        ClampToVerticalBounds();
+        ManuelSteering();
     }
 
-    private void SimulatedSteering()
+    private void ManuelSteering()
     {
-        float currentYSpeed = _rb.linearVelocity.y;
+        if (_movementVector.y == 0f) return;
 
-        float targetYSpeed = _movementVector.y * _paddle.Speed;
-        float smoothing = _paddle.Acceleration;
+        Vector3 pos = transform.position;
 
-        _rb.linearVelocityY = Mathf.Lerp(currentYSpeed, targetYSpeed, smoothing * Time.fixedDeltaTime);
+        float deltaY = _movementVector.y * _paddle.Speed * Time.fixedDeltaTime;
+        pos.y += deltaY;
 
+        float camHeight = Camera.main.orthographicSize;
+        float hudOffset = LevelBounds.GetHudOffsetInUnits();
+        float halfPaddleHeight = _paddlePrefab.GetComponent<SpriteRenderer>().bounds.extents.y;
+
+        float upperBound = camHeight - hudOffset - halfPaddleHeight;
+        float lowerBound = -camHeight + halfPaddleHeight;
+
+        pos.y = Mathf.Clamp(pos.y, lowerBound, upperBound);
+        _rb.MovePosition(pos); // this works with kinematic too
     }
 
-    private void ArcadeSteering()
-    {
-        float currentYSpeed = _rb.linearVelocity.y;
-
-        if (_movementVector.y == 0)
-            _rb.linearVelocityY = 0f;
-        else
-        {
-            float targetYSpeed = _movementVector.y * _paddle.Speed;
-            float newYSpeed = Mathf.MoveTowards(currentYSpeed, targetYSpeed, _paddle.Acceleration * Time.fixedDeltaTime);
-            _rb.linearVelocityY = newYSpeed;
-        }
-    }
 
     public void OnLaunchBall(InputAction.CallbackContext ctx)
     {
@@ -120,6 +115,7 @@ public class PlayerController : MonoBehaviour
         _paddle.Action(ctx);
     }
 
+    [Obsolete("Not used any more", true)]
     private void ClampToVerticalBounds()
     {
         Vector3 pos = transform.position;
@@ -132,6 +128,33 @@ public class PlayerController : MonoBehaviour
         float lowerBound = -camHeight + halfPaddleHeight;
 
         pos.y = Mathf.Clamp(pos.y, lowerBound, upperBound);
-        transform.position = pos;
+        _rb.position = pos;
+    }
+
+    [Obsolete("Not used any more", true)]
+    private void SimulatedSteering()
+    {
+        float currentYSpeed = _rb.linearVelocity.y;
+
+        float targetYSpeed = _movementVector.y * _paddle.Speed;
+        float smoothing = _paddle.Acceleration;
+
+        _rb.linearVelocityY = Mathf.Lerp(currentYSpeed, targetYSpeed, smoothing * Time.fixedDeltaTime);
+
+    }
+
+    [Obsolete("Not used any more", true)]
+    private void ArcadeSteering()
+    {
+        float currentYSpeed = _rb.linearVelocity.y;
+
+        if (_movementVector.y == 0)
+            _rb.linearVelocityY = 0f;
+        else
+        {
+            float targetYSpeed = _movementVector.y * _paddle.Speed;
+            float newYSpeed = Mathf.MoveTowards(currentYSpeed, targetYSpeed, _paddle.Acceleration * Time.fixedDeltaTime);
+            _rb.linearVelocityY = newYSpeed;
+        }
     }
 }
