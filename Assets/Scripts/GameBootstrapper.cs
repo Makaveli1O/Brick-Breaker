@@ -7,6 +7,7 @@ using Assets.Scripts.Score;
 using Assets.Scripts.HeartSystem;
 using Assets.Scripts.Ball;
 using Assets.Scripts.Powerups;
+using Assets.Scripts.UI;
 
 
 public class GameBootstrapper : MonoBehaviour
@@ -26,6 +27,7 @@ public class GameBootstrapper : MonoBehaviour
     [SerializeField] private GameObject _pausePanelPrefab;
     [SerializeField] private GameObject _instructionsUiPrefab;
     [SerializeField] private GameObject _coordinatorPrefab;
+    [SerializeField] private CameraController _cameraController;
     private ShrapnelPoolFacade _shrapnelPool;
     void Awake()
     {
@@ -80,6 +82,7 @@ public class GameBootstrapper : MonoBehaviour
         SimpleServiceLocator.Register<IHeartController>(_heartController);
         SimpleServiceLocator.Register<ILevelCatalog>(new StaticLevelCatalog());
         SimpleServiceLocator.Register<IShrapnelPoolFacade>(_shrapnelPool);
+        SimpleServiceLocator.Register<CameraController>(_cameraController);
 
         // Level progress from SharedKernel
         SimpleServiceLocator.Register<ILevelProgressRepository>(

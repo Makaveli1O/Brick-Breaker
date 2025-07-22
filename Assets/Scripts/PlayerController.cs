@@ -3,6 +3,7 @@ using Assets.Scripts.Ball;
 using Assets.Scripts.GameHandler;
 using Assets.Scripts.Powerups;
 using Assets.Scripts.SharedKernel;
+using Assets.Scripts.UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
