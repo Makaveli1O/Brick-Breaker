@@ -11,9 +11,9 @@ namespace Assets.Scripts.Powerups
         private float _originalSpeed;
         private float _originalAcceleration;
         private float _duration;
-        private const float _defaultMultiplier = 10f;
+        private const float _defaultMultiplier = 2f;
         private const float _defaultDuration = 5f;
-        private const float _defaultAcceleration = 30f;
+        private const float _defaultAcceleration = 20f;
 
         public override void Configure(object config)
         {

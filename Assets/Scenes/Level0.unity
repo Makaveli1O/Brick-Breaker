@@ -5145,12 +5145,24 @@ PrefabInstance:
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 697293219477396324, guid: de0992f14535cb64d8660de9baeba94b, type: 3}
+      propertyPath: m_Mass
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 697293219477396324, guid: de0992f14535cb64d8660de9baeba94b, type: 3}
       propertyPath: m_BodyType
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 697293219477396324, guid: de0992f14535cb64d8660de9baeba94b, type: 3}
+      propertyPath: m_Constraints
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 697293219477396324, guid: de0992f14535cb64d8660de9baeba94b, type: 3}
       propertyPath: m_GravityScale
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 697293219477396324, guid: de0992f14535cb64d8660de9baeba94b, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 702405139730017999, guid: de0992f14535cb64d8660de9baeba94b, type: 3}
       propertyPath: m_Name
