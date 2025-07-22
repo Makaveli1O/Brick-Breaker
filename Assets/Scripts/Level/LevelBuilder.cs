@@ -27,6 +27,16 @@ namespace Assets.Scripts.Level
             return this;
         }
 
+        public LevelBuilder WithBlock(
+            int gridX,
+            int gridY,
+            List<BehaviourConfig> behaviourConfigs,
+            GridSystem grid
+        )
+        {
+            float2 snappedPosition = grid.ToWorldPosition(gridX, gridY);
+            return WithBlock(snappedPosition, behaviourConfigs);
+        }
 
         public LevelData Build()
         {

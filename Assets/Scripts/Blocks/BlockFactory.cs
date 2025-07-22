@@ -38,6 +38,8 @@ namespace Assets.Scripts.Blocks
 
             return block;
         }
+
+        public Sprite GetBlockSprite() => _blockPrefab.GetComponent<SpriteRenderer>().sprite;
     }
 
 }

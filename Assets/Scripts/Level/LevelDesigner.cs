@@ -15,6 +15,7 @@ namespace Assets.Scripts.Level
         private ISoundPlayer _soundPlayer;
         public AudioClip GetSceneMusicTheme => Resources.Load<AudioClip>("Sound/UI/Themes/game_loop");
         private IGameStateController _gameStateController;
+        private GridSystem _grid;
 
 
         void Awake()
@@ -26,6 +27,7 @@ namespace Assets.Scripts.Level
 
         void Start()
         {
+            _grid = new GridSystem(_spawner.GetBlockSizeInWorldUnits().x, _spawner.GetBlockSizeInWorldUnits().y);
             LoadLevel(GetLevelData(GameStateStorage.CurrentLevel));
             _gameStateController.SetState(GameState.Loaded);
             // _soundPlayer.PlayMusic(GetSceneMusicTheme);
@@ -68,14 +70,14 @@ namespace Assets.Scripts.Level
 
             var builder = new LevelBuilder();
 
-            // Middle stationary exploders (sides)
-            for (float y = -1; y <= 1; y += 0.2f)
+            for (int y = -2; y <= 2; y++)
             {
-                builder.WithBlock(new float2(-4, y), stationaryExploder);
+                builder.WithBlock(-8, y, stationaryExploder, _grid);
             }
 
             return builder.Build();
         }
+
 
         private LevelData GetLevel2()
         {
