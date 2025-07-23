@@ -7,13 +7,12 @@ namespace Assets.Scripts.GameHandler
     {
         private ISceneLoader _sceneLoader;
         private ISoundPlayer _soundPlayer;
+        [SerializeField] private GameObject _instructions;
         private string GetInitialSceneName => SceneNames.Level0;
         public AudioClip GetSceneMusicTheme => Resources.Load<AudioClip>("Sound/UI/Themes/main_menu");
-        private LevelProgressService _levelProgressService;
         
         void Awake()
         {
-            _levelProgressService = SimpleServiceLocator.Resolve<LevelProgressService>();
             _sceneLoader = SimpleServiceLocator.Resolve<ISceneLoader>();
             _soundPlayer = SimpleServiceLocator.Resolve<ISoundPlayer>();
         }
@@ -23,7 +22,10 @@ namespace Assets.Scripts.GameHandler
             _soundPlayer.PlayMusic(GetSceneMusicTheme);
         }
 
-        public void ShowInstructions(){ return; }
+        public void ToggleInstructions()
+        {
+            _instructions.SetActive(!_instructions.activeSelf);
+        }
 
         public void PlayGame(int levelId)
         {

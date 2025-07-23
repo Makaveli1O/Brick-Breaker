@@ -53,7 +53,7 @@ namespace Assets.Scripts.GameHandler
             switch (_selectedIndex)
             {
                 case 0: _mainMenuScene.PlayGame(selectedLevelId); break;
-                case 1: _mainMenuScene.ShowInstructions(); break;
+                case 1: _mainMenuScene.ToggleInstructions(); break;
                 case 2: _mainMenuScene.ExitGame(); break;
             }
         }
