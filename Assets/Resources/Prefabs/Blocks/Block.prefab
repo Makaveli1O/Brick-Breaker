@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 7613214456888611792}
   - component: {fileID: 4205123141860245065}
   - component: {fileID: 258504909998533141}
-  - component: {fileID: 8638455681782496722}
   - component: {fileID: 1357396478241080401}
+  - component: {fileID: 3002801611038204023}
   m_Layer: 0
   m_Name: Block
   m_TagString: Block
@@ -103,7 +103,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _destroyClip: {fileID: 8300000, guid: 23719ce001bf8a5499fb65ad8bc36677, type: 3}
---- !u!61 &8638455681782496722
+--- !u!114 &1357396478241080401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5284649261403713773}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7f1059cceff0474ca2a1d60b70aff55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!61 &3002801611038204023
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -147,17 +159,5 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.1, y: 0.32}
+  m_Size: {x: 0.16, y: 0.64}
   m_EdgeRadius: 0
---- !u!114 &1357396478241080401
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5284649261403713773}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d7f1059cceff0474ca2a1d60b70aff55, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
