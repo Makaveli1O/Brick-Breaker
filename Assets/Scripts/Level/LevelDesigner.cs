@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Assets.Scripts.Blocks;
 using Assets.Scripts.GameHandler;
 using Assets.Scripts.SharedKernel;
+using Assets.Scripts.UI;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -15,6 +16,7 @@ namespace Assets.Scripts.Level
         private ISoundPlayer _soundPlayer;
         public AudioClip GetSceneMusicTheme => Resources.Load<AudioClip>("Sound/UI/Themes/game_loop");
         private IGameStateController _gameStateController;
+        private InstructionsUI _instructionsUI;
         private GridSystem _grid;
 
 
@@ -23,6 +25,7 @@ namespace Assets.Scripts.Level
             _spawner = GetComponent<BlockSpawner>();
             _soundPlayer = SimpleServiceLocator.Resolve<ISoundPlayer>();
             _gameStateController = SimpleServiceLocator.Resolve<IGameStateController>();
+            _instructionsUI = SimpleServiceLocator.Resolve<InstructionsUI>();
         }
 
         void Start()
@@ -75,6 +78,7 @@ namespace Assets.Scripts.Level
                 builder.WithBlock(-8, y, stationaryExploder, _grid);
             }
 
+            _instructionsUI.SetText("Use 'W' / 'S' for movement. Press `F` to launch the ball.");
             return builder.Build();
         }
 

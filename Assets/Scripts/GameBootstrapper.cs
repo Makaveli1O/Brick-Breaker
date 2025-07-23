@@ -54,8 +54,8 @@ public class GameBootstrapper : MonoBehaviour
             SimpleServiceLocator.Register(ballController);
 
             GameObject _instructionsUiInstance = Instantiate(_instructionsUiPrefab);
-            InstructionsUI instructionController = _instructionsUiInstance.GetComponent<InstructionsUI>();
-            SimpleServiceLocator.Register(instructionController);
+            InstructionsUI instructionUI = _instructionsUiInstance.GetComponent<InstructionsUI>();
+            SimpleServiceLocator.Register(instructionUI);
 
             GameObject _coordinatorInstance = Instantiate(_coordinatorPrefab);
             DestructionCoordinator destructionCoordinator = _coordinatorInstance.GetComponent<DestructionCoordinator>();
