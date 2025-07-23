@@ -21,7 +21,8 @@ namespace Assets.Scripts.UI
         private List<LevelDefinition> _levels;
         private int _currentIndex = 0;
         [SerializeField] private GameObject _currentButton;
-        
+        public int GetCurrentlySelectedLevelId() => _levels[_currentIndex].Id;
+
 
         void Awake()
         {
@@ -39,13 +40,13 @@ namespace Assets.Scripts.UI
             RenderCurrent();
         }
 
-        private void ShowPrevious()
+        public void ShowPrevious()
         {
             _currentIndex = (_currentIndex - 1 + _levels.Count) % _levels.Count;
             RenderCurrent();
         }
 
-        private void ShowNext()
+        public void ShowNext()
         {
             _currentIndex = (_currentIndex + 1) % _levels.Count;
             RenderCurrent();
