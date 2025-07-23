@@ -119,6 +119,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""BoostPaddle"",
+                    ""type"": ""Button"",
+                    ""id"": ""286450ff-713c-42f1-8bb8-7520d3234889"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Pause"",
                     ""type"": ""Button"",
                     ""id"": ""7310c6b3-28de-4154-85f6-53bf4a1aafe9"",
@@ -198,11 +207,22 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""3a3cb369-ad63-48cd-90f8-b131078a4018"",
-                    ""path"": ""<Keyboard>/space"",
+                    ""path"": ""<Keyboard>/f"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Launch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c57d89a9-7331-4cb6-9b0d-37c115037d5c"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""BoostPaddle"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -227,6 +247,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Base_Move = m_Base.FindAction("Move", throwIfNotFound: true);
         m_Base_Rotate = m_Base.FindAction("Rotate", throwIfNotFound: true);
         m_Base_Launch = m_Base.FindAction("Launch", throwIfNotFound: true);
+        m_Base_BoostPaddle = m_Base.FindAction("BoostPaddle", throwIfNotFound: true);
         m_Base_Pause = m_Base.FindAction("Pause", throwIfNotFound: true);
     }
 
@@ -311,6 +332,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Base_Move;
     private readonly InputAction m_Base_Rotate;
     private readonly InputAction m_Base_Launch;
+    private readonly InputAction m_Base_BoostPaddle;
     private readonly InputAction m_Base_Pause;
     /// <summary>
     /// Provides access to input actions defined in input action map "Base".
@@ -335,6 +357,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Base/Launch".
         /// </summary>
         public InputAction @Launch => m_Wrapper.m_Base_Launch;
+        /// <summary>
+        /// Provides access to the underlying input action "Base/BoostPaddle".
+        /// </summary>
+        public InputAction @BoostPaddle => m_Wrapper.m_Base_BoostPaddle;
         /// <summary>
         /// Provides access to the underlying input action "Base/Pause".
         /// </summary>
@@ -374,6 +400,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Launch.started += instance.OnLaunch;
             @Launch.performed += instance.OnLaunch;
             @Launch.canceled += instance.OnLaunch;
+            @BoostPaddle.started += instance.OnBoostPaddle;
+            @BoostPaddle.performed += instance.OnBoostPaddle;
+            @BoostPaddle.canceled += instance.OnBoostPaddle;
             @Pause.started += instance.OnPause;
             @Pause.performed += instance.OnPause;
             @Pause.canceled += instance.OnPause;
@@ -397,6 +426,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Launch.started -= instance.OnLaunch;
             @Launch.performed -= instance.OnLaunch;
             @Launch.canceled -= instance.OnLaunch;
+            @BoostPaddle.started -= instance.OnBoostPaddle;
+            @BoostPaddle.performed -= instance.OnBoostPaddle;
+            @BoostPaddle.canceled -= instance.OnBoostPaddle;
             @Pause.started -= instance.OnPause;
             @Pause.performed -= instance.OnPause;
             @Pause.canceled -= instance.OnPause;
@@ -461,6 +493,13 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnLaunch(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "BoostPaddle" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnBoostPaddle(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "Pause" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>

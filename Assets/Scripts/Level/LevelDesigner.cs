@@ -78,7 +78,7 @@ namespace Assets.Scripts.Level
             return builder.Build();
         }
 
-
+        
         private LevelData GetLevel2()
         {
             var reflecter = new BehaviourBuilder()
@@ -89,8 +89,7 @@ namespace Assets.Scripts.Level
 
             var builder = new LevelBuilder();
 
-            // Diagonal arms
-            builder.WithBlock(new int2(-3, -3), reflecter);
+            builder.WithBlock(3, -3, reflecter, _grid);
 
             return builder.Build();
         }
@@ -103,13 +102,11 @@ namespace Assets.Scripts.Level
                 .AddNonConfigurable<ExplodeBehaviour>()
                 .Build();
 
-            float s = BlockGrid.Spacing;
-
             for (int x = -10; x <= -7; x++)
             {
                 for (int y = -3; y <= 3; y++)
                 {
-                    builder.WithBlock(new float2(x * s, y * s), exploder);
+                    builder.WithBlock(x, y, exploder, _grid);
                 }
             }
 
@@ -130,10 +127,10 @@ namespace Assets.Scripts.Level
 
             var builder = new LevelBuilder();
 
-            foreach (var pos in GenerateYCoords(4f, -4, 0))
-                builder.WithBlock(new float2(pos.x, pos.y), reflecter);
+            for (int y = -4; y <= 0; y++)
+                builder.WithBlock(4, y, reflecter, _grid);
 
-            builder.WithBlock(new float2(3f, 0f), exploder);
+            builder.WithBlock(3, 0, exploder, _grid);
 
             return builder.Build();
         }
@@ -148,8 +145,13 @@ namespace Assets.Scripts.Level
 
             var builder = new LevelBuilder();
 
-            foreach (var pos in GenerateGrid(-2f, 2f, 0.3f, 2f, -2f, 0.3f))
-                builder.WithBlock(new float2(pos.x, pos.y), slower);
+            for (int x = -2; x <= 2; x++)
+            {
+                for (int y = -2; y <= 2; y++)
+                {
+                    builder.WithBlock(x, y, slower, _grid);
+                }
+            }
 
             return builder.Build();
         }
@@ -164,17 +166,17 @@ namespace Assets.Scripts.Level
 
             var reflector = new BehaviourBuilder()
                 .Add<ReflectBehaviour, ReflectConfig>(
-                    new ReflectConfig( Vector2.up)
+                    new ReflectConfig(Vector2.up)
                 )
                 .Build();
 
             var builder = new LevelBuilder();
 
-            // Vertical slow line
-            foreach (var pos in GenerateYCoords(3f, -3f, 0f))
-                builder.WithBlock(new float2(pos.x, pos.y), reflector);
+            for (int y = -3; y <= 3; y++)
+                builder.WithBlock(3, y, reflector, _grid);
 
-            builder.WithBlock(new float2(1f, 0f), slower);
+            builder.WithBlock(1, 0, slower, _grid);
+
             return builder.Build();
         }
 
@@ -189,8 +191,13 @@ namespace Assets.Scripts.Level
 
             var builder = new LevelBuilder();
 
-            foreach (var pos in GenerateGrid(-2f, 2f, 0.4f, 2f, -2f, 0.4f))
-                builder.WithBlock(new float2(pos.x, pos.y), combo);
+            for (int x = -2; x <= 2; x++)
+            {
+                for (int y = -2; y <= 2; y++)
+                {
+                    builder.WithBlock(x, y, combo, _grid);
+                }
+            }
 
             return builder.Build();
         }
