@@ -6,13 +6,13 @@ namespace Assets.Scripts.Level
     {
         private readonly List<LevelDefinition> _levels = new()
         {
-            new LevelDefinition(1, "Pilot", "A balanced starter level showcasing basic moving and exploding blocks."),
-            new LevelDefinition(2, "Instant finish", "Finishes instantly! Test purposes."),
-            new LevelDefinition(3, "Explosion Performance Test", "Stress test: large grid of exploding blocks. Boom everywhere."),
-            new LevelDefinition(4, "Reflect Behaviour Test", "A vertical wall of reflectors to redirect the ball. Watch your angles."),
-            new LevelDefinition(5, "Slower Madness", "Dense cluster of slow blocks. Gameplay slows dramatically."),
-            new LevelDefinition(6, "Slow & Reflect Cross Pattern", "Cross-shaped challenge using slow and reflect behaviours."),
-            new LevelDefinition(7, "Slow + Explode Combo Grid", "Grid of hybrid blocks that slow and then explode. Chaos follows."),
+            new LevelDefinition(1, "Tutorial1: Basic movement.", "Basic level with a row of moving blocks and a wall of exploding blocks."),
+            new LevelDefinition(2, "Tutorial2: Move block", "These blocks move! Time your shots."),
+            new LevelDefinition(3, "Tutorial3: Explosion block", "Grid of only exploding blocks."),
+            new LevelDefinition(4, "Tutorial4: Reflect block", "Single vertical wall made of reflect blocks. Demonstrates bounce logic."),
+            new LevelDefinition(5, "Tutorial5: Combination", "Compact cluster of slow blocks that heavily reduce ball speed."),
+            new LevelDefinition(6, "Tutorial6: Slo reflect block", "Cross shape made from reflect (vertical) and slow (horizontal) blocks."),
+            new LevelDefinition(7, "Tutorial7: Slow + explosion", "5x5 grid of blocks combining slow and explode behaviour."),
         };
         public IReadOnlyList<LevelDefinition> GetAvailableLevels() => _levels;
     }
