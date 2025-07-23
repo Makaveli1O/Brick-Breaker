@@ -5086,15 +5086,23 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 555736732778835414, guid: de0992f14535cb64d8660de9baeba94b, type: 3}
       propertyPath: m_ActionEvents.Array.size
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 555736732778835414, guid: de0992f14535cb64d8660de9baeba94b, type: 3}
       propertyPath: m_ActionEvents.Array.data[3].m_ActionId
       value: 7310c6b3-28de-4154-85f6-53bf4a1aafe9
       objectReference: {fileID: 0}
     - target: {fileID: 555736732778835414, guid: de0992f14535cb64d8660de9baeba94b, type: 3}
+      propertyPath: m_ActionEvents.Array.data[4].m_ActionId
+      value: 286450ff-713c-42f1-8bb8-7520d3234889
+      objectReference: {fileID: 0}
+    - target: {fileID: 555736732778835414, guid: de0992f14535cb64d8660de9baeba94b, type: 3}
       propertyPath: m_ActionEvents.Array.data[3].m_ActionName
       value: 'Base/Pause[/Keyboard/escape]'
+      objectReference: {fileID: 0}
+    - target: {fileID: 555736732778835414, guid: de0992f14535cb64d8660de9baeba94b, type: 3}
+      propertyPath: m_ActionEvents.Array.data[4].m_ActionName
+      value: 'Base/BoostPaddle[/Keyboard/space]'
       objectReference: {fileID: 0}
     - target: {fileID: 555736732778835414, guid: de0992f14535cb64d8660de9baeba94b, type: 3}
       propertyPath: m_ActionEvents.Array.data[1].m_PersistentCalls.m_Calls.Array.size
@@ -5102,6 +5110,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 555736732778835414, guid: de0992f14535cb64d8660de9baeba94b, type: 3}
       propertyPath: m_ActionEvents.Array.data[3].m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 555736732778835414, guid: de0992f14535cb64d8660de9baeba94b, type: 3}
+      propertyPath: m_ActionEvents.Array.data[4].m_PersistentCalls.m_Calls.Array.size
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 555736732778835414, guid: de0992f14535cb64d8660de9baeba94b, type: 3}
@@ -5113,11 +5125,19 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 555736732778835414, guid: de0992f14535cb64d8660de9baeba94b, type: 3}
+      propertyPath: m_ActionEvents.Array.data[4].m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 555736732778835414, guid: de0992f14535cb64d8660de9baeba94b, type: 3}
       propertyPath: m_ActionEvents.Array.data[1].m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: -944628639613478452, guid: 9bef3a8ebf53898439490fc287e37912, type: 3}
     - target: {fileID: 555736732778835414, guid: de0992f14535cb64d8660de9baeba94b, type: 3}
       propertyPath: m_ActionEvents.Array.data[3].m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1869222747}
+    - target: {fileID: 555736732778835414, guid: de0992f14535cb64d8660de9baeba94b, type: 3}
+      propertyPath: m_ActionEvents.Array.data[4].m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1869222747}
     - target: {fileID: 555736732778835414, guid: de0992f14535cb64d8660de9baeba94b, type: 3}
@@ -5129,8 +5149,16 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 555736732778835414, guid: de0992f14535cb64d8660de9baeba94b, type: 3}
+      propertyPath: m_ActionEvents.Array.data[4].m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 555736732778835414, guid: de0992f14535cb64d8660de9baeba94b, type: 3}
       propertyPath: m_ActionEvents.Array.data[3].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: OnPauseGame
+      objectReference: {fileID: 0}
+    - target: {fileID: 555736732778835414, guid: de0992f14535cb64d8660de9baeba94b, type: 3}
+      propertyPath: m_ActionEvents.Array.data[4].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnBoostPaddle
       objectReference: {fileID: 0}
     - target: {fileID: 555736732778835414, guid: de0992f14535cb64d8660de9baeba94b, type: 3}
       propertyPath: m_ActionEvents.Array.data[1].m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
@@ -5141,7 +5169,15 @@ PrefabInstance:
       value: PlayerController, Scripts
       objectReference: {fileID: 0}
     - target: {fileID: 555736732778835414, guid: de0992f14535cb64d8660de9baeba94b, type: 3}
+      propertyPath: m_ActionEvents.Array.data[4].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: PlayerController, Scripts
+      objectReference: {fileID: 0}
+    - target: {fileID: 555736732778835414, guid: de0992f14535cb64d8660de9baeba94b, type: 3}
       propertyPath: m_ActionEvents.Array.data[3].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 555736732778835414, guid: de0992f14535cb64d8660de9baeba94b, type: 3}
+      propertyPath: m_ActionEvents.Array.data[4].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 697293219477396324, guid: de0992f14535cb64d8660de9baeba94b, type: 3}
