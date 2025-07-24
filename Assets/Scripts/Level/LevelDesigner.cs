@@ -75,19 +75,29 @@ namespace Assets.Scripts.Level
         
         private LevelData GetLevel2()
         {
-            var movingBlock = new BehaviourBuilder()
-                .Add<MoveBehaviour, MoveConfig>(
-                    new MoveConfig(1f, new Vector3(-4, 2, 0), new Vector3(4, 2, 0))
-                ).Build();
+            var basicBlock = new BehaviourBuilder()
+                .AddNonConfigurable<BasicBehaviour>()
+                .Build();
 
             var builder = new LevelBuilder();
 
-            for (int i = -1; i <= 1; i++)
+            for (int y = 0; y <= 4; y++)
             {
-                builder.WithBlock(i, 2, movingBlock, _grid);
+                builder.WithBlock(-2, y, basicBlock, _grid);
             }
 
-            _instructionsUI.SetText("These blocks move! Time your shots. Press `SPACE` to boost the paddle speed.");
+            builder.WithBlock(2, 4, basicBlock, _grid);
+
+            builder.WithConfig(new LevelConfig(Vector2.left));
+
+            _instructionsUI.SetText(
+                "There are several paddles with different \n" +
+                "behaviours. This can rotate in 45 degrees. \n" +
+                "Use 'A' and 'D' to rotate the paddle.\n" +
+                "Find an angle to shoot around the wall.\n" +
+                "Press 'F' to launch the ball."
+            );
+
             return builder.Build();
         }
 
