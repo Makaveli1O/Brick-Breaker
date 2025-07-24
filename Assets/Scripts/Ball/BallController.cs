@@ -1,3 +1,5 @@
+using Assets.Scripts.GameHandler;
+using Assets.Scripts.Level;
 using Assets.Scripts.SharedKernel;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -17,6 +19,7 @@ namespace Assets.Scripts.Ball
         public bool IsMoving => _rb.linearVelocity.sqrMagnitude > 0.001f;
 
         private Rigidbody2D _rb;
+        private ILevelDesigner _levelDesigner;
 
 #if UNITY_EDITOR
         [SerializeField] private float _currentSpeed;
@@ -49,23 +52,25 @@ namespace Assets.Scripts.Ball
 
         public void LaunchBall()
         {
-            // Threshold used for the initial bump
-            float threshold = .1f;
+            
+            LevelData levelData = SimpleServiceLocator.Resolve<ILevelDesigner>().GetLevelData(GameStateStorage.CurrentLevel);
 
-            float x = -1f; // Always launch to the left
-            float y = Random.value < 0.5f ?
-                Random.Range(-threshold, 0.5f) :
-                Random.Range(0.5f, threshold);
+            Vector2 direction = levelData.LevelConfig.LaunchDirection ?? GetRandomLeftDirection();
 
-            Vector2 direction = new Vector2(x, y).normalized;
             _rb.AddForce(direction * _initialPush);
             _soundPlayer.PlaySfx(_launchBallClip);
         }
 
-        public void LaunchBall(Vector2 direction)
+        private Vector2 GetRandomLeftDirection()
         {
-            _rb.AddForce(direction * _initialPush);
-            _soundPlayer.PlaySfx(_launchBallClip);
+            float threshold = .1f;
+
+            float x = -1f;
+            float y = Random.value < 0.5f ?
+                Random.Range(-threshold, 0.5f) :
+                Random.Range(0.5f, threshold);
+
+            return new Vector2(x, y).normalized;
         }
 
         public void OnCollisionEnter2D(Collision2D collision)

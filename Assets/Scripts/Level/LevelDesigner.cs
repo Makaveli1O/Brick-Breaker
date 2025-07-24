@@ -30,6 +30,7 @@ namespace Assets.Scripts.Level
 
         void Start()
         {
+            SimpleServiceLocator.Register<ILevelDesigner>(this); //TODO this is not correct, registratio nshould be done only within bootstrapper
             _grid = new GridSystem(_spawner.GetBlockSizeInWorldUnits().x, _spawner.GetBlockSizeInWorldUnits().y);
             LoadLevel(GetLevelData(GameStateStorage.CurrentLevel));
             _gameStateController.SetState(GameState.Loaded);
@@ -63,9 +64,11 @@ namespace Assets.Scripts.Level
             .AddNonConfigurable<BasicBehaviour>()
             .Build();
 
-            var builder = new LevelBuilder();
+            Vector2 launchHorizontalLeft = Vector2.left;
 
-            builder.WithBlock(-3, 0, basicBlock, _grid);
+            var builder = new LevelBuilder()
+                .WithBlock(-3, -1, basicBlock, _grid)
+                .WithConfig(new LevelConfig(launchHorizontalLeft));
 
             _instructionsUI.SetText("Use 'W' and 'S' to move.\nPress 'F' to launch the ball.");
             return builder.Build();

@@ -15,7 +15,6 @@ public class GameBootstrapper : MonoBehaviour
     private BlockFactory _blockFactory;
     private BlockWinConditionCounter _blockCounter;
     private SceneLoader _sceneLoader;
-    private LevelDesigner _levelDesigner;
     [SerializeField] private SoundPlayer _soundPlayerPrefab;
     private SoundPlayer _soundPlayerInstance;
 
@@ -34,7 +33,6 @@ public class GameBootstrapper : MonoBehaviour
         _blockFactory = GetComponent<BlockFactory>();
         _blockCounter = new BlockWinConditionCounter();
         _sceneLoader = GetComponent<SceneLoader>();
-        _levelDesigner = GetComponent<LevelDesigner>();
         _scoreTracker = GetComponent<ScoreTracker>();
         _heartController = new HeartController(5);
         _shrapnelPool = GetComponent<ShrapnelPoolFacade>();
@@ -77,7 +75,6 @@ public class GameBootstrapper : MonoBehaviour
         SimpleServiceLocator.Register<IBlockCounter>(_blockCounter);
         SimpleServiceLocator.Register<IGameWinCondition>(_blockCounter);
         SimpleServiceLocator.Register<ISceneLoader>(_sceneLoader);
-        SimpleServiceLocator.Register<ILevelDesigner>(_levelDesigner);
         SimpleServiceLocator.Register<IScoreTracker>(_scoreTracker);
         SimpleServiceLocator.Register<IHeartController>(_heartController);
         SimpleServiceLocator.Register<ILevelCatalog>(new StaticLevelCatalog());
