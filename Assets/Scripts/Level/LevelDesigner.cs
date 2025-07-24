@@ -30,7 +30,6 @@ namespace Assets.Scripts.Level
 
         void Start()
         {
-            SimpleServiceLocator.Register<ILevelDesigner>(this); //TODO this is not correct, registratio nshould be done only within bootstrapper
             _grid = new GridSystem(_spawner.GetBlockSizeInWorldUnits().x, _spawner.GetBlockSizeInWorldUnits().y);
             LoadLevel(GetLevelData(GameStateStorage.CurrentLevel));
             _gameStateController.SetState(GameState.Loaded);

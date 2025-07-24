@@ -27,6 +27,7 @@ public class GameBootstrapper : MonoBehaviour
     [SerializeField] private GameObject _instructionsUiPrefab;
     [SerializeField] private GameObject _coordinatorPrefab;
     [SerializeField] private CameraController _cameraController;
+    [SerializeField] private GameObject _levelDesignerPrefab;
     private ShrapnelPoolFacade _shrapnelPool;
     void Awake()
     {
@@ -60,8 +61,12 @@ public class GameBootstrapper : MonoBehaviour
 
             PowerupExpirationCoordinator powerupExpirationCoordinator = _coordinatorInstance.GetComponent<PowerupExpirationCoordinator>();
 
+            GameObject _levelDesignerInstance = Instantiate(_levelDesignerPrefab);
+            ILevelDesigner levelDesigner = _levelDesignerInstance.GetComponent<ILevelDesigner>();
+
             SimpleServiceLocator.Register(destructionCoordinator);
             SimpleServiceLocator.Register<IPowerupExpirationCoordinator>(powerupExpirationCoordinator);
+            SimpleServiceLocator.Register<ILevelDesigner>(levelDesigner);
         }
 
         GameObject pausePanelInstance = Instantiate(_pausePanelPrefab);
