@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2793350792930615551}
   - component: {fileID: 4671864257725591217}
   - component: {fileID: 658905561066554974}
+  - component: {fileID: -6794303964918055655}
   m_Layer: 0
   m_Name: Level Main Camera
   m_TagString: MainCamera
@@ -152,3 +153,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _wallBlockHorizontalPrefab: {fileID: 4544472822524786109, guid: 7b40586850d9f4d45aa59c28f875f738, type: 3}
   _wallBlockVerticalPrefab: {fileID: 7769383839839293709, guid: adc2365830952a24ea0412d954c87744, type: 3}
+--- !u!114 &-6794303964918055655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8687855035491171682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2a85ce042c053149b7a9bf41e24a364, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

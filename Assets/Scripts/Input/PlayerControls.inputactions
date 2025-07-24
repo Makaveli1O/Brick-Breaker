@@ -33,6 +33,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "BoostPaddle",
+                    "type": "Button",
+                    "id": "286450ff-713c-42f1-8bb8-7520d3234889",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Pause",
                     "type": "Button",
                     "id": "7310c6b3-28de-4154-85f6-53bf4a1aafe9",
@@ -112,11 +121,22 @@
                 {
                     "name": "",
                     "id": "3a3cb369-ad63-48cd-90f8-b131078a4018",
-                    "path": "<Keyboard>/space",
+                    "path": "<Keyboard>/f",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Launch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c57d89a9-7331-4cb6-9b0d-37c115037d5c",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "BoostPaddle",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

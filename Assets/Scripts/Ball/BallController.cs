@@ -1,3 +1,5 @@
+using Assets.Scripts.GameHandler;
+using Assets.Scripts.Level;
 using Assets.Scripts.SharedKernel;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -9,7 +11,22 @@ namespace Assets.Scripts.Ball
     {
         [SerializeField] private AudioClip _launchBallClip;
         [SerializeField] private AudioClip _ballHit;
-        private float _initialPush = 200f;
+       
+        private Vector2? _launchDirection = null;
+        public void SetLaunchDirection(Vector2? launchDirection) => _launchDirection = launchDirection;
+
+        private const float INITIAL_PUSH_DEFAULT = 200f;
+        private float _initialPush = INITIAL_PUSH_DEFAULT;
+        public void SetInitialPush(float? initialPush) => _initialPush = initialPush ?? INITIAL_PUSH_DEFAULT;
+
+        public Vector2? _initialPosition = null;
+        public void SetInitialPosition(Vector2? initialPosition)
+        {
+            _initialPosition = initialPosition;
+            if (initialPosition.HasValue)
+                transform.position = initialPosition.Value;
+        }
+       
         private float _maxSpeed = 6f;
         private float _minSpeed = 4f;
         public bool IsSlowed { get; set; } = false;
@@ -49,17 +66,22 @@ namespace Assets.Scripts.Ball
 
         public void LaunchBall()
         {
-            // Threshold used for the initial bump
+            Vector2 direction = _launchDirection ?? GetRandomLeftDirection();
+            
+            _rb.AddForce(direction * _initialPush);
+            _soundPlayer.PlaySfx(_launchBallClip);
+        }
+
+        private Vector2 GetRandomLeftDirection()
+        {
             float threshold = .1f;
 
-            float x = -1f; // Always launch to the left
+            float x = -1f;
             float y = Random.value < 0.5f ?
                 Random.Range(-threshold, 0.5f) :
                 Random.Range(0.5f, threshold);
 
-            Vector2 direction = new Vector2(x, y).normalized;
-            _rb.AddForce(direction * _initialPush);
-            _soundPlayer.PlaySfx(_launchBallClip);
+            return new Vector2(x, y).normalized;
         }
 
         public void OnCollisionEnter2D(Collision2D collision)

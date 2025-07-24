@@ -48,7 +48,7 @@ Canvas:
   m_GameObject: {fileID: 1944170292936808755}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_Camera: {fileID: 3296514539812408186, guid: cdf998b0bea96184d83444008a980ee3, type: 3}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -60,7 +60,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!114 &2666716065794545463
 MonoBehaviour:
@@ -167,7 +167,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Press SPACE to launch ball..
+  m_text: Press `F` to launch ball..
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8ef5bfe83f166da42a0f818c839ea7eb, type: 2}
   m_sharedMaterial: {fileID: -2428045646024628933, guid: 8ef5bfe83f166da42a0f818c839ea7eb, type: 2}
@@ -284,3 +284,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _instruction: {fileID: 3303263184857114915}
+  _canvas: {fileID: 85677348739216908}

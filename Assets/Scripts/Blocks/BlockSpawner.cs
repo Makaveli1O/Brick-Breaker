@@ -1,5 +1,6 @@
 using UnityEngine;
 using Assets.Scripts.SharedKernel;
+using Unity.Mathematics;
 
 namespace Assets.Scripts.Blocks
 {
@@ -21,6 +22,13 @@ namespace Assets.Scripts.Blocks
             {
                 throw new System.Exception("BlockCounter service is not registered in the SimpleServiceLocator.");
             }
+        }
+        public float2 GetBlockSizeInWorldUnits()
+        {
+            var sprite = _blockFactory.GetBlockSprite();
+            float pixelsPerUnit = sprite.pixelsPerUnit;
+            var rect = sprite.rect;
+            return new float2(rect.width / pixelsPerUnit, rect.height / pixelsPerUnit);
         }
 
         public Block SpawnBlock(BlockData blockData)

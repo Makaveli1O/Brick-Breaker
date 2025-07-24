@@ -1,9 +1,13 @@
 using System.Collections.Generic;
+using Assets.Scripts.Ball;
 using Assets.Scripts.Blocks;
 using Assets.Scripts.GameHandler;
 using Assets.Scripts.SharedKernel;
+using Assets.Scripts.UI;
 using Unity.Mathematics;
 using UnityEngine;
+using Assets.Scripts.Level.Config;
+using Assets.Scripts.HeartSystem;
 
 namespace Assets.Scripts.Level
 {
@@ -15,6 +19,10 @@ namespace Assets.Scripts.Level
         private ISoundPlayer _soundPlayer;
         public AudioClip GetSceneMusicTheme => Resources.Load<AudioClip>("Sound/UI/Themes/game_loop");
         private IGameStateController _gameStateController;
+        private InstructionsUI _instructionsUI;
+        private GridSystem _grid;
+        private IBallController _ballController;
+        private IHeartController _heartController;
 
 
         void Awake()
@@ -22,10 +30,14 @@ namespace Assets.Scripts.Level
             _spawner = GetComponent<BlockSpawner>();
             _soundPlayer = SimpleServiceLocator.Resolve<ISoundPlayer>();
             _gameStateController = SimpleServiceLocator.Resolve<IGameStateController>();
+            _instructionsUI = SimpleServiceLocator.Resolve<InstructionsUI>();
+            _ballController = SimpleServiceLocator.Resolve<IBallController>();
+            _heartController = SimpleServiceLocator.Resolve<IHeartController>();
         }
 
         void Start()
         {
+            _grid = new GridSystem(_spawner.GetBlockSizeInWorldUnits().x, _spawner.GetBlockSizeInWorldUnits().y);
             LoadLevel(GetLevelData(GameStateStorage.CurrentLevel));
             _gameStateController.SetState(GameState.Loaded);
             // _soundPlayer.PlayMusic(GetSceneMusicTheme);
@@ -43,153 +55,173 @@ namespace Assets.Scripts.Level
                 5 => GetLevel5(),
                 6 => GetLevel6(),
                 7 => GetLevel7(),
+                8 => GetLevel8(),
                 _ => GetLevel1()
             };
         }
 
+        // TODO make levels to gradually introduc eplayer to the mechanics
+        // movement W/S, launch ball with F
+        // Showcase HP system
+        // Showcase individual blocks, their relationship to the colours
+        // and their possibility to combine their behaviour.
         private LevelData GetLevel1()
         {
-            var slowMover = new BehaviourBuilder()
-                .Add<MoveBehaviour, MoveConfig>(
-                    new MoveConfig(1.0f, new Vector3(-4, 4, 0), new Vector3(4, 4, 0))
-                )
-                .Build();
+            var basicBlock = new BehaviourBuilder()
+            .AddNonConfigurable<BasicBehaviour>()
+            .Build();
 
-            var stationaryExploder = new BehaviourBuilder()
-                .AddNonConfigurable<ExplodeBehaviour>()
-                .Build();
+            Vector2 launchHorizontalLeft = Vector2.left;
 
-            var fastCombo = new BehaviourBuilder()
-                .Add<MoveBehaviour, MoveConfig>(
-                    new MoveConfig(4.0f, new Vector3(-2, 0, 0), new Vector3(2, 0, 0))
-                )
-                .AddNonConfigurable<ExplodeBehaviour>()
-                .Build();
+            var builder = new LevelBuilder()
+                .WithBlock(-3, -1, basicBlock, _grid)
+                .WithConfig(LevelConfigFactory.WithBall(launchDirection: Vector2.left));
 
-            var builder = new LevelBuilder();
-
-            // Middle stationary exploders (sides)
-            for (float y = -1; y <= 1; y += 0.2f)
-            {
-                builder.WithBlock(new float2(-4, y), stationaryExploder);
-            }
-
+            _instructionsUI.SetText("Use 'W' and 'S' to move.\nPress 'F' to launch the ball.");
             return builder.Build();
         }
-
+        
         private LevelData GetLevel2()
         {
-            var reflecter = new BehaviourBuilder()
-                .Add<ReflectBehaviour, ReflectConfig>(
-                    new ReflectConfig(Vector2.left)
-                )
+            var basicBlock = new BehaviourBuilder()
+                .AddNonConfigurable<BasicBehaviour>()
                 .Build();
 
             var builder = new LevelBuilder();
 
-            // Diagonal arms
-            builder.WithBlock(new int2(-3, -3), reflecter);
+            for (int y = 0; y <= 4; y++)
+            {
+                builder.WithBlock(-2, y, basicBlock, _grid);
+            }
+
+            builder.WithBlock(2, 4, basicBlock, _grid);
+
+            builder.WithConfig(LevelConfigFactory.WithBall(launchDirection:Vector2.left));
+
+            _instructionsUI.SetText(
+                "There are several paddles with different \n" +
+                "behaviours. This can rotate in 45 degrees. \n" +
+                "Use 'A' and 'D' to rotate the paddle.\n" +
+                "Find an angle to shoot around the wall.\n" +
+                "Press 'F' to launch the ball."
+            );
 
             return builder.Build();
         }
+
 
         private LevelData GetLevel3()
         {
-            var builder = new LevelBuilder();
-
-            var exploder = new BehaviourBuilder()
-                .AddNonConfigurable<ExplodeBehaviour>()
+            var basicBlock = new BehaviourBuilder()
+                .AddNonConfigurable<BasicBehaviour>()
                 .Build();
 
-            float s = BlockGrid.Spacing;
+            Vector2 launchDiagonal = new Vector2(-1, 1).normalized;
 
-            for (int x = -10; x <= -7; x++)
-            {
-                for (int y = -3; y <= 3; y++)
-                {
-                    builder.WithBlock(new float2(x * s, y * s), exploder);
-                }
-            }
+            var builder = new LevelBuilder()
+                .WithBlock(3, 3, basicBlock, _grid)
+                .WithBlock(4, 3, basicBlock, _grid)
+                .WithBlock(5, 3, basicBlock, _grid)
+                .WithBlock(6, 3, basicBlock, _grid)
+                .WithBlock(7, 3, basicBlock, _grid)
+                .WithConfig(
+                    LevelConfigFactory.WithBall(launchDirection: launchDiagonal, initialPush: 400f)
+                );
 
+            _instructionsUI.SetText("Press 'SPACEBAR' to temporarily boost paddle speed.\nTry catching the ball launched sideways!");
             return builder.Build();
         }
 
         private LevelData GetLevel4()
         {
-            var reflecter = new BehaviourBuilder()
-                .Add<ReflectBehaviour, ReflectConfig>(
-                    new ReflectConfig(Vector2.left)
-                )
+            var basicBlock = new BehaviourBuilder()
+                .AddNonConfigurable<BasicBehaviour>()
                 .Build();
 
-            var exploder = new BehaviourBuilder()
-                .AddNonConfigurable<ExplodeBehaviour>()
-                .Build();
+            var builder = new LevelBuilder()
+                .WithBlock(-3, 2, basicBlock, _grid)
+                .WithConfig(
+                    LevelConfigFactory.WithBall(
+                        launchDirection: new Vector2(0, -1),
+                        position: new Vector2(0, 4),
+                        initialPush: 300f
+                    ))
+                .WithConfig(LevelConfigFactory.WithHP(2));
 
-            var builder = new LevelBuilder();
-
-            foreach (var pos in GenerateYCoords(4f, -4, 0))
-                builder.WithBlock(new float2(pos.x, pos.y), reflecter);
-
-            builder.WithBlock(new float2(3f, 0f), exploder);
+            _instructionsUI.SetText(
+                "If you do not catch the ball you will lose a heart.\n" +
+                "Number of hearts is indicated in the top left corner.\n" +
+                "Each miss costs one heart. Losing all hearts loses the game. \n" +
+                "Press `F` to launch the ball."
+            );
 
             return builder.Build();
         }
 
         private LevelData GetLevel5()
         {
-            var slower = new BehaviourBuilder()
-                .Add<SlowBehaviour, SlowConfig>(
-                    new SlowConfig(2f, 0.5f)
-                )
-                .Build();
+            var basic = new BehaviourBuilder().AddNonConfigurable<BasicBehaviour>().Build();
+            var explode = new BehaviourBuilder().AddNonConfigurable<ExplodeBehaviour>().Build();
 
-            var builder = new LevelBuilder();
+            var builder = new LevelBuilder()
+                .WithBlock(3, 5, basic, _grid)
+                .WithBlock(4, 5, explode, _grid)
+                .WithBlock(5, 5, basic, _grid)
+                .WithConfig(LevelConfigFactory.WithBall(launchDirection: Vector2.left));
 
-            foreach (var pos in GenerateGrid(-2f, 2f, 0.3f, 2f, -2f, 0.3f))
-                builder.WithBlock(new float2(pos.x, pos.y), slower);
-
+            _instructionsUI.SetText(
+                "Explosion blocks shoots shrapnels in various directions.\n" +
+                "This can be useful in order to destroy more blocks.\n" +
+                "Destroying this block might lead to chain reaction." 
+            );
             return builder.Build();
         }
 
         private LevelData GetLevel6()
         {
-            var slower = new BehaviourBuilder()
-                .Add<SlowBehaviour, SlowConfig>(
-                    new SlowConfig(2f, 0.3f)
-                )
-                .Build();
+            var reflect = new BehaviourBuilder().AddNonConfigurable<ReflectBehaviour>().Build();
 
-            var reflector = new BehaviourBuilder()
-                .Add<ReflectBehaviour, ReflectConfig>(
-                    new ReflectConfig( Vector2.up)
-                )
-                .Build();
+            var builder = new LevelBuilder()
+                .WithBlock(4, 5, reflect, _grid)
+                .WithConfig(LevelConfigFactory.WithBall(launchDirection: Vector2.left));
 
-            var builder = new LevelBuilder();
+            _instructionsUI.SetText(
+                "Reflect blocks bounce the ball in predefined angle.\n" +
+                "Each block can have set custom reflection angle. \n" + 
+                "This can be very tricky. Reflection vector is visualized\n" +
+                "by small arrow next to it."
+            );
 
-            // Vertical slow line
-            foreach (var pos in GenerateYCoords(3f, -3f, 0f))
-                builder.WithBlock(new float2(pos.x, pos.y), reflector);
-
-            builder.WithBlock(new float2(1f, 0f), slower);
             return builder.Build();
         }
 
         private LevelData GetLevel7()
         {
+            var slow = new BehaviourBuilder()
+                .Add<SlowBehaviour, SlowConfig>(new SlowConfig(duration: 3f, slownessPercentage: 20f))
+                .Build();
+
+            var builder = new LevelBuilder()
+                .WithBlock(4, 5, slow, _grid)
+                .WithBlock(5, 5, slow, _grid)
+                .WithConfig(LevelConfigFactory.WithBall(launchDirection: Vector2.left));
+
+            _instructionsUI.SetText("Slow blocks reduce ball speed.");
+            return builder.Build();
+        }
+
+        private LevelData GetLevel8()
+        {
             var combo = new BehaviourBuilder()
-                .Add<SlowBehaviour, SlowConfig>(
-                    new SlowConfig(1.5f, 0.4f)
-                )
+                .AddNonConfigurable<ReflectBehaviour>()
                 .AddNonConfigurable<ExplodeBehaviour>()
                 .Build();
 
-            var builder = new LevelBuilder();
+            var builder = new LevelBuilder()
+                .WithBlock(4, 5, combo, _grid)
+                .WithConfig(LevelConfigFactory.WithBall(launchDirection: Vector2.left));
 
-            foreach (var pos in GenerateGrid(-2f, 2f, 0.4f, 2f, -2f, 0.4f))
-                builder.WithBlock(new float2(pos.x, pos.y), combo);
-
+            _instructionsUI.SetText("This block reflects the ball and explodes!");
             return builder.Build();
         }
 
@@ -226,6 +258,17 @@ namespace Assets.Scripts.Level
         {
             foreach (BlockData data in levelData.Blocks)
                 _spawner.SpawnBlock(data);
+
+            ApplyBallConfig(levelData.LevelConfig.BallConfig);
+
+            _heartController.SetMaxHearts(levelData.LevelConfig.InitialHP);
+        }
+
+        private void ApplyBallConfig(BallConfig config)
+        {
+            _ballController.SetLaunchDirection(config.LaunchDirection);
+            _ballController.SetInitialPosition(config.BallInitialPosition);
+            _ballController.SetInitialPush(config.BallInitialPush);
         }
     }
 }

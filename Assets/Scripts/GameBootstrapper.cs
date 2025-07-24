@@ -7,6 +7,7 @@ using Assets.Scripts.Score;
 using Assets.Scripts.HeartSystem;
 using Assets.Scripts.Ball;
 using Assets.Scripts.Powerups;
+using Assets.Scripts.UI;
 
 
 public class GameBootstrapper : MonoBehaviour
@@ -14,7 +15,6 @@ public class GameBootstrapper : MonoBehaviour
     private BlockFactory _blockFactory;
     private BlockWinConditionCounter _blockCounter;
     private SceneLoader _sceneLoader;
-    private LevelDesigner _levelDesigner;
     [SerializeField] private SoundPlayer _soundPlayerPrefab;
     private SoundPlayer _soundPlayerInstance;
 
@@ -26,13 +26,14 @@ public class GameBootstrapper : MonoBehaviour
     [SerializeField] private GameObject _pausePanelPrefab;
     [SerializeField] private GameObject _instructionsUiPrefab;
     [SerializeField] private GameObject _coordinatorPrefab;
+    [SerializeField] private CameraController _cameraController;
+    [SerializeField] private GameObject _levelDesignerPrefab;
     private ShrapnelPoolFacade _shrapnelPool;
     void Awake()
     {
         _blockFactory = GetComponent<BlockFactory>();
         _blockCounter = new BlockWinConditionCounter();
         _sceneLoader = GetComponent<SceneLoader>();
-        _levelDesigner = GetComponent<LevelDesigner>();
         _scoreTracker = GetComponent<ScoreTracker>();
         _heartController = new HeartController(5);
         _shrapnelPool = GetComponent<ShrapnelPoolFacade>();
@@ -52,16 +53,20 @@ public class GameBootstrapper : MonoBehaviour
             SimpleServiceLocator.Register(ballController);
 
             GameObject _instructionsUiInstance = Instantiate(_instructionsUiPrefab);
-            InstructionsUI instructionController = _instructionsUiInstance.GetComponent<InstructionsUI>();
-            SimpleServiceLocator.Register(instructionController);
+            InstructionsUI instructionUI = _instructionsUiInstance.GetComponent<InstructionsUI>();
+            SimpleServiceLocator.Register(instructionUI);
 
             GameObject _coordinatorInstance = Instantiate(_coordinatorPrefab);
             DestructionCoordinator destructionCoordinator = _coordinatorInstance.GetComponent<DestructionCoordinator>();
 
             PowerupExpirationCoordinator powerupExpirationCoordinator = _coordinatorInstance.GetComponent<PowerupExpirationCoordinator>();
 
+            GameObject _levelDesignerInstance = Instantiate(_levelDesignerPrefab);
+            ILevelDesigner levelDesigner = _levelDesignerInstance.GetComponent<ILevelDesigner>();
+
             SimpleServiceLocator.Register(destructionCoordinator);
             SimpleServiceLocator.Register<IPowerupExpirationCoordinator>(powerupExpirationCoordinator);
+            SimpleServiceLocator.Register<ILevelDesigner>(levelDesigner);
         }
 
         GameObject pausePanelInstance = Instantiate(_pausePanelPrefab);
@@ -75,11 +80,11 @@ public class GameBootstrapper : MonoBehaviour
         SimpleServiceLocator.Register<IBlockCounter>(_blockCounter);
         SimpleServiceLocator.Register<IGameWinCondition>(_blockCounter);
         SimpleServiceLocator.Register<ISceneLoader>(_sceneLoader);
-        SimpleServiceLocator.Register<ILevelDesigner>(_levelDesigner);
         SimpleServiceLocator.Register<IScoreTracker>(_scoreTracker);
         SimpleServiceLocator.Register<IHeartController>(_heartController);
         SimpleServiceLocator.Register<ILevelCatalog>(new StaticLevelCatalog());
         SimpleServiceLocator.Register<IShrapnelPoolFacade>(_shrapnelPool);
+        SimpleServiceLocator.Register<CameraController>(_cameraController);
 
         // Level progress from SharedKernel
         SimpleServiceLocator.Register<ILevelProgressRepository>(

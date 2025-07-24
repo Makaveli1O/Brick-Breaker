@@ -3,6 +3,7 @@ using Assets.Scripts.Ball;
 using Assets.Scripts.GameHandler;
 using Assets.Scripts.Powerups;
 using Assets.Scripts.SharedKernel;
+using Assets.Scripts.UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -63,15 +64,16 @@ public class PlayerController : MonoBehaviour
         _rb.MovePosition(pos); // this works with kinematic too
     }
 
-
-    public void OnLaunchBall(InputAction.CallbackContext ctx)
+    public void OnBoostPaddle(InputAction.CallbackContext ctx)
     {
-        // TODO own key binding 
         if (ctx.performed)
         {
             _powerupSpawner.Spawn(PowerupSpawner.PowerupTypes.SpeedBoost, _paddleInstance);
-        }
+        } 
+    }
 
+    public void OnLaunchBall(InputAction.CallbackContext ctx)
+    {
         if (ctx.performed && !_ballLaunched)
         {
             _ballController.LaunchBall();

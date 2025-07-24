@@ -4,7 +4,7 @@ namespace Assets.Scripts.Blocks
 {
     public interface IBlockFactory
     {
-        
+
         /// <summary>
         /// Spawns a block based on the provided block data.
         /// </summary>
@@ -12,5 +12,6 @@ namespace Assets.Scripts.Blocks
         /// <param name="parent">The parent transform under which the block will be spawned.</param>
         /// <returns>The spawned block.</returns>
         Block SpawnBlock(BlockData blockData, Transform parent);
+        Sprite GetBlockSprite();
     }
 }
