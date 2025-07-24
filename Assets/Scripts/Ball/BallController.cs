@@ -62,6 +62,12 @@ namespace Assets.Scripts.Ball
             _soundPlayer.PlaySfx(_launchBallClip);
         }
 
+        public void LaunchBall(Vector2 direction)
+        {
+            _rb.AddForce(direction * _initialPush);
+            _soundPlayer.PlaySfx(_launchBallClip);
+        }
+
         public void OnCollisionEnter2D(Collision2D collision)
         {
             if (collision.gameObject.CompareTag("Player"))

@@ -59,34 +59,17 @@ namespace Assets.Scripts.Level
         // and their possibility to combine their behaviour.
         private LevelData GetLevel1()
         {
-            var slowMover = new BehaviourBuilder()
-                .Add<MoveBehaviour, MoveConfig>(
-                    new MoveConfig(1.0f, new Vector3(-4, 4, 0), new Vector3(4, 4, 0))
-                )
-                .Build();
-
-            var stationaryExploder = new BehaviourBuilder()
-                .AddNonConfigurable<ExplodeBehaviour>()
-                .Build();
-
-            var fastCombo = new BehaviourBuilder()
-                .Add<MoveBehaviour, MoveConfig>(
-                    new MoveConfig(4.0f, new Vector3(-2, 0, 0), new Vector3(2, 0, 0))
-                )
-                .AddNonConfigurable<ExplodeBehaviour>()
-                .Build();
+            var basicBlock = new BehaviourBuilder()
+            .AddNonConfigurable<BasicBehaviour>()
+            .Build();
 
             var builder = new LevelBuilder();
 
-            for (int y = -2; y <= 2; y++)
-            {
-                builder.WithBlock(-8, y, stationaryExploder, _grid);
-            }
+            builder.WithBlock(-3, 0, basicBlock, _grid);
 
-            _instructionsUI.SetText("Use 'W' / 'S' for movement. Press `F` to launch the ball.");
+            _instructionsUI.SetText("Use 'W' and 'S' to move.\nPress 'F' to launch the ball.");
             return builder.Build();
         }
-
         
         private LevelData GetLevel2()
         {

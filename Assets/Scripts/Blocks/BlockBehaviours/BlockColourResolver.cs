@@ -10,6 +10,7 @@ namespace Assets.Scripts.Blocks
     {
         private static readonly Dictionary<Type, Color> _behaviourColours = new()
         {
+            [typeof(BasicBehaviour)] = Colours.BasicBlockColor,
             [typeof(MoveBehaviour)] = Colours.MoveBlockColor,
             [typeof(ExplodeBehaviour)] = Colours.ExplodeBlockColor,
             [typeof(ReflectBehaviour)] = Colours.ReflectBlockColor,

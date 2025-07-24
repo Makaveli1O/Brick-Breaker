@@ -6,13 +6,7 @@ namespace Assets.Scripts.Level
     {
         private readonly List<LevelDefinition> _levels = new()
         {
-            new LevelDefinition(1, "Tutorial1: Basic movement.", "Basic level with a row of moving blocks and a wall of exploding blocks."),
-            new LevelDefinition(2, "Tutorial2: Move block", "These blocks move! Time your shots."),
-            new LevelDefinition(3, "Tutorial3: Explosion block", "Grid of only exploding blocks."),
-            new LevelDefinition(4, "Tutorial4: Reflect block", "Single vertical wall made of reflect blocks. Demonstrates bounce logic."),
-            new LevelDefinition(5, "Tutorial5: Combination", "Compact cluster of slow blocks that heavily reduce ball speed."),
-            new LevelDefinition(6, "Tutorial6: Slo reflect block", "Cross shape made from reflect (vertical) and slow (horizontal) blocks."),
-            new LevelDefinition(7, "Tutorial7: Slow + explosion", "5x5 grid of blocks combining slow and explode behaviour."),
+            new LevelDefinition(1, "Tutorial 1: Launch Basics", "Learn to move your paddle and launch the ball to destroy blocks."),
         };
         public IReadOnlyList<LevelDefinition> GetAvailableLevels() => _levels;
     }
