@@ -55,6 +55,7 @@ namespace Assets.Scripts.Level
                 5 => GetLevel5(),
                 6 => GetLevel6(),
                 7 => GetLevel7(),
+                8 => GetLevel8(),
                 _ => GetLevel1()
             };
         }
@@ -159,66 +160,68 @@ namespace Assets.Scripts.Level
 
         private LevelData GetLevel5()
         {
-            var reflectMover = new BehaviourBuilder()
-                .Add<MoveBehaviour, MoveConfig>(
-                    new MoveConfig(1.5f, new Vector3(-3, 2, 0), new Vector3(3, 2, 0))
-                )
-                .AddNonConfigurable<ReflectBehaviour>()
-                .Build();
+            var basic = new BehaviourBuilder().AddNonConfigurable<BasicBehaviour>().Build();
+            var explode = new BehaviourBuilder().AddNonConfigurable<ExplodeBehaviour>().Build();
 
-            var builder = new LevelBuilder();
+            var builder = new LevelBuilder()
+                .WithBlock(3, 5, basic, _grid)
+                .WithBlock(4, 5, explode, _grid)
+                .WithBlock(5, 5, basic, _grid)
+                .WithConfig(LevelConfigFactory.WithBall(launchDirection: Vector2.left));
 
-            for (int x = -1; x <= 1; x++)
-            {
-                builder.WithBlock(x, 2, reflectMover, _grid);
-            }
-
-            _instructionsUI.SetText("These reflectors are on the move.");
+            _instructionsUI.SetText(
+                "Explosion blocks shoots shrapnels in various directions.\n" +
+                "This can be useful in order to destroy more blocks.\n" +
+                "Destroying this block might lead to chain reaction." 
+            );
             return builder.Build();
         }
 
         private LevelData GetLevel6()
         {
-            var movingExploder = new BehaviourBuilder()
-                .Add<MoveBehaviour, MoveConfig>(
-                    new MoveConfig(2f, new Vector3(-4, 3, 0), new Vector3(4, 3, 0))
-                )
-                .AddNonConfigurable<ExplodeBehaviour>()
-                .Build();
+            var reflect = new BehaviourBuilder().AddNonConfigurable<ReflectBehaviour>().Build();
 
-            var reflectBlock = new BehaviourBuilder()
-                .AddNonConfigurable<ReflectBehaviour>()
-                .Build();
+            var builder = new LevelBuilder()
+                .WithBlock(4, 5, reflect, _grid)
+                .WithConfig(LevelConfigFactory.WithBall(launchDirection: Vector2.left));
 
-            var builder = new LevelBuilder();
+            _instructionsUI.SetText(
+                "Reflect blocks bounce the ball in predefined angle.\n" +
+                "Each block can have set custom reflection angle. \n" + 
+                "This can be very tricky. Reflection vector is visualized\n" +
+                "by small arrow next to it."
+            );
 
-            builder.WithBlock(0, 4, movingExploder, _grid);
-            builder.WithBlock(-2, 2, reflectBlock, _grid);
-            builder.WithBlock(2, 2, reflectBlock, _grid);
-
-            _instructionsUI.SetText("Everything combined: reflect, explode, and move!");
             return builder.Build();
         }
 
         private LevelData GetLevel7()
         {
+            var slow = new BehaviourBuilder()
+                .Add<SlowBehaviour, SlowConfig>(new SlowConfig(duration: 3f, slownessPercentage: 20f))
+                .Build();
+
+            var builder = new LevelBuilder()
+                .WithBlock(4, 5, slow, _grid)
+                .WithBlock(5, 5, slow, _grid)
+                .WithConfig(LevelConfigFactory.WithBall(launchDirection: Vector2.left));
+
+            _instructionsUI.SetText("Slow blocks reduce ball speed.");
+            return builder.Build();
+        }
+
+        private LevelData GetLevel8()
+        {
             var combo = new BehaviourBuilder()
-                .Add<SlowBehaviour, SlowConfig>(
-                    new SlowConfig(1.5f, 0.4f)
-                )
+                .AddNonConfigurable<ReflectBehaviour>()
                 .AddNonConfigurable<ExplodeBehaviour>()
                 .Build();
 
-            var builder = new LevelBuilder();
+            var builder = new LevelBuilder()
+                .WithBlock(4, 5, combo, _grid)
+                .WithConfig(LevelConfigFactory.WithBall(launchDirection: Vector2.left));
 
-            for (int x = -2; x <= 2; x++)
-            {
-                for (int y = -2; y <= 2; y++)
-                {
-                    builder.WithBlock(x, y, combo, _grid);
-                }
-            }
-
+            _instructionsUI.SetText("This block reflects the ball and explodes!");
             return builder.Build();
         }
 
