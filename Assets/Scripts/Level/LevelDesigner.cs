@@ -6,6 +6,7 @@ using Assets.Scripts.SharedKernel;
 using Assets.Scripts.UI;
 using Unity.Mathematics;
 using UnityEngine;
+using Assets.Scripts.Level.Config;
 
 namespace Assets.Scripts.Level
 {
@@ -70,7 +71,7 @@ namespace Assets.Scripts.Level
 
             var builder = new LevelBuilder()
                 .WithBlock(-3, -1, basicBlock, _grid)
-                .WithConfig(new LevelConfig(launchHorizontalLeft));
+                .WithConfig(LevelConfigFactory.WithBall(launchDirection: Vector2.left));
 
             _instructionsUI.SetText("Use 'W' and 'S' to move.\nPress 'F' to launch the ball.");
             return builder.Build();
@@ -91,11 +92,7 @@ namespace Assets.Scripts.Level
 
             builder.WithBlock(2, 4, basicBlock, _grid);
 
-            builder.WithConfig(
-                new LevelConfig(
-                    launchDirection: Vector2.left
-                )
-            );
+            builder.WithConfig(LevelConfigFactory.WithBall(launchDirection:Vector2.left));
 
             _instructionsUI.SetText(
                 "There are several paddles with different \n" +
@@ -124,10 +121,7 @@ namespace Assets.Scripts.Level
                 .WithBlock(6, 3, basicBlock, _grid)
                 .WithBlock(7, 3, basicBlock, _grid)
                 .WithConfig(
-                    new LevelConfig(
-                        launchDirection: launchDiagonal,
-                        ballInitialPush: 400f
-                    )
+                    LevelConfigFactory.WithBall(launchDirection: launchDiagonal, initialPush: 400f)
                 );
 
             _instructionsUI.SetText("Press 'SPACEBAR' to temporarily boost paddle speed.\nTry catching the ball launched sideways!");
@@ -253,9 +247,14 @@ namespace Assets.Scripts.Level
             foreach (BlockData data in levelData.Blocks)
                 _spawner.SpawnBlock(data);
 
-            _ballController.SetLaunchDirection(levelData.LevelConfig.LaunchDirection);
-            _ballController.SetInitialPosition(levelData.LevelConfig.BallInitialPosition);
-            _ballController.SetInitialPush(levelData.LevelConfig.BallInitialPush);
+            ApplyBallConfig(levelData.LevelConfig.BallConfig);
+        }
+
+        private void ApplyBallConfig(BallConfig config)
+        {
+            _ballController.SetLaunchDirection(config.LaunchDirection);
+            _ballController.SetInitialPosition(config.BallInitialPosition);
+            _ballController.SetInitialPush(config.BallInitialPush);
         }
     }
 }

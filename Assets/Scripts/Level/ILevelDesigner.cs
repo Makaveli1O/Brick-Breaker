@@ -1,3 +1,5 @@
+using Assets.Scripts.Level.Config;
+
 namespace Assets.Scripts.Level
 {
     public interface ILevelDesigner

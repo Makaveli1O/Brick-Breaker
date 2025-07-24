@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Assets.Scripts.Blocks;
 using Unity.Mathematics;
+using Assets.Scripts.Level.Config;
 
 namespace Assets.Scripts.Level
 {
