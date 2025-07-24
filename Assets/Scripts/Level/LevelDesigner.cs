@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Assets.Scripts.Ball;
 using Assets.Scripts.Blocks;
 using Assets.Scripts.GameHandler;
 using Assets.Scripts.SharedKernel;
@@ -18,6 +19,7 @@ namespace Assets.Scripts.Level
         private IGameStateController _gameStateController;
         private InstructionsUI _instructionsUI;
         private GridSystem _grid;
+        private IBallController _ballController;
 
 
         void Awake()
@@ -26,6 +28,7 @@ namespace Assets.Scripts.Level
             _soundPlayer = SimpleServiceLocator.Resolve<ISoundPlayer>();
             _gameStateController = SimpleServiceLocator.Resolve<IGameStateController>();
             _instructionsUI = SimpleServiceLocator.Resolve<InstructionsUI>();
+            _ballController = SimpleServiceLocator.Resolve<IBallController>();
         }
 
         void Start()
@@ -88,7 +91,11 @@ namespace Assets.Scripts.Level
 
             builder.WithBlock(2, 4, basicBlock, _grid);
 
-            builder.WithConfig(new LevelConfig(Vector2.left));
+            builder.WithConfig(
+                new LevelConfig(
+                    launchDirection: Vector2.left
+                )
+            );
 
             _instructionsUI.SetText(
                 "There are several paddles with different \n" +
@@ -104,18 +111,26 @@ namespace Assets.Scripts.Level
 
         private LevelData GetLevel3()
         {
-            var reflectBlock = new BehaviourBuilder()
-                .AddNonConfigurable<ReflectBehaviour>()
+            var basicBlock = new BehaviourBuilder()
+                .AddNonConfigurable<BasicBehaviour>()
                 .Build();
 
-            var builder = new LevelBuilder();
+            Vector2 launchDiagonal = new Vector2(-1, 1).normalized;
 
-            for (int x = -2; x <= 2; x++)
-            {
-                builder.WithBlock(x, 3, reflectBlock, _grid);
-            }
+            var builder = new LevelBuilder()
+                .WithBlock(3, 3, basicBlock, _grid)
+                .WithBlock(4, 3, basicBlock, _grid)
+                .WithBlock(5, 3, basicBlock, _grid)
+                .WithBlock(6, 3, basicBlock, _grid)
+                .WithBlock(7, 3, basicBlock, _grid)
+                .WithConfig(
+                    new LevelConfig(
+                        launchDirection: launchDiagonal,
+                        ballInitialPush: 400f
+                    )
+                );
 
-            _instructionsUI.SetText("Reflect blocks bounce your ball back.");
+            _instructionsUI.SetText("Press 'SPACEBAR' to temporarily boost paddle speed.\nTry catching the ball launched sideways!");
             return builder.Build();
         }
 
@@ -237,6 +252,10 @@ namespace Assets.Scripts.Level
         {
             foreach (BlockData data in levelData.Blocks)
                 _spawner.SpawnBlock(data);
+
+            _ballController.SetLaunchDirection(levelData.LevelConfig.LaunchDirection);
+            _ballController.SetInitialPosition(levelData.LevelConfig.BallInitialPosition);
+            _ballController.SetInitialPush(levelData.LevelConfig.BallInitialPush);
         }
     }
 }

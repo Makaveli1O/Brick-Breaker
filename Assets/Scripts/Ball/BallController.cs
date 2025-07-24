@@ -11,7 +11,22 @@ namespace Assets.Scripts.Ball
     {
         [SerializeField] private AudioClip _launchBallClip;
         [SerializeField] private AudioClip _ballHit;
-        private float _initialPush = 200f;
+       
+        private Vector2? _launchDirection = null;
+        public void SetLaunchDirection(Vector2? launchDirection) => _launchDirection = launchDirection;
+
+        private const float INITIAL_PUSH_DEFAULT = 200f;
+        private float _initialPush = INITIAL_PUSH_DEFAULT;
+        public void SetInitialPush(float? initialPush) => _initialPush = initialPush ?? INITIAL_PUSH_DEFAULT;
+
+        public Vector2? _initialPosition = null;
+        public void SetInitialPosition(Vector2? initialPosition)
+        {
+            _initialPosition = initialPosition;
+            if (initialPosition.HasValue)
+                transform.position = initialPosition.Value;
+        }
+       
         private float _maxSpeed = 6f;
         private float _minSpeed = 4f;
         public bool IsSlowed { get; set; } = false;
@@ -19,7 +34,6 @@ namespace Assets.Scripts.Ball
         public bool IsMoving => _rb.linearVelocity.sqrMagnitude > 0.001f;
 
         private Rigidbody2D _rb;
-        private ILevelDesigner _levelDesigner;
 
 #if UNITY_EDITOR
         [SerializeField] private float _currentSpeed;
@@ -52,11 +66,8 @@ namespace Assets.Scripts.Ball
 
         public void LaunchBall()
         {
+            Vector2 direction = _launchDirection ?? GetRandomLeftDirection();
             
-            LevelData levelData = SimpleServiceLocator.Resolve<ILevelDesigner>().GetLevelData(GameStateStorage.CurrentLevel);
-
-            Vector2 direction = levelData.LevelConfig.LaunchDirection ?? GetRandomLeftDirection();
-
             _rb.AddForce(direction * _initialPush);
             _soundPlayer.PlaySfx(_launchBallClip);
         }
