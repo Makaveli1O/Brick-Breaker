@@ -37,5 +37,23 @@ namespace Assets.Scripts.HeartSystem
                 OnHeartRemoved?.Invoke(_heartCount);
             }
         }
+        public void SetMaxHearts(int newMax)
+        {
+            if (newMax <= 0)
+                throw new ArgumentOutOfRangeException(nameof(newMax), "Max hearts must be positive.");
+
+            _maxHearts = newMax;
+
+            if (_heartCount > _maxHearts)
+            {
+                while (_heartCount > _maxHearts)
+                    RemoveHeart();
+            }
+            else
+            {
+                while (_heartCount < _maxHearts)
+                    AddHeart();
+            }
+        }
     }
 }

@@ -11,5 +11,9 @@ public static class LevelConfigFactory
             BallInitialPosition = position,
             BallInitialPush = initialPush
         });
+    }  
+    public static LevelConfig WithHP(int hp)
+    {
+        return new LevelConfig(new BallConfig(), hp);
     }
 }

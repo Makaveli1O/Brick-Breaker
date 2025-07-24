@@ -7,6 +7,7 @@ using Assets.Scripts.UI;
 using Unity.Mathematics;
 using UnityEngine;
 using Assets.Scripts.Level.Config;
+using Assets.Scripts.HeartSystem;
 
 namespace Assets.Scripts.Level
 {
@@ -21,6 +22,7 @@ namespace Assets.Scripts.Level
         private InstructionsUI _instructionsUI;
         private GridSystem _grid;
         private IBallController _ballController;
+        private IHeartController _heartController;
 
 
         void Awake()
@@ -30,6 +32,7 @@ namespace Assets.Scripts.Level
             _gameStateController = SimpleServiceLocator.Resolve<IGameStateController>();
             _instructionsUI = SimpleServiceLocator.Resolve<InstructionsUI>();
             _ballController = SimpleServiceLocator.Resolve<IBallController>();
+            _heartController = SimpleServiceLocator.Resolve<IHeartController>();
         }
 
         void Start()
@@ -130,21 +133,26 @@ namespace Assets.Scripts.Level
 
         private LevelData GetLevel4()
         {
-            var movingExploder = new BehaviourBuilder()
-                .Add<MoveBehaviour, MoveConfig>(
-                    new MoveConfig(2f, new Vector3(-3, 4, 0), new Vector3(3, 4, 0))
-                )
-                .AddNonConfigurable<ExplodeBehaviour>()
+            var basicBlock = new BehaviourBuilder()
+                .AddNonConfigurable<BasicBehaviour>()
                 .Build();
 
-            var builder = new LevelBuilder();
+            var builder = new LevelBuilder()
+                .WithBlock(-3, 2, basicBlock, _grid)
+                .WithConfig(
+                    LevelConfigFactory.WithBall(
+                        launchDirection: new Vector2(0, -1), // downward launch
+                        position: new Vector2(0, 4),         // ball starts above paddle
+                        initialPush: 1f                      // ensure it falls fast
+                    ))
+                .WithConfig(LevelConfigFactory.WithHP(2));
 
-            for (int x = -2; x <= 2; x++)
-            {
-                builder.WithBlock(x, 4, movingExploder, _grid);
-            }
+            _instructionsUI.SetText(
+                "This time, don’t catch the ball.\n" +
+                "Let it fall to see what happens when you miss.\n" +
+                "Each miss costs one heart."
+            );
 
-            _instructionsUI.SetText("These moving blocks explode on hit!");
             return builder.Build();
         }
 
@@ -248,6 +256,8 @@ namespace Assets.Scripts.Level
                 _spawner.SpawnBlock(data);
 
             ApplyBallConfig(levelData.LevelConfig.BallConfig);
+
+            _heartController.SetMaxHearts(levelData.LevelConfig.InitialHP);
         }
 
         private void ApplyBallConfig(BallConfig config)
