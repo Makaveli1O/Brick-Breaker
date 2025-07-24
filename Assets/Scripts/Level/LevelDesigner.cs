@@ -141,16 +141,17 @@ namespace Assets.Scripts.Level
                 .WithBlock(-3, 2, basicBlock, _grid)
                 .WithConfig(
                     LevelConfigFactory.WithBall(
-                        launchDirection: new Vector2(0, -1), // downward launch
-                        position: new Vector2(0, 4),         // ball starts above paddle
-                        initialPush: 1f                      // ensure it falls fast
+                        launchDirection: new Vector2(0, -1),
+                        position: new Vector2(0, 4),
+                        initialPush: 300f
                     ))
                 .WithConfig(LevelConfigFactory.WithHP(2));
 
             _instructionsUI.SetText(
-                "This time, don’t catch the ball.\n" +
-                "Let it fall to see what happens when you miss.\n" +
-                "Each miss costs one heart."
+                "If you do not catch the ball you will lose a heart.\n" +
+                "Number of hearts is indicated in the top left corner.\n" +
+                "Each miss costs one heart. Losing all hearts loses the game. \n" +
+                "Press `F` to launch the ball."
             );
 
             return builder.Build();
