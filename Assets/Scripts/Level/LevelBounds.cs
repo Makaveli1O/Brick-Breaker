@@ -4,6 +4,7 @@ using System.Linq;
 using Assets.Scripts.Blocks;
 using Assets.Scripts.GameHandler;
 using Assets.Scripts.SharedKernel;
+using Assets.Scripts.UI;
 using UnityEngine;
 
 public class LevelBounds : MonoBehaviour
@@ -15,13 +16,21 @@ public class LevelBounds : MonoBehaviour
 
     [SerializeField] private GameObject _wallBlockHorizontalPrefab;
     [SerializeField] private GameObject _wallBlockVerticalPrefab;
+    private HudScaler _hudScaler;
 
+    private GameObject _topWall;
     private float _wallThickness;
     private float _left, _right, _top, _bottom, _width, _height;
+
+    void Awake()
+    {
+        _hudScaler = GetComponent<HudScaler>();
+    }
 
     void Start()
     {
         CreateBounds();
+        _hudScaler.AlignToTopWall(_topWall);
     }
 
     public static float GetHudOffsetInUnits() =>
@@ -57,6 +66,8 @@ public class LevelBounds : MonoBehaviour
             new Vector2(_wallThickness, _height),
             WallScreenPosition.Right
         );
+
+        _topWall = topWall;
 
         FixHorizontalOverlap(topWall);
         FixHorizontalOverlap(bottomWall);
