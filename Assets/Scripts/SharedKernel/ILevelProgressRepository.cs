@@ -6,5 +6,6 @@ namespace Assets.Scripts.SharedKernel
         void SaveProgress(LevelProgressData data);
         bool IsLevelUnlocked(string levelId);
         void UnlockLevel(string levelId);
+        void ResetProgress();
     }
 }

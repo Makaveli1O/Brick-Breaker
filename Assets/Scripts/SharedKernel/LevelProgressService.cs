@@ -18,6 +18,7 @@ namespace Assets.Scripts.SharedKernel
         public int GetScore(string levelId) => _repository.GetProgress(levelId).Score;
 
         public bool IsUnlocked(string levelId) => _repository.IsLevelUnlocked(levelId);
+        public void ResetProgress() => _repository.ResetProgress();
 
         public int GetLastUnlockedLevelId()
         {

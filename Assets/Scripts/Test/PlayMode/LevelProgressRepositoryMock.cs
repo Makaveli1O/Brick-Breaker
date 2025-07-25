@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices.WindowsRuntime;
 using Assets.Scripts.SharedKernel;
 
 public class LevelProgressRepositoryMock : ILevelProgressRepository
@@ -11,6 +12,7 @@ public class LevelProgressRepositoryMock : ILevelProgressRepository
     }
 
     public bool IsLevelUnlocked(string levelId) => LevelUnlockedStub;
+    public void ResetProgress(){}
     public void SaveProgress(LevelProgressData data)
     {
         return;

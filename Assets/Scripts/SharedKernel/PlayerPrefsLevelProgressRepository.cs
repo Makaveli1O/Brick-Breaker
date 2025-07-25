@@ -32,5 +32,11 @@ namespace Assets.Scripts.SharedKernel
         {
             PlayerPrefs.SetInt(UnlockedPrefix + levelId, 1);
         }
+
+        public void ResetProgress()
+        {
+            PlayerPrefs.DeleteAll();
+            PlayerPrefs.Save();
+        }
     }
 }
