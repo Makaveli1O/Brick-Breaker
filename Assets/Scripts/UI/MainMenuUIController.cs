@@ -62,9 +62,18 @@ namespace Assets.Scripts.GameHandler
         {
             switch (_selectedIndex)
             {
-                case 0: _mainMenuScene.PlayGame(selectedLevelId); break;
-                case 1: _mainMenuScene.ToggleInstructions(); break;
-                case 2: _mainMenuScene.ExitGame(); break;
+                case 0:
+                    if (_levelSelectionUI.IsCurrentlySelectedLevelUnlocked())
+                        _mainMenuScene.PlayGame(selectedLevelId);
+                    else
+                        Debug.Log("Selected level is locked");
+                    break;
+                case 1:
+                    _mainMenuScene.ToggleInstructions();
+                    break;
+                case 2:
+                    _mainMenuScene.ExitGame();
+                    break;
             }
         }
 

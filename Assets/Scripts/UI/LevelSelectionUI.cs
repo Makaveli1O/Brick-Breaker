@@ -40,6 +40,8 @@ namespace Assets.Scripts.UI
             RenderCurrent();
         }
 
+        public bool IsCurrentlySelectedLevelUnlocked() => _levelProgressService.IsUnlocked(_levels[_currentIndex].Id.ToString());
+
         public void ShowPrevious()
         {
             _currentIndex = (_currentIndex - 1 + _levels.Count) % _levels.Count;

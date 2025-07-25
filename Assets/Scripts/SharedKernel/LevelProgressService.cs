@@ -7,6 +7,7 @@ namespace Assets.Scripts.SharedKernel
         public LevelProgressService(ILevelProgressRepository repository)
         {
             _repository = repository;
+            _repository.UnlockLevel("1"); // Always unlock first level
         }
 
         public void CompleteLevel(string levelId, int score, string nextLevelId)
